@@ -1,8 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">PrincePolo</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">Extreme Pair Programming</string>
+    <string name="action_settings">Settings eyyh</string>
+    <string name="drawer_open">Slider Menu Opened</string>
+    <string name="drawer_close">Slider Menu Closed</string>
+
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item>Home</item>
+        <item>Something</item>
+        <item>and yet</item>
+        <item>more something</item>
+        <item>even more</item>
+        <item>stuff here</item>
+		<item>Thors Activity</item>
+    </string-array>
+
+    <!-- Nav Drawer List Item Icons -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_home</item>
+        <item>@drawable/ic_1</item>
+        <item>@drawable/ic_2</item>
+        <item>@drawable/ic_3</item>
+        <item>@drawable/ic_4</item>
+        <item>@drawable/ic_5</item>
+		<item>@drawable/thor</item>
+    </array>
+
+    <!-- Content Description -->
+    <string name="desc_list_item_icon">Item Icon</string>
+    <string name="title_activity_home_fragment">HomeFragment</string>
+    <string name="title_activity_thor_fragment">ThorFragment</string>
 
 </resources>

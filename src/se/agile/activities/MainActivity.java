@@ -14,6 +14,7 @@ import android.content.res.TypedArray;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +44,6 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
 		mTitle = mDrawerTitle = getTitle();
 
 		// load slide menu items
@@ -79,7 +79,7 @@ public class MainActivity extends Activity
 		// enabling action bar app icon and behaving it as toggle button
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
-
+		
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.ic_drawer, //nav menu toggle icon
 				R.string.app_name, // nav drawer open - description for accessibility
@@ -99,6 +99,7 @@ public class MainActivity extends Activity
 				invalidateOptionsMenu();
 			}
 		};
+
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		if (savedInstanceState == null) 
@@ -106,13 +107,14 @@ public class MainActivity extends Activity
 			// on first time display view for first nav item
 			displayView(0);
 		}
+		
+		mDrawerLayout.openDrawer(Gravity.LEFT);
 	}
 
 	/**
 	 * Slide menu item click listener
 	 * */
-	private class SlideMenuClickListener implements
-			ListView.OnItemClickListener {
+	private class SlideMenuClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {

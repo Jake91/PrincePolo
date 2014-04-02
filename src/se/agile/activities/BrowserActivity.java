@@ -1,9 +1,11 @@
 package se.agile.activities;
 
 import se.agile.activities.model.HttpConnection;
+import se.agile.activities.model.Preferences;
 import se.agile.princepolo.R;
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
@@ -12,18 +14,17 @@ import android.webkit.WebViewClient;
 public class BrowserActivity extends Activity {
 	public static String OAUTH_URL = "https://github.com/login/oauth/authorize";
     public static String OAUTH_ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token";
-    public static String CLIENT_ID = "387b05f90574b6fede43";
-    public static String CLIENT_SECRET = "557392acf8c742ac6e6a3a4ff36b172f378c1633";
     public static String CALLBACK_URL = "princepolo://oauthresponse";//"http://localhost";
     
-	private static final String logTag = "gitIntegration";
+	private String logTag;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
+		logTag = getResources().getString(R.string.logtag_main);
 		Log.d(logTag, "new intent started: testbrowseractivity");
-		String url = OAUTH_URL + "?client_id=" + CLIENT_ID + "&redirect_uri=" + CALLBACK_URL;
+		String url = OAUTH_URL + "?client_id=" + Preferences.getClientId() + "&redirect_uri=" + CALLBACK_URL;
 		
 		WebView webview = (WebView)findViewById(R.id.webview);
 		webview.getSettings().setJavaScriptEnabled(true);
@@ -45,12 +46,18 @@ public class BrowserActivity extends Activity {
                 String accessCodeFragment = "code=";
             	// We hijack the GET request to extract the OAuth parameters
             	Log.d(logTag, "OnPageStarted url: " + url);
-            	synchronized (this) { //Seems to be threading calling the method since i got serveral HttpConnections running....
+            	synchronized (this) { //Seems to be threading calling the method since i got several HttpConnections running....
             		if(url.matches("princepolo://oauthresponse\\?code=[\\dA-z]+") && !isPostSent) {
     	        		String accessCode = url.split("code=")[1];
     	        		Log.d(logTag, "accessCode: " + accessCode);
-                		HttpConnection conn = new HttpConnection();
-                		conn.execute(accessCode);
+    	        		AsyncTask<String, Void, Void> aTask = new AsyncTask<String, Void, Void>(){
+    	        			@Override
+    	        			protected Void doInBackground(String... params) {
+    	        				HttpConnection.requestAccessToken(params[0]);
+    	        				return null;
+    	        			}
+    	        		};
+                		aTask.execute(accessCode);
                 		isPostSent = true;
     	        	}else{
     	        		Log.d(logTag, "Url don't match \"princepolo://oauthresponse\\?code=[\\dA-z]+\"");

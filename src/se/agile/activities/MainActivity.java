@@ -2,16 +2,18 @@ package se.agile.activities;
 
 import java.util.ArrayList;
 
+import se.agile.activities.model.Preferences;
 import se.agile.navigator.NavDrawerItem;
 import se.agile.navigator.NavDrawerListAdapter;
 import se.agile.princepolo.R;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -39,13 +41,14 @@ public class MainActivity extends Activity
 	private TypedArray navMenuIcons;
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private NavDrawerListAdapter adapter;
+	private String logTag;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		logTag = getResources().getString(R.string.logtag_main);
 		mTitle = mDrawerTitle = getTitle();
 
 		// load slide menu items
@@ -109,10 +112,12 @@ public class MainActivity extends Activity
 			displayView(0);
 		}
 		
-		Intent intent = new Intent(this, BrowserActivity.class);
-	    startActivity(intent);
+		
+		Preferences.initializePreferences(this);
+	
 	}
 
+	
 	/**
 	 * Slide menu item click listener
 	 * */
@@ -184,7 +189,7 @@ public class MainActivity extends Activity
 				fragment = new Fragment5();
 				break;
 			case 5:
-				fragment = new Fragment6();
+				fragment = new SetUpGitHubFragment();
 				break;
 			case 6:
 				fragment = new ThorFragment();

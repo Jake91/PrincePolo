@@ -23,35 +23,39 @@ import org.json.JSONTokener;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class HttpConnection extends AsyncTask<String, Void, Void>{
+public class HttpConnection{
 	
-	private static final String logTag = "gitIntegration";
+	private static final String logTag = "PrincePolo";
 	public static String OAUTH_URL = "https://github.com/login/oauth/authorize";
     public static String OAUTH_ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token";
-    public static String CLIENT_ID = "387b05f90574b6fede43";
-    public static String CLIENT_SECRET = "557392acf8c742ac6e6a3a4ff36b172f378c1633";
     public static String CALLBACK_URL = "princepolo://oauthresponse";//"http://localhost";
-
-	@Override
-	protected Void doInBackground(String... params) {
-		Log.d(logTag, "Param to asynctask httpconnection: " + params[0]);
+    
+    /**
+     * Will send a post to GitHub requesting the access_token. If found it will save it to the preferences.
+     * 
+     * @param code
+     */
+    public static synchronized void requestAccessToken(String code){
+		if(code == null || !code.matches("[\\dA-z]+")){
+			Log.e(logTag, "parameter to HttpConnection don't contain 'code'");
+			return;
+		}
 		HttpClient client = new DefaultHttpClient();
 	    HttpPost httppost = new HttpPost(OAUTH_ACCESS_TOKEN_URL);
 	    try {
 	    	JSONObject holder = new JSONObject();
 	    	try {
-	    		holder.put("client_id", CLIENT_ID);
-		    	holder.put("client_secret", CLIENT_SECRET);
-				holder.put("code", params[0]);
+	    		holder.put("client_id", Preferences.getClientId());
+		    	holder.put("client_secret", Preferences.getClientSecret());
+				holder.put("code", code);
 			} catch (JSONException e1) {
-				Log.d(logTag,"JSON ERROR");
+				Log.e(logTag,"Error creating JSON string");
 				e1.printStackTrace();
+				return;
 			}
-	    	Log.d(logTag, "Holder json: " + holder.toString());
             StringEntity se = new StringEntity( holder.toString());  
             se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
             httppost.setEntity(se);
-	        Log.d(logTag, "client.execute");
 	        HttpResponse response = client.execute(httppost);
 	        HttpEntity respEntity = response.getEntity();
 //	        Log.d(logTag, "response Entity Utils: " + EntityUtils.toString(respEntity));
@@ -67,17 +71,17 @@ public class HttpConnection extends AsyncTask<String, Void, Void>{
 		        String json = builder.toString();
 	        	Log.d(logTag, "json= " + json);
 		        try {
-		        	Log.d(logTag, "json result: ");
 		        	JSONObject object = (JSONObject) new JSONTokener(json).nextValue();
 		        	String access_token = object.getString("access_token");
-		        	Log.d(logTag, "json access_token: "+access_token);
+		        	Preferences.setAccessToken(access_token);
 		        	String token_type = object.getString("token_type");
-		        	Log.d(logTag, "json token_type: " + token_type);
+		        	Preferences.setTokenType(token_type);
 		        	String scope = object.getString("scope");
-		        	Log.d(logTag, "json scope: "+ scope);
+		        	Preferences.setScope(scope);
 				} catch (JSONException e) {
-					Log.d(logTag, "Error in JSON");
+					Log.e(logTag, "Error in interpreting JSON");
 					e.printStackTrace();
+					return;
 				}
 	        }else{
 	        	Log.e(logTag, "Didn't get statuscode 200");
@@ -87,6 +91,5 @@ public class HttpConnection extends AsyncTask<String, Void, Void>{
 	    } catch (IOException e) {
 	    	Log.d(logTag, "Error in testBrowser3");
 	    }
-		return null;
-	}
+    }
 }

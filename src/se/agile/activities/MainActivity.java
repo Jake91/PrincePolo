@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import se.agile.navigator.NavDrawerItem;
 import se.agile.navigator.NavDrawerListAdapter;
 import se.agile.princepolo.R;
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -106,6 +108,9 @@ public class MainActivity extends Activity
 			// on first time display view for first nav item
 			displayView(0);
 		}
+		
+		Intent intent = new Intent(this, TestBrowserActivity.class);
+	    startActivity(intent);
 	}
 
 	/**

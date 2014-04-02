@@ -13,8 +13,8 @@
         <item>and yet</item>
         <item>more something</item>
         <item>even more</item>
-        <item>stuff here</item>
-		<item>Thors Activity</item>
+        <item>SetUp GitHub</item>
+        <item>Thors Activity</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
@@ -25,12 +25,17 @@
         <item>@drawable/ic_3</item>
         <item>@drawable/ic_4</item>
         <item>@drawable/ic_5</item>
-		<item>@drawable/thor</item>
+        <item>@drawable/thor</item>
     </array>
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
     <string name="title_activity_home_fragment">HomeFragment</string>
     <string name="title_activity_thor_fragment">ThorFragment</string>
+    <string name="title_activity_browser">BrowserActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="access_token">access_token</string>
+    <string name="github">GitHub</string>
+    <string name="logtag_main">PrincePolo</string>
 
 </resources>

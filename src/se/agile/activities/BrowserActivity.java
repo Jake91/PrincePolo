@@ -53,7 +53,7 @@ public class BrowserActivity extends Activity {
                 		conn.execute(accessCode);
                 		isPostSent = true;
     	        	}else{
-    	        		Log.d(logTag, "Error in testBrowser");
+    	        		Log.d(logTag, "Url don't match \"princepolo://oauthresponse\\?code=[\\dA-z]+\"");
     	        	}
 				}
             	if(isPostSent){

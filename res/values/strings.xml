@@ -33,7 +33,6 @@
     <string name="title_activity_home_fragment">HomeFragment</string>
     <string name="title_activity_thor_fragment">ThorFragment</string>
     <string name="title_activity_browser">BrowserActivity</string>
-    <string name="title_activity_test_browser">TestBrowserActivity</string>
     <string name="hello_world">Hello world!</string>
 
 </resources>

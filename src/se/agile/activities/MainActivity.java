@@ -109,7 +109,7 @@ public class MainActivity extends Activity
 			displayView(0);
 		}
 		
-		Intent intent = new Intent(this, TestBrowserActivity.class);
+		Intent intent = new Intent(this, BrowserActivity.class);
 	    startActivity(intent);
 	}
 

@@ -21,92 +21,124 @@ public class Preferences {
     	return prefs != null;
     }
     
-    private static String ACCESS_TOKEN = "access_token";
+    private static void setGeneral(PREF_KEY key, String value){
+    	if(isInitialized()){
+    		Editor edit = prefs.edit();
+            edit.putString(key.getKey(), value);
+            edit.apply();
+            Log.d(logTag,"saved " + key + ": " + value + " to preferences");
+    	}else{
+    		Log.e(logTag, "Preferences is not initialized");
+    	}
+    }
+    private static String getGeneral(PREF_KEY key) {
+    	if(isInitialized()){
+    		String value = prefs.getString(key.getKey(), "");
+            if(value.equals("")){
+            	value = "Empty";
+            	Log.e(logTag, "You have no " + key + " saved in prefereneces");
+            }else{
+            	Log.d(logTag, "Got " + key + " from preferences: " + value);
+            }
+            return value;
+    	}else{
+    		Log.e(logTag, "Preferences is not initialized");
+    		return "Error, preferences is not initialized";
+    	}
+    }
+    
+    public static enum PREF_KEY {
+    	ACCESS_TOKEN("access_token"),
+    	TOKEN_TYPE("token_type"),
+    	SCOPE("scope"),
+    	USER_NAME("username"),
+    	USER_REPOS("repos"),
+    	USER_ACCOUNT_CREATED("account_created"),
+    	EMPTY("");
+		
+		private final String key;
+
+		private PREF_KEY(String key) {
+			this.key = key;
+		}
+
+		private String getKey() {
+			return key;
+		}
+		
+		public static PREF_KEY getKey(String key){
+			for(PREF_KEY pref : values()){
+				if(pref.getKey().equals(key)){
+					return pref;
+				}
+			}
+			return PREF_KEY.EMPTY;
+		}
+	}
+    
+//    public static String ACCESS_TOKEN = "access_token";
     
     public static void setAccessToken(String access_token) {
-    	if(isInitialized()){
-    		Editor edit = prefs.edit();
-            edit.putString(ACCESS_TOKEN, access_token);
-            edit.apply();
-            Log.d(logTag,"saved " + ACCESS_TOKEN + ": " + access_token + " to preferences");
-    	}else{
-    		Log.e(logTag, "Preferences is not initialized");
-    	}
+    	setGeneral(PREF_KEY.ACCESS_TOKEN, access_token);
     }
-
     public static String getAccessToken() {
-    	if(isInitialized()){
-    		String access_token = prefs.getString(ACCESS_TOKEN, "");
-            if(access_token.equals("")){
-            	access_token = "Empty";
-            	Log.e(logTag, "You have no " + ACCESS_TOKEN + " saved in prefereneces");
-            }else{
-            	Log.d(logTag, "Got " + ACCESS_TOKEN + " from preferences: " + access_token);
-            }
-            return access_token;
-    	}else{
-    		Log.e(logTag, "Preferences is not initialized");
-    		return "Error, preferences is not initialized";
-    	}
+    	return getGeneral(PREF_KEY.ACCESS_TOKEN);
     }
     
-    private static String TOKEN_TYPE = "token_type";
+    
+//    public static String TOKEN_TYPE = "token_type";
     
     public static void setTokenType(String token_type) {
-    	if(isInitialized()){
-    		Editor edit = prefs.edit();
-            edit.putString(TOKEN_TYPE, token_type);
-            edit.apply();
-            Log.d(logTag,"saved " + TOKEN_TYPE + ": " + token_type + " to preferences");
-    	}else{
-    		Log.e(logTag, "Preferences is not initialized");
-    	}
+    	setGeneral(PREF_KEY.TOKEN_TYPE, token_type);
     }
-
     public static String getTokenType() {
-    	if(isInitialized()){
-    		String token_type = prefs.getString(TOKEN_TYPE, "");
-            if(token_type.equals("")){
-            	token_type = "Empty";
-            	Log.e(logTag, "You have no " + TOKEN_TYPE + " saved in prefereneces");
-            }else{
-            	Log.d(logTag, "Got " + TOKEN_TYPE + " from preferences: " + token_type);
-            }
-            return token_type;
-    	}else{
-    		Log.e(logTag, "Preferences is not initialized");
-    		return "Error, preferences is not initialized";
-    	}
+    	return getGeneral(PREF_KEY.TOKEN_TYPE);
     }
     
-    private static String SCOPE = "scope";
+    
+//    public static String SCOPE = "scope";
     
     public static void setScope(String scope) {
-    	if(isInitialized()){
-    		Editor edit = prefs.edit();
-            edit.putString(SCOPE, scope);
-            edit.apply();
-            Log.d(logTag,"saved " + SCOPE + ": " + scope + " to preferences");
-    	}else{
-    		Log.e(logTag, "Preferences is not initialized");
-    	}
+    	setGeneral(PREF_KEY.SCOPE, scope);
     }
-
     public static String getScope() {
-    	if(isInitialized()){
-    		String scope = prefs.getString(SCOPE, "");
-	        if(scope.equals("")){
-	        	scope = "Empty";
-	        	Log.e(logTag, "You have no " + SCOPE + " saved in prefereneces");
-	        }else{
-	        	Log.d(logTag, "Got " + SCOPE + " from preferences: " + scope);
-	        }
-	        return scope;
-    	}else{
-    		Log.e(logTag, "Preferences is not initialized");
-    		return "Error, preferences is not initialized";
-    	}
+    	return getGeneral(PREF_KEY.SCOPE);
     }
+    
+    
+//    public static String USER_NAME = "username";
+    
+    public static void setUserName(String username) {
+    	setGeneral(PREF_KEY.USER_NAME, username);
+    }
+    public static String getUserName() {
+    	return getGeneral(PREF_KEY.USER_NAME);
+    }
+    
+//    public static String USER_REPOS = "repos";
+    
+    public static void setUserRepos(String[] repos) {
+    	StringBuilder builder = new StringBuilder();
+    	for(String repo : repos){
+    		builder.append(repo + ",");
+    	}
+    	setGeneral(PREF_KEY.USER_REPOS, builder.toString());
+    }
+    public static String[] getUserRepos() {
+    	String repos = getGeneral(PREF_KEY.USER_REPOS);
+    	return repos.split(",");
+    }
+    
+//    public static String USER_ACCOUNT_CREATED = "account_created";
+    
+    public static void setUserAcountCreated(String account_created) {
+    	setGeneral(PREF_KEY.USER_ACCOUNT_CREATED, account_created);
+    }
+    public static String getUserAcountCreated() {
+    	return getGeneral(PREF_KEY.USER_ACCOUNT_CREATED);
+    }
+    
+    //-------------------------------
     
     public static String getClientId() {
     	return "387b05f90574b6fede43";
@@ -120,16 +152,13 @@ public class Preferences {
     private static OnSharedPreferenceChangeListener onChangeListern; // Need to keep this reference, otherwise we don't get any events....
     //Wrapping the OnSharedPreferenceChangeListener since i dont want to give away the sharedpreferences....
     public static void addListener(PreferenceListener listener){
-    	Log.e(logTag, "trying to add listener");
     	if(isInitialized()){
     		prefListener.add(listener);
     		if(onChangeListern == null){
-    			Log.e(logTag, "add listener");
     			onChangeListern = new OnSharedPreferenceChangeListener() {
     				public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-    					Log.d(logTag, "Listener event recieved Preference");
     					for(PreferenceListener list : prefListener){
-    	          	    	list.preferenceChanged(key);
+    	          	    	list.preferenceChanged(PREF_KEY.getKey(key));
     	          	    }
     				}
     			};

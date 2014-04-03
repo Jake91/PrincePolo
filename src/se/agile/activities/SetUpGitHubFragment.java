@@ -1,10 +1,14 @@
 package se.agile.activities;	
 
+import se.agile.activities.model.HttpConnection;
+import se.agile.activities.model.HttpConnection.URL;
+import se.agile.activities.model.Preferences.PREF_KEY;
 import se.agile.activities.model.PreferenceListener;
 import se.agile.activities.model.Preferences;
 import se.agile.princepolo.R;
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +40,8 @@ public class SetUpGitHubFragment extends Fragment {
     				Preferences.setAccessToken("");
     				Preferences.setScope("");
     				Preferences.setTokenType("");
+    				Preferences.setUserName("");
+    				Preferences.setUserRepos(new String[] {""});
     				break;
         		}
         		
@@ -45,9 +51,18 @@ public class SetUpGitHubFragment extends Fragment {
         ((Button) rootView.findViewById(R.id.button_reset_connection)).setOnClickListener(buttonListener);
         PreferenceListener listener = new PreferenceListener() {
 			@Override
-			public void preferenceChanged(String key) {
-				if(key.equals("access_token")){
-					gotAccessToken(Preferences.getAccessToken().equals("Empty"));
+			public void preferenceChanged(PREF_KEY key) {
+				switch(key){
+					case ACCESS_TOKEN:
+						gotAccessToken(Preferences.getAccessToken().equals("Empty"));
+						break;
+					case USER_NAME:
+						updateUser();
+						break;
+					case USER_REPOS:
+						updateUserRepos();
+						break;
+						
 				}
 			}
 		};
@@ -56,6 +71,19 @@ public class SetUpGitHubFragment extends Fragment {
         
         return rootView;
     }
+	
+	private void updateUser(){
+		((TextView) rootView.findViewById(R.id.textView_User)).setText("User: " + Preferences.getUserName());
+	}
+	
+	private void updateUserRepos(){
+		StringBuilder builder = new StringBuilder();
+		builder.append("Repositories:\n");
+		for(String s : Preferences.getUserRepos()){
+			builder.append(s + "\n");
+		}
+		((TextView) rootView.findViewById(R.id.textView_Repositories)).setText(builder.toString());
+	}
 	
 	private void gotAccessToken(boolean hasAccessToken){
 		if(hasAccessToken){
@@ -74,6 +102,8 @@ public class SetUpGitHubFragment extends Fragment {
 	@Override
 	public void onResume(){
 		gotAccessToken(Preferences.getAccessToken().equals("Empty"));
+		updateUser();
+		updateUserRepos();
 		super.onResume();
 	}
 }

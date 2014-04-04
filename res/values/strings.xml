@@ -8,13 +8,16 @@
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
-        <item>Home</item>
-        <item>Something</item>
-        <item>and yet</item>
-        <item>more something</item>
-        <item>even more</item>
-        <item>SetUp GitHub</item>
-        <item>Thors Activity</item>
+        <item>Repository Overview</item>
+        <item>Notifications</item>
+        <item>Issues</item>
+        <item>Branches</item>
+        <item>Collaborators</item>
+        <item>Select Repository</item>
+        <item>GitHub Connection</item>
+        <item>Settings</item>
+        <item>Help</item>
+        <item>About</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
@@ -26,6 +29,9 @@
         <item>@drawable/ic_4</item>
         <item>@drawable/ic_5</item>
         <item>@drawable/thor</item>
+		<item>@drawable/ic_3</item>
+        <item>@drawable/ic_4</item>
+        <item>@drawable/ic_5</item>
     </array>
 
     <!-- Content Description -->
@@ -33,9 +39,11 @@
     <string name="title_activity_home_fragment">HomeFragment</string>
     <string name="title_activity_thor_fragment">ThorFragment</string>
     <string name="title_activity_browser">BrowserActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="access_token">access_token</string>
     <string name="github">GitHub</string>
     <string name="logtag_main">PrincePolo</string>
+    <string name="title_activity_settings_fragment">SettingsFragment</string>
+    <string name="title_activity_about_fragment">AboutFragment</string>
+    <string name="title_activity_help_fragment">HelpFragment</string>
 
 </resources>

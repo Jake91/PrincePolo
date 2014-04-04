@@ -7,15 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ThorFragment extends Fragment {
+public class SelectRepositoryFragment extends Fragment {
 	private String logTag;
-	public ThorFragment(){}
+	public SelectRepositoryFragment(){}
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
-        View rootView = inflater.inflate(R.layout.fragment_thor, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_select_repository, container, false);
          
         return rootView;
     }

@@ -32,6 +32,18 @@
             android:name="se.agile.activities.BrowserActivity"
             android:label="@string/title_activity_browser" >
         </activity>
+        <activity
+            android:name="se.agile.activities.SettingsFragment"
+            android:label="@string/title_activity_settings_fragment" >
+        </activity>
+        <activity
+            android:name="se.agile.activities.AboutFragment"
+            android:label="@string/title_activity_about_fragment" >
+        </activity>
+        <activity
+            android:name="se.agile.activities.HelpFragment"
+            android:label="@string/title_activity_help_fragment" >
+        </activity>
     </application>
 
 </manifest>

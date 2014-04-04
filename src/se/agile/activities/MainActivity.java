@@ -67,12 +67,15 @@ public class MainActivity extends Activity
 
 		// nagivagion drawer items added to array
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1), true, "50+"));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1), true, "50+"));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[9], navMenuIcons.getResourceId(9, -1)));
 		
 
 		// Recycle the typed array
@@ -186,25 +189,34 @@ public class MainActivity extends Activity
 		switch (position) 
 		{
 			case 0:
-				fragment = new HomeFragment();
+				fragment = new RepositoryOverviewFragment();
 				break;
 			case 1:
-				fragment = new Fragment2();
+				fragment = new NotificationsFragment();
 				break;
 			case 2:
-				fragment = new Fragment3();
+				fragment = new IssuesFragment();
 				break;
 			case 3:
-				fragment = new Fragment4();
+				fragment = new BranchesFragment();
 				break;
 			case 4:
-				fragment = new Fragment5();
+				fragment = new CollaboratorsFragment();
 				break;
 			case 5:
-				fragment = new SetUpGitHubFragment();
+				fragment = new SelectRepositoryFragment();
 				break;
 			case 6:
-				fragment = new ThorFragment();
+				fragment = new ConnectToGitHubFragment();
+				break;
+			case 7:
+				fragment = new SettingsFragment();
+				break;
+			case 8:
+				fragment = new HelpFragment();
+				break;
+			case 9:
+				fragment = new AboutFragment();
 				break;
 	
 			default:

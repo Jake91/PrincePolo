@@ -24,14 +24,17 @@ public class ConnectToGitHubFragment extends Fragment {
 	
 	
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
+	{
 		logTag = getResources().getString(R.string.logtag_main);
         rootView = inflater.inflate(R.layout.fragment_connect_to_github, container, false);
 		final View tempRootView = rootView;
-        OnClickListener buttonListener = new View.OnClickListener() {
-        	public void onClick(View v) {
-        		switch (v.getId()) {
+        OnClickListener buttonListener = new View.OnClickListener() 
+        {
+        	public void onClick(View v) 
+        	{
+        		switch (v.getId()) 
+        		{
     			case R.id.button_get2_github:
     				Intent intent = new Intent(getActivity(), BrowserActivity.class);
             	    startActivity(intent);
@@ -43,16 +46,18 @@ public class ConnectToGitHubFragment extends Fragment {
     				Preferences.setUserName("");
     				Preferences.setUserRepos(new String[] {""});
     				break;
-        		}
-        		
+        		}	
         	}
         };
         ((Button) rootView.findViewById(R.id.button_get2_github)).setOnClickListener(buttonListener);
         ((Button) rootView.findViewById(R.id.button_reset_connection)).setOnClickListener(buttonListener);
-        PreferenceListener listener = new PreferenceListener() {
+        PreferenceListener listener = new PreferenceListener() 
+        {
 			@Override
-			public void preferenceChanged(PREF_KEY key) {
-				switch(key){
+			public void preferenceChanged(PREF_KEY key) 
+			{
+				switch(key)
+				{
 					case ACCESS_TOKEN:
 						gotAccessToken(Preferences.isConnectedToGitHub());
 						break;
@@ -72,11 +77,13 @@ public class ConnectToGitHubFragment extends Fragment {
         return rootView;
     }
 	
-	private void updateUser(){
+	private void updateUser()
+	{
 		((TextView) rootView.findViewById(R.id.textView_User)).setText("User: " + Preferences.getUserName());
 	}
 	
-	private void updateUserRepos(){
+	private void updateUserRepos()
+	{
 		StringBuilder builder = new StringBuilder();
 		builder.append("Repositories:\n");
 		for(String s : Preferences.getUserRepos()){
@@ -85,12 +92,16 @@ public class ConnectToGitHubFragment extends Fragment {
 		((TextView) rootView.findViewById(R.id.textView_Repositories)).setText(builder.toString());
 	}
 	
-	private void gotAccessToken(boolean isConnectedToGitHub){
-		if(isConnectedToGitHub){
+	private void gotAccessToken(boolean isConnectedToGitHub)
+	{
+		if(isConnectedToGitHub)
+		{
 			((Button) rootView.findViewById(R.id.button_get2_github)).setEnabled(false);
 			((TextView) rootView.findViewById(R.id.txtLabel))
 				.setText("You have connected to GitHub");
-		}else{
+		}
+		else
+		{
 			((Button) rootView.findViewById(R.id.button_get2_github)).setEnabled(true);
 			((TextView) rootView.findViewById(R.id.txtLabel))
 				.setText("You are not connected to GitHub. In order to get data from github you have to allow "+
@@ -100,7 +111,8 @@ public class ConnectToGitHubFragment extends Fragment {
 
 	
 	@Override
-	public void onResume(){
+	public void onResume()
+	{
 		gotAccessToken(Preferences.isConnectedToGitHub());
 		updateUser();
 		updateUserRepos();

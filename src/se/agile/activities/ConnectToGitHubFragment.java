@@ -17,17 +17,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class SetUpGitHubFragment extends Fragment {
+public class ConnectToGitHubFragment extends Fragment {
 	private String logTag;
 	private View rootView;
-	public SetUpGitHubFragment(){}
+	public ConnectToGitHubFragment(){}
 	
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
-        rootView = inflater.inflate(R.layout.setup_github_fragment, container, false);
+        rootView = inflater.inflate(R.layout.fragment_connect_to_github, container, false);
 		final View tempRootView = rootView;
         OnClickListener buttonListener = new View.OnClickListener() {
         	public void onClick(View v) {

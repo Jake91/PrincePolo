@@ -7,15 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class Fragment4 extends Fragment {
+public class RepositoryOverviewFragment extends Fragment {
 	private String logTag;
-	public Fragment4(){}
+	public RepositoryOverviewFragment(){}
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
-        View rootView = inflater.inflate(R.layout.fragment_4, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_repository_overview, container, false);
          
         return rootView;
     }

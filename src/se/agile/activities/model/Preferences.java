@@ -52,6 +52,7 @@ public class Preferences {
     	SCOPE("scope"),
     	USER_NAME("username"),
     	USER_REPOS("repos"),
+    	SELECTED_REPOSITORY("selected_repository"),
     	USER_ACCOUNT_CREATED("account_created"),
     	CLIENT_ID("387b05f90574b6fede43"),
     	CLIENT_SECRET("557392acf8c742ac6e6a3a4ff36b172f378c1633"),
@@ -137,6 +138,13 @@ public class Preferences {
     }
     public static String getUserAcountCreated() {
     	return getGeneral(PREF_KEY.USER_ACCOUNT_CREATED);
+    }
+    
+    public static void setSelectedRepository(String selected_repository) {
+    	setGeneral(PREF_KEY.SELECTED_REPOSITORY, selected_repository);
+    }
+    public static String getSelectedRepository() {
+    	return getGeneral(PREF_KEY.SELECTED_REPOSITORY);
     }
     
     //-------------------------------

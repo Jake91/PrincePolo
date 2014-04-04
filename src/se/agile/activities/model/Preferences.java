@@ -54,6 +54,8 @@ public class Preferences {
     	USER_NAME("username"),
     	USER_REPOS("repos"),
     	USER_ACCOUNT_CREATED("account_created"),
+    	CLIENT_ID("387b05f90574b6fede43"),
+    	CLIENT_SECRET("557392acf8c742ac6e6a3a4ff36b172f378c1633"),
     	EMPTY("");
 		
 		private final String key;
@@ -141,11 +143,11 @@ public class Preferences {
     //-------------------------------
     
     public static String getClientId() {
-    	return "387b05f90574b6fede43";
+    	return PREF_KEY.CLIENT_ID.getKey();
     }
     
     public static String getClientSecret() {
-    	return "557392acf8c742ac6e6a3a4ff36b172f378c1633";
+    	return PREF_KEY.CLIENT_SECRET.getKey();
     }
     
     private static ArrayList<PreferenceListener> prefListener = new ArrayList<PreferenceListener>();

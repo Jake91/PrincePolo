@@ -141,12 +141,14 @@ public class HttpConnection{
 	}
 	
 	private static void parseJSONString(URL url, String json){
+		String response = "";
 		switch(url){
 		case GET_USER:
 			try {
 				JSONObject object = (JSONObject) new JSONTokener(json).nextValue();
 				String user = object.getString("login");
 				Preferences.setUserName(user);
+				response = "user" + ": " + user; 
 				String created_at = object.getString("created_at");
 				Preferences.setUserAcountCreated(created_at);
 			} catch (JSONException e) {
@@ -169,6 +171,7 @@ public class HttpConnection{
 				}
 				String[] temp = new String[list.size()];
 				Preferences.setUserRepos(list.toArray(temp));
+				response = "Repositories: " + list.toString();
 			} catch (JSONException e) {
 				Log.e(logTag, "Couldn't parse JSON String to JSONArray");
 				e.printStackTrace();
@@ -176,6 +179,17 @@ public class HttpConnection{
 			break;
 		default:
 			break;
+		}
+		fireResponseRecieved(url, response);
+	}
+	private static ArrayList<HttpConnectionResponseListener> listenerList = new ArrayList<HttpConnectionResponseListener>();
+	public static void addListener(HttpConnectionResponseListener listener){
+		listenerList.add(listener);
+	}
+	
+	private static void fireResponseRecieved(URL url, String response){
+		for(HttpConnectionResponseListener listener : listenerList){
+			listener.receivedResponse(url, response);
 		}
 	}
 }

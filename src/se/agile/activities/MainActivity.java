@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +49,8 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		Preferences.initializePreferences(this);
 		logTag = getResources().getString(R.string.logtag_main);
 		mTitle = mDrawerTitle = getTitle();
 
@@ -109,11 +112,20 @@ public class MainActivity extends Activity
 		if (savedInstanceState == null) 
 		{
 			// on first time display view for first nav item
-			displayView(0);
+			if (Preferences.isConnectedToGitHub())
+			{
+				displayView(0);
+				Log.d(logTag, "Displayview 0 isconnected");
+			}
+			else
+			{
+				displayView(5);
+				Log.d(logTag, "Displayview 1 is not connected");
+			}
 		}
 		
-		
-		Preferences.initializePreferences(this);
+		// Opens up the menu from the left when the app is openeds
+		mDrawerLayout.openDrawer(Gravity.LEFT);
 	
 	}
 

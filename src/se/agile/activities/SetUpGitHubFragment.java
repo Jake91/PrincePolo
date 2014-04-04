@@ -54,7 +54,7 @@ public class SetUpGitHubFragment extends Fragment {
 			public void preferenceChanged(PREF_KEY key) {
 				switch(key){
 					case ACCESS_TOKEN:
-						gotAccessToken(Preferences.getAccessToken().equals("Empty"));
+						gotAccessToken(Preferences.isConnectedToGitHub());
 						break;
 					case USER_NAME:
 						updateUser();
@@ -85,23 +85,23 @@ public class SetUpGitHubFragment extends Fragment {
 		((TextView) rootView.findViewById(R.id.textView_Repositories)).setText(builder.toString());
 	}
 	
-	private void gotAccessToken(boolean hasAccessToken){
-		if(hasAccessToken){
+	private void gotAccessToken(boolean isConnectedToGitHub){
+		if(isConnectedToGitHub){
+			((Button) rootView.findViewById(R.id.button_get2_github)).setEnabled(false);
+			((TextView) rootView.findViewById(R.id.txtLabel))
+				.setText("You have connected to GitHub");
+		}else{
 			((Button) rootView.findViewById(R.id.button_get2_github)).setEnabled(true);
 			((TextView) rootView.findViewById(R.id.txtLabel))
 				.setText("You are not connected to GitHub. In order to get data from github you have to allow "+
 							"the app to get data from you account.");
-		}else{
-			((Button) rootView.findViewById(R.id.button_get2_github)).setEnabled(false);
-			((TextView) rootView.findViewById(R.id.txtLabel))
-				.setText("You have connected to GitHub");
 		}
 	}
 
 	
 	@Override
 	public void onResume(){
-		gotAccessToken(Preferences.getAccessToken().equals("Empty"));
+		gotAccessToken(Preferences.isConnectedToGitHub());
 		updateUser();
 		updateUserRepos();
 		super.onResume();

@@ -35,7 +35,6 @@ public class Preferences {
     	if(isInitialized()){
     		String value = prefs.getString(key.getKey(), "");
             if(value.equals("")){
-            	value = "Empty";
             	Log.e(logTag, "You have no " + key + " saved in prefereneces");
             }else{
             	Log.d(logTag, "Got " + key + " from preferences: " + value);
@@ -169,6 +168,11 @@ public class Preferences {
     	}else{
     		Log.e(logTag, "Preferences is not initialized");
     	}
+    }
+    
+    public static boolean isConnectedToGitHub()
+    {
+    	return getAccessToken().matches("[\\dA-z]+");
     }
 }
 

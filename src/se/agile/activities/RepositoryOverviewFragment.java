@@ -4,6 +4,7 @@ import se.agile.activities.model.Preferences;
 import se.agile.princepolo.R;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,13 @@ public class RepositoryOverviewFragment extends Fragment
 		logTag = getResources().getString(R.string.logtag_main);
         View rootView = inflater.inflate(R.layout.fragment_repository_overview, container, false);
         this.rootView = rootView;
+        
 		updateUser();
 		updateUserRepos();
+		// latest commits
+		// issues
+		// branches
+		// collaborators
         return rootView;
     }
 	
@@ -31,13 +37,20 @@ public class RepositoryOverviewFragment extends Fragment
 		((TextView) rootView.findViewById(R.id.textView_User)).setText("User: " + Preferences.getUserName());
 	}
 	
+	
 	private void updateUserRepos()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("Repositories:\n");
-		for(String s : Preferences.getUserRepos()){
-			builder.append(s + "\n");
+		builder.append("Currently selected repository:\n");
+		for(String s : Preferences.getUserRepos())
+		{
+			if (Preferences.getSelectedRepository().equals(s))
+			{
+				builder.append(s + "\n");
+			}
 		}
 		((TextView) rootView.findViewById(R.id.textView_Repositories)).setText(builder.toString());
 	}
+	
+	
 }

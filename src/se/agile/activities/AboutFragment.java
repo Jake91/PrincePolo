@@ -22,7 +22,6 @@ import se.agile.activities.model.NotificationDialog;
 import se.agile.activities.model.Preferences;
 import se.agile.activities.model.HttpConnection.URL;
 import se.agile.activities.model.CreateNotificationActivity;
-
 import se.agile.princepolo.R;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,6 +31,8 @@ import android.app.FragmentManager;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -45,10 +46,12 @@ import android.widget.TextView;
 
 public class AboutFragment extends Fragment 
 {
+	
 	private String logTag;
 	private View rootView;
 	ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 	public AboutFragment(){}
+	private int notificationID = 100;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
@@ -56,11 +59,11 @@ public class AboutFragment extends Fragment
 		logTag = getResources().getString(R.string.logtag_main);
         View rootView = inflater.inflate(R.layout.fragment_about, container, false);
         this.rootView = rootView;
-        
+		CountBranches task = new CountBranches();
+		task.execute(new String[] { "https://api.github.com/repos/Jake91/PrincePolo/branches?access_token=aa534e873012c9a6881ee6826f31e494ad6ca6db" });
         updateUser();
 		updateUserRepos();
 		String token = Preferences.getAccessToken();
-		//https://api.github.com/repos/Jake91/PrincePolo/commits?access_token=aa534e873012c9a6881ee6826f31e494ad6ca6db
 		Log.d(logTag, ""+token);
 		
 		scheduler.scheduleAtFixedRate (new Runnable() 
@@ -72,21 +75,6 @@ public class AboutFragment extends Fragment
 				task.execute(new String[] { "https://api.github.com/repos/gautsson/testing/commits?access_token=aa534e873012c9a6881ee6826f31e494ad6ca6db" });
 			}
 		}, 0, 10, TimeUnit.SECONDS);
-		
-        OnClickListener buttonListener = new View.OnClickListener() 
-        {
-        	public void onClick(View v) 
-        	{	
-                /*FragmentManager fm = getFragmentManager();
-                NotificationDialog editNameDialog = new NotificationDialog();
-                editNameDialog.show(fm, "fragment_edit_name"); */
-
-        		
-        		// FIX THIS SHIT! NotificationDialog.java, CreateNotificationActivity, etc ...
-        		}
-        };
-		
-        ((Button) rootView.findViewById(R.id.readWebpage)).setOnClickListener(buttonListener);
 		
         return rootView;
     }
@@ -146,12 +134,22 @@ public class AboutFragment extends Fragment
                 /*FragmentManager fm = getFragmentManager();
                 NotificationDialog editNameDialog = new NotificationDialog();
                 editNameDialog.show(fm, "fragment_edit_name"); */
-    	    	
-    	    	
-    	    	
-    	    	
-    	    	
     	    	Preferences.setMD5Value(newValue);
+    	    	Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+    	    	long[] pattern = {500,500,500,500,500,500,500,500,500};
+    	    	
+    	    	NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getActivity());
+    	    	mBuilder.setSmallIcon(R.drawable.ic_launcher);
+    	    	mBuilder.setContentTitle("Incoming commit");
+    	    	mBuilder.setContentText("Click to view it");
+    	    	mBuilder.setSound(alarmSound);
+    	    	mBuilder.setVibrate(pattern);
+    	    	
+    	    	NotificationManager mNotificationManager =
+    	    		    (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+    	    		    
+    	    		// notificationID allows you to update the notification later on.
+    	    		mNotificationManager.notify(notificationID, mBuilder.build());
     	    }
     	    else return;
 	    }
@@ -205,4 +203,59 @@ public class AboutFragment extends Fragment
         }
         return md5;
     }
+	
+	
+	
+	
+	private class CountBranches extends AsyncTask<String, Void, String> 
+	{
+		@Override
+		protected String doInBackground(String... urls) 
+	    {
+			String response = "";
+			for (String url : urls) 
+			{
+				DefaultHttpClient client = new DefaultHttpClient();
+				HttpGet httpGet = new HttpGet(url);
+				try 
+				{
+					HttpResponse execute = client.execute(httpGet);
+					InputStream content = execute.getEntity().getContent();
+				
+					BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+					String s = "";
+					while ((s = buffer.readLine()) != null) 
+					{
+				        response += s;
+					}
+
+				} 
+				catch (Exception e) 
+				{
+					e.printStackTrace();
+				}
+			}
+			return response;
+	    }
+
+	    @Override
+	    protected void onPostExecute(String result) 
+	    {
+			String findStr = "name";
+			int lastIndex = 0;
+			int count =0;
+
+			while(lastIndex != -1)
+			{
+				lastIndex = result.indexOf(findStr,lastIndex);
+
+				 if( lastIndex != -1)
+				 {
+					 count ++;
+					 lastIndex+=findStr.length();
+				 }
+			}
+			Log.d(logTag, "numberofBranches:"+count);
+	    }
+	}
 }

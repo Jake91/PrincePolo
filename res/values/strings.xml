@@ -29,7 +29,7 @@
         <item>@drawable/ic_4</item>
         <item>@drawable/ic_5</item>
         <item>@drawable/thor</item>
-		<item>@drawable/ic_3</item>
+        <item>@drawable/ic_3</item>
         <item>@drawable/ic_4</item>
         <item>@drawable/ic_5</item>
     </array>
@@ -45,5 +45,7 @@
     <string name="title_activity_settings_fragment">SettingsFragment</string>
     <string name="title_activity_about_fragment">AboutFragment</string>
     <string name="title_activity_help_fragment">HelpFragment</string>
+    <string name="title_activity_notification">NotificationActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

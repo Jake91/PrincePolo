@@ -1,4 +1,4 @@
-package se.agile.activities.model;
+package se.agile.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;

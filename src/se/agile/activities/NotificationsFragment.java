@@ -1,6 +1,6 @@
 package se.agile.activities;	
 
-import se.agile.activities.model.Preferences;
+import se.agile.model.Preferences;
 import se.agile.princepolo.R;
 import android.app.Fragment;
 import android.os.Bundle;

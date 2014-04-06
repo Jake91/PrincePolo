@@ -1,4 +1,4 @@
-package se.agile.activities.model;
+package se.agile.model;
 
 import se.agile.activities.AboutFragment;
 import se.agile.princepolo.R;

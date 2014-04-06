@@ -1,10 +1,10 @@
 package se.agile.activities;	
 
-import se.agile.activities.model.HttpConnection;
-import se.agile.activities.model.HttpConnection.URL;
-import se.agile.activities.model.Preferences.PREF_KEY;
-import se.agile.activities.model.PreferenceListener;
-import se.agile.activities.model.Preferences;
+import se.agile.model.HttpConnection;
+import se.agile.model.PreferenceListener;
+import se.agile.model.Preferences;
+import se.agile.model.HttpConnection.URL;
+import se.agile.model.Preferences.PREF_KEY;
 import se.agile.princepolo.R;
 import android.app.Fragment;
 import android.content.Intent;

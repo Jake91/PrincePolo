@@ -1,4 +1,4 @@
-package se.agile.activities.model;
+package se.agile.model;
 
 import se.agile.princepolo.R;
 import android.app.AlertDialog;

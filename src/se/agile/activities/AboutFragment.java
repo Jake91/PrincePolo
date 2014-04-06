@@ -17,11 +17,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import se.agile.activities.model.HttpConnection;
-import se.agile.activities.model.NotificationDialog;
-import se.agile.activities.model.Preferences;
-import se.agile.activities.model.HttpConnection.URL;
-import se.agile.activities.model.CreateNotificationActivity;
+import se.agile.model.CreateNotificationActivity;
+import se.agile.model.HttpConnection;
+import se.agile.model.NotificationDialog;
+import se.agile.model.Preferences;
+import se.agile.model.HttpConnection.URL;
 import se.agile.princepolo.R;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -131,9 +131,6 @@ public class AboutFragment extends Fragment
     	    
     	    if (!newValue.equals(Preferences.getMD5Value()))
     	    {
-                /*FragmentManager fm = getFragmentManager();
-                NotificationDialog editNameDialog = new NotificationDialog();
-                editNameDialog.show(fm, "fragment_edit_name"); */
     	    	Preferences.setMD5Value(newValue);
     	    	Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     	    	long[] pattern = {500,500,500,500,500,500,500,500,500};

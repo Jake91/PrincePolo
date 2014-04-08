@@ -1,7 +1,8 @@
 package se.agile.activities;
 
-import se.agile.activities.model.HttpConnection;
-import se.agile.activities.model.Preferences;
+import se.agile.model.HttpConnection;
+import se.agile.model.Preferences;
+import se.agile.model.HttpConnection.URL;
 import se.agile.princepolo.R;
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -12,9 +13,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class BrowserActivity extends Activity {
-	public static String OAUTH_URL = "https://github.com/login/oauth/authorize";
-    public static String OAUTH_ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token";
-    public static String CALLBACK_URL = "princepolo://oauthresponse";//"http://localhost";
+	private static String OAUTH_URL = "https://github.com/login/oauth/authorize";
+    private static String CALLBACK_URL = "princepolo://oauthresponse";//"http://localhost";
     
 	private String logTag;
 
@@ -54,6 +54,8 @@ public class BrowserActivity extends Activity {
     	        			@Override
     	        			protected Void doInBackground(String... params) {
     	        				HttpConnection.requestAccessToken(params[0]);
+    	        				HttpConnection.getRequestGeneral(URL.GET_USER);
+    							HttpConnection.getRequestGeneral(URL.GET_USER_REPOS);
     	        				return null;
     	        			}
     	        		};

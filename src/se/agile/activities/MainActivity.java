@@ -1,21 +1,31 @@
 package se.agile.activities;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-import se.agile.activities.model.Preferences;
+import se.agile.asynctasks.GetTheCommitHistory;
+import se.agile.asynctasks.CountBranches;
+import se.agile.model.Preferences;
+import se.agile.model.Util;
 import se.agile.navigator.NavDrawerItem;
 import se.agile.navigator.NavDrawerListAdapter;
 import se.agile.princepolo.R;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.NotificationManager;
+import android.content.ContentResolver;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
@@ -27,6 +37,8 @@ import android.widget.ListView;
 
 public class MainActivity extends Activity 
 {
+	private int notificationID = 100;
+	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -43,13 +55,28 @@ public class MainActivity extends Activity
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private NavDrawerListAdapter adapter;
 	private String logTag;
+	
+	// For the GetCommitHistory
+	ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
+		// At the start of the app no new commits have arrived by definition
+		Util.haveNewCommitsArrived = false;
+		
+		// Initializing shared preferences
+		Preferences.initializePreferences(this);
+		
+		if (Preferences.getAccessToken().equals(""))
+		{
+			Intent intent = new Intent(MainActivity.this, BrowserActivity.class);
+    	    startActivity(intent);
+		}
+	
 		logTag = getResources().getString(R.string.logtag_main);
 		mTitle = mDrawerTitle = getTitle();
 
@@ -66,12 +93,15 @@ public class MainActivity extends Activity
 
 		// nagivagion drawer items added to array
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1), true, "50+"));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1), true, "50+"));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[9], navMenuIcons.getResourceId(9, -1)));
 		
 
 		// Recycle the typed array
@@ -112,11 +142,39 @@ public class MainActivity extends Activity
 		if (savedInstanceState == null) 
 		{
 			// on first time display view for first nav item
-			displayView(0);
+			if (Preferences.isConnectedToGitHub())
+			{
+				displayView(0);
+				Log.d(logTag, "Displayview 0 isconnected");
+			}
+			else
+			{
+				displayView(5);
+				Log.d(logTag, "Displayview 1 is not connected");
+			}
 		}
-
-		mDrawerLayout.openDrawer(Gravity.LEFT);
-		Preferences.initializePreferences(this);
+		
+		// Opens up the menu from the left when the app is openeds
+		//mDrawerLayout.openDrawer(Gravity.LEFT);
+		
+		// Just a test, at the moment. Counts the number of Branches in a repo
+		CountBranches task = new CountBranches();
+		task.execute(new String[] { "https://api.github.com/repos/Jake91/PrincePolo/branches?access_token=aa534e873012c9a6881ee6826f31e494ad6ca6db" });
+		
+		// Checks every 10 sec whether new commits have arrived
+		scheduler.scheduleAtFixedRate (new Runnable() 
+		{
+			public void run() 
+			{
+				GetTheCommitHistory task = new GetTheCommitHistory();
+				task.execute(new String[] { "https://api.github.com/repos/gautsson/testing/commits?access_token=aa534e873012c9a6881ee6826f31e494ad6ca6db" });
+				
+				if (Util.haveNewCommitsArrived == true)
+				{
+					issueNotification();
+				}
+			}
+		}, 0, 10, TimeUnit.SECONDS);
 	}
 
 	
@@ -175,25 +233,34 @@ public class MainActivity extends Activity
 		switch (position) 
 		{
 			case 0:
-				fragment = new HomeFragment();
+				fragment = new RepositoryOverviewFragment();
 				break;
 			case 1:
-				fragment = new Fragment2();
+				fragment = new NotificationsFragment();
 				break;
 			case 2:
-				fragment = new Fragment3();
+				fragment = new IssuesFragment();
 				break;
 			case 3:
-				fragment = new Fragment4();
+				fragment = new BranchesFragment();
 				break;
 			case 4:
-				fragment = new Fragment5();
+				fragment = new CollaboratorsFragment();
 				break;
 			case 5:
-				fragment = new SetUpGitHubFragment();
+				fragment = new SelectRepositoryFragment();
 				break;
 			case 6:
-				fragment = new ThorFragment();
+				fragment = new ConnectToGitHubFragment();
+				break;
+			case 7:
+				fragment = new SettingsFragment();
+				break;
+			case 8:
+				fragment = new HelpFragment();
+				break;
+			case 9:
+				fragment = new AboutFragment();
 				break;
 	
 			default:
@@ -244,6 +311,28 @@ public class MainActivity extends Activity
 		super.onConfigurationChanged(newConfig);
 		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+	
+	private void issueNotification()
+	{
+		Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+		Uri funSound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/glad");
+    	long[] pattern = {500,500,500,500,500,500,500,500,500};
+    	 
+    	NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MainActivity.this);
+    	mBuilder.setSmallIcon(R.drawable.ic_launcher);
+    	mBuilder.setContentTitle("Incoming commit!");
+    	mBuilder.setContentText("Click to view it");
+    	mBuilder.setSound(alarmSound);
+    	mBuilder.setVibrate(pattern);
+    	
+    	NotificationManager mNotificationManager =
+    		    (NotificationManager) MainActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+    		    
+    		// notificationID allows you to update the notification later on.
+    		mNotificationManager.notify(notificationID, mBuilder.build());
+    		
+    		Util.haveNewCommitsArrived = false;
 	}
 
 }

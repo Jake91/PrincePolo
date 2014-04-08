@@ -7,15 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class Fragment3 extends Fragment {
+public class BranchesFragment extends Fragment {
 	private String logTag;
-	public Fragment3(){}
+	public BranchesFragment(){}
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
-        View rootView = inflater.inflate(R.layout.fragment_3, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_branches, container, false);
          
         return rootView;
     }

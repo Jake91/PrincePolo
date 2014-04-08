@@ -16,7 +16,6 @@ public class HelpFragment extends Fragment {
             Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
         View rootView = inflater.inflate(R.layout.fragment_help, container, false);
-         
         return rootView;
     }
 }

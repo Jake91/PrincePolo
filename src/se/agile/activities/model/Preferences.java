@@ -2,6 +2,9 @@ package se.agile.activities.model;
 
 import java.util.ArrayList;
 
+import se.agile.activities.model.GitHubData.Repository;
+import se.agile.activities.model.GitHubData.User;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -110,25 +113,29 @@ public class Preferences {
     
 //    public static String USER_NAME = "username";
     
-    public static void setUserName(String username) {
-    	setGeneral(PREF_KEY.USER_NAME, username);
+    public static void setUser(User user) {
+    	setGeneral(PREF_KEY.USER_NAME, user.getName());
     }
-    public static String getUserName() {
-    	return getGeneral(PREF_KEY.USER_NAME);
+    public static User getUser() {
+    	return new User(getGeneral(PREF_KEY.USER_NAME));
     }
     
 //    public static String USER_REPOS = "repos";
     
-    public static void setUserRepos(String[] repos) {
+    public static void setUserRepos(ArrayList<Repository> repos) {
     	StringBuilder builder = new StringBuilder();
-    	for(String repo : repos){
-    		builder.append(repo + ",");
+    	for(Repository repo : repos){
+    		builder.append(repo.getName() + ",");
     	}
     	setGeneral(PREF_KEY.USER_REPOS, builder.toString());
     }
-    public static String[] getUserRepos() {
+    public static ArrayList<Repository> getUserRepos() {
+    	ArrayList<Repository> list = new ArrayList<Repository>();
     	String repos = getGeneral(PREF_KEY.USER_REPOS);
-    	return repos.split(",");
+    	for(String repo: repos.split(",")){
+    		list.add(new Repository(repo));
+    	}
+    	return list;
     }
     
 //    public static String USER_ACCOUNT_CREATED = "account_created";

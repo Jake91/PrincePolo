@@ -1,6 +1,7 @@
 package se.agile.activities;	
 
 import se.agile.activities.model.Preferences;
+import se.agile.activities.model.GitHubData.Repository;
 import se.agile.princepolo.R;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -30,9 +31,9 @@ public class SelectRepositoryFragment extends Fragment {
 	@Override
 	public void onResume(){
 		RadioGroup group = (RadioGroup) rootView.findViewById(R.id.radiogroup_repos);
-		for(String repo : Preferences.getUserRepos()){
+		for(Repository repo : Preferences.getUserRepos()){
 			RadioButton button = new RadioButton(rootView.getContext());
-			button.setText(repo);
+			button.setText(repo.getName());
 			button.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
 			group.addView(button);
 		}

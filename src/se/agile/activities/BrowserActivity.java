@@ -54,8 +54,8 @@ public class BrowserActivity extends Activity {
     	        			@Override
     	        			protected Void doInBackground(String... params) {
     	        				HttpConnection.requestAccessToken(params[0]);
-    	        				HttpConnection.getRequestGeneral(URL.GET_USER);
-    							HttpConnection.getRequestGeneral(URL.GET_USER_REPOS);
+    	        				HttpConnection.requestUser();
+    							HttpConnection.requestRepositories();
     	        				return null;
     	        			}
     	        		};

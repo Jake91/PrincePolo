@@ -22,6 +22,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import se.agile.activities.model.GitHubData.Branch;
+import se.agile.activities.model.GitHubData.Repository;
+import se.agile.activities.model.GitHubData.User;
+
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -97,7 +101,8 @@ public class HttpConnection{
 
 	public static enum URL {
 		GET_USER_REPOS("https://api.github.com/user/repos"),
-		GET_USER("https://api.github.com/user");
+		GET_USER("https://api.github.com/user"),
+		GET_BRANCHES("https://api.github.com/repos/Jake91/PrincePolo/branches");
 		
 		private final String url;
 
@@ -108,11 +113,36 @@ public class HttpConnection{
 		private String getUrl() {
 			return url;
 		}
-		
-		
 	}
 	
-	public static void getRequestGeneral(URL url){
+	public static User requestUser(){
+		String json = getRequestGeneral(URL.GET_USER);
+		User user = JSONParser.parseUser(json);
+		Preferences.setUser(user);
+		
+		fireResponseRecieved(URL.GET_USER, "Updated User");
+		return user;
+	}
+	
+	public static ArrayList<Repository> requestRepositories(){
+		String json = getRequestGeneral(URL.GET_USER_REPOS);
+		ArrayList<Repository> repos = JSONParser.parseRepositories(json);
+		Preferences.setUserRepos(repos);
+		
+		fireResponseRecieved(URL.GET_USER_REPOS, "Updated Repositories");
+		return repos;
+	}
+	
+	public static ArrayList<Branch> requestBranches(){
+		String json = getRequestGeneral(URL.GET_BRANCHES);
+		ArrayList<Branch> branches = JSONParser.parseBranches(json);
+		//Not saving.....
+		
+		fireResponseRecieved(URL.GET_USER_REPOS, "Updated Branches");
+		return branches;
+	}
+	
+	private static String getRequestGeneral(URL url){
 		HttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(url.getUrl());
 		try {
@@ -128,8 +158,7 @@ public class HttpConnection{
 				while ((line = reader.readLine()) != null) {
 					builder.append(line);
 				}
-				String json = builder.toString();
-				parseJSONString(url, json);
+				return builder.toString();
 			}else{
 				Log.e(logTag, "Didn't get statuscode 200");
 			}
@@ -138,53 +167,16 @@ public class HttpConnection{
 		} catch (IOException e) {
 			Log.d(logTag, "Error in testBrowser3");
 		}
+		return null;
 	}
 	
-	private static void parseJSONString(URL url, String json){
-		String response = "";
-		switch(url){
-		case GET_USER:
-			try {
-				JSONObject object = (JSONObject) new JSONTokener(json).nextValue();
-				String user = object.getString("login");
-				Preferences.setUserName(user);
-				response = "user" + ": " + user; 
-				String created_at = object.getString("created_at");
-				Preferences.setUserAcountCreated(created_at);
-			} catch (JSONException e) {
-				Log.e(logTag, "Error in interpreting JSON");
-				e.printStackTrace();
-				return;
-			}
-			break;
-		case GET_USER_REPOS:
-			try {
-				JSONArray jsonArray= new JSONArray(json);
-				ArrayList<String> list = new ArrayList<String>();
-				for (int i = 0; i < jsonArray.length(); i++) {
-					JSONObject jsonObject = jsonArray.getJSONObject(i);
-					try{
-						list.add(jsonObject.getString("full_name"));
-					}catch(JSONException e){
-						e.printStackTrace();
-					}
-				}
-				String[] temp = new String[list.size()];
-				Preferences.setUserRepos(list.toArray(temp));
-				response = "Repositories: " + list.toString();
-			} catch (JSONException e) {
-				Log.e(logTag, "Couldn't parse JSON String to JSONArray");
-				e.printStackTrace();
-			}
-			break;
-		default:
-			break;
-		}
-		fireResponseRecieved(url, response);
-	}
 	private static ArrayList<HttpConnectionResponseListener> listenerList = new ArrayList<HttpConnectionResponseListener>();
 	public static void addListener(HttpConnectionResponseListener listener){
 		listenerList.add(listener);
+	}
+	
+	public static boolean removeListener(HttpConnectionResponseListener listener){
+		return listenerList.remove(listener);
 	}
 	
 	private static void fireResponseRecieved(URL url, String response){

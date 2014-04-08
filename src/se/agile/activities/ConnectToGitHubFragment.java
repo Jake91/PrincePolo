@@ -1,14 +1,15 @@
 package se.agile.activities;	
 
-import se.agile.activities.model.HttpConnection;
-import se.agile.activities.model.HttpConnection.URL;
-import se.agile.activities.model.Preferences.PREF_KEY;
+import java.util.ArrayList;
+
 import se.agile.activities.model.PreferenceListener;
 import se.agile.activities.model.Preferences;
+import se.agile.activities.model.GitHubData.Repository;
+import se.agile.activities.model.GitHubData.User;
+import se.agile.activities.model.Preferences.PREF_KEY;
 import se.agile.princepolo.R;
 import android.app.Fragment;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +41,8 @@ public class ConnectToGitHubFragment extends Fragment {
     				Preferences.setAccessToken("");
     				Preferences.setScope("");
     				Preferences.setTokenType("");
-    				Preferences.setUserName("");
-    				Preferences.setUserRepos(new String[] {""});
+    				Preferences.setUser(new User(""));
+    				Preferences.setUserRepos(new ArrayList<Repository>());
     				break;
         		}
         		
@@ -73,14 +74,14 @@ public class ConnectToGitHubFragment extends Fragment {
     }
 	
 	private void updateUser(){
-		((TextView) rootView.findViewById(R.id.textView_User)).setText("User: " + Preferences.getUserName());
+		((TextView) rootView.findViewById(R.id.textView_User)).setText("User: " + Preferences.getUser().getName());
 	}
 	
 	private void updateUserRepos(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("Repositories:\n");
-		for(String s : Preferences.getUserRepos()){
-			builder.append(s + "\n");
+		for(Repository repo : Preferences.getUserRepos()){
+			builder.append(repo.getName() + "\n");
 		}
 		((TextView) rootView.findViewById(R.id.textView_Repositories)).setText(builder.toString());
 	}

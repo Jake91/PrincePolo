@@ -323,7 +323,7 @@ public class MainActivity extends Activity
     	mBuilder.setSmallIcon(R.drawable.ic_launcher);
     	mBuilder.setContentTitle("Incoming commit!");
     	mBuilder.setContentText("Click to view it");
-    	mBuilder.setSound(funSound);
+    	mBuilder.setSound(alarmSound);
     	mBuilder.setVibrate(pattern);
     	
     	NotificationManager mNotificationManager =

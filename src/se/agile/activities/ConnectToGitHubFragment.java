@@ -42,7 +42,7 @@ public class ConnectToGitHubFragment extends Fragment {
     				Preferences.setScope("");
     				Preferences.setTokenType("");
     				Preferences.setUser(new User(""));
-    				Preferences.setUserRepos(new ArrayList<Repository>());
+    				Preferences.setRepositories(new ArrayList<Repository>());
     				break;
         		}
         		
@@ -80,7 +80,7 @@ public class ConnectToGitHubFragment extends Fragment {
 	private void updateUserRepos(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("Repositories:\n");
-		for(Repository repo : Preferences.getUserRepos()){
+		for(Repository repo : Preferences.getRepositories()){
 			builder.append(repo.getName() + "\n");
 		}
 		((TextView) rootView.findViewById(R.id.textView_Repositories)).setText(builder.toString());

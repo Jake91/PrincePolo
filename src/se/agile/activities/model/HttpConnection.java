@@ -100,7 +100,7 @@ public class HttpConnection{
 	}
 
 	public static enum URL {
-		GET_USER_REPOS("https://api.github.com/user/repos"),
+		GET_REPOSITORIES("https://api.github.com/user/repos"),
 		GET_USER("https://api.github.com/user"),
 		GET_BRANCHES("https://api.github.com/repos/Jake91/PrincePolo/branches");
 		
@@ -125,11 +125,11 @@ public class HttpConnection{
 	}
 	
 	public static ArrayList<Repository> requestRepositories(){
-		String json = getRequestGeneral(URL.GET_USER_REPOS);
+		String json = getRequestGeneral(URL.GET_REPOSITORIES);
 		ArrayList<Repository> repos = JSONParser.parseRepositories(json);
-		Preferences.setUserRepos(repos);
+		Preferences.setRepositories(repos);
 		
-		fireResponseRecieved(URL.GET_USER_REPOS, "Updated Repositories");
+		fireResponseRecieved(URL.GET_REPOSITORIES, "Updated Repositories");
 		return repos;
 	}
 	
@@ -138,7 +138,7 @@ public class HttpConnection{
 		ArrayList<Branch> branches = JSONParser.parseBranches(json);
 		//Not saving.....
 		
-		fireResponseRecieved(URL.GET_USER_REPOS, "Updated Branches");
+		fireResponseRecieved(URL.GET_BRANCHES, "Updated Branches");
 		return branches;
 	}
 	

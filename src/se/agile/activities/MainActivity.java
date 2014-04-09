@@ -122,7 +122,7 @@ public class MainActivity extends Activity
 			}
 			else
 			{
-				displayView(5);
+				displayView(6);
 				Log.d(logTag, "Displayview 1 is not connected");
 			}
 		}

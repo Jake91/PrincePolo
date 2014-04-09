@@ -17,7 +17,11 @@ public class Preferences {
     private static SharedPreferences prefs;
     
     public static void initializePreferences(Context context){
-    	prefs = context.getSharedPreferences(PREF_STRINGS_NAME, Context.MODE_PRIVATE); 
+    	if(prefs == null){
+    		prefs = context.getSharedPreferences(PREF_STRINGS_NAME, Context.MODE_PRIVATE);
+    	}else{
+    		Log.e(logTag, "Preferences is already initialized");
+    	}
     }
     
     private static boolean isInitialized(){
@@ -45,7 +49,7 @@ public class Preferences {
             return value;
     	}else{
     		Log.e(logTag, "Preferences is not initialized");
-    		return "Error, preferences is not initialized";
+    		return "";
     	}
     }
     
@@ -110,8 +114,7 @@ public class Preferences {
     	return getGeneral(PREF_KEY.SCOPE);
     }
     
-    
-//    public static String USER_NAME = "username";
+
     
     public static void setUser(User user) {
     	setGeneral(PREF_KEY.USER_NAME, user.getName());
@@ -120,16 +123,15 @@ public class Preferences {
     	return new User(getGeneral(PREF_KEY.USER_NAME));
     }
     
-//    public static String USER_REPOS = "repos";
     
-    public static void setUserRepos(ArrayList<Repository> repos) {
+    public static void setRepositories(ArrayList<Repository> repos) {
     	StringBuilder builder = new StringBuilder();
     	for(Repository repo : repos){
     		builder.append(repo.getName() + ",");
     	}
     	setGeneral(PREF_KEY.USER_REPOS, builder.toString());
     }
-    public static ArrayList<Repository> getUserRepos() {
+    public static ArrayList<Repository> getRepositories() {
     	ArrayList<Repository> list = new ArrayList<Repository>();
     	String repos = getGeneral(PREF_KEY.USER_REPOS);
     	for(String repo: repos.split(",")){
@@ -138,7 +140,6 @@ public class Preferences {
     	return list;
     }
     
-//    public static String USER_ACCOUNT_CREATED = "account_created";
     
     public static void setUserAcountCreated(String account_created) {
     	setGeneral(PREF_KEY.USER_ACCOUNT_CREATED, account_created);
@@ -147,11 +148,11 @@ public class Preferences {
     	return getGeneral(PREF_KEY.USER_ACCOUNT_CREATED);
     }
     
-    public static void setSelectedRepository(String selected_repository) {
-    	setGeneral(PREF_KEY.SELECTED_REPOSITORY, selected_repository);
+    public static void setSelectedRepository(Repository selected_repository) {
+    	setGeneral(PREF_KEY.SELECTED_REPOSITORY, selected_repository.getName());
     }
-    public static String getSelectedRepository() {
-    	return getGeneral(PREF_KEY.SELECTED_REPOSITORY);
+    public static Repository getSelectedRepository() {
+    	return new Repository(getGeneral(PREF_KEY.SELECTED_REPOSITORY));
     }
     
     //-------------------------------

@@ -23,7 +23,7 @@ public class BrowserActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_browser);
 		logTag = getResources().getString(R.string.logtag_main);
-		Log.d(logTag, "new intent started: testbrowseractivity");
+		Log.d(logTag, "new intent started: Browseractivity");
 		String url = OAUTH_URL + "?client_id=" + Preferences.getClientId() + "&redirect_uri=" + CALLBACK_URL;
 		
 		WebView webview = (WebView)findViewById(R.id.webview);
@@ -68,7 +68,7 @@ public class BrowserActivity extends Activity {
             	if(isPostSent){
             		finish();
             	}
-        		
+        		super.onPageStarted(view, url, favicon);
             }});
         webview.loadUrl(url);
 	}

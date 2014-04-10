@@ -23,6 +23,7 @@ public class ConnectToGitHubFragment extends Fragment {
 	private View rootView;
 	public ConnectToGitHubFragment(){}
 	
+	private PreferenceListener prefListener;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,7 +47,7 @@ public class ConnectToGitHubFragment extends Fragment {
         };
         ((Button) rootView.findViewById(R.id.button_get2_github)).setOnClickListener(buttonListener);
         ((Button) rootView.findViewById(R.id.button_reset_connection)).setOnClickListener(buttonListener);
-        PreferenceListener listener = new PreferenceListener() {
+        prefListener = new PreferenceListener() {
 			@Override
 			public void preferenceChanged(PREF_KEY key) {
 				switch(key){
@@ -64,7 +65,7 @@ public class ConnectToGitHubFragment extends Fragment {
 			}
 		};
 		
-        Preferences.addListener(listener);
+        Preferences.addListener(prefListener);
         
         return rootView;
     }
@@ -102,5 +103,10 @@ public class ConnectToGitHubFragment extends Fragment {
 		updateUser();
 		updateUserRepos();
 		super.onResume();
+	}
+	@Override
+	public void onDestroy(){
+		Preferences.removeListener(prefListener);
+		super.onDestroy();
 	}
 }

@@ -38,11 +38,7 @@ public class ConnectToGitHubFragment extends Fragment {
             	    startActivity(intent);
     				break;
     			case R.id.button_reset_connection:
-    				Preferences.setAccessToken("");
-    				Preferences.setScope("");
-    				Preferences.setTokenType("");
-    				Preferences.setUser(new User(""));
-    				Preferences.setRepositories(new ArrayList<Repository>());
+    				Preferences.ClearPreferences();
     				break;
         		}
         		
@@ -60,7 +56,7 @@ public class ConnectToGitHubFragment extends Fragment {
 					case USER_NAME:
 						updateUser();
 						break;
-					case USER_REPOS:
+					case USER_REPOSITORIES:
 						updateUserRepos();
 						break;
 						

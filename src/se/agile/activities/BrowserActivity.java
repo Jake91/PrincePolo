@@ -1,23 +1,24 @@
 package se.agile.activities;
 
-import se.agile.activities.model.HttpConnection;
+import se.agile.activities.model.RequestListener;
 import se.agile.activities.model.Preferences;
-import se.agile.activities.model.HttpConnection.URL;
+import se.agile.activities.model.RequestAccessToken;
+import se.agile.activities.model.RequestRepositories;
+import se.agile.activities.model.RequestUser;
 import se.agile.princepolo.R;
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class BrowserActivity extends Activity {
+public class BrowserActivity extends Activity implements RequestListener{
 	private static String OAUTH_URL = "https://github.com/login/oauth/authorize";
     private static String CALLBACK_URL = "princepolo://oauthresponse";//"http://localhost";
     
 	private String logTag;
-
+	private RequestAccessToken accessTokenRequest;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -25,7 +26,7 @@ public class BrowserActivity extends Activity {
 		logTag = getResources().getString(R.string.logtag_main);
 		Log.d(logTag, "new intent started: Browseractivity");
 		String url = OAUTH_URL + "?client_id=" + Preferences.getClientId() + "&redirect_uri=" + CALLBACK_URL;
-		
+		this.accessTokenRequest = new RequestAccessToken(this);
 		WebView webview = (WebView)findViewById(R.id.webview);
 		webview.getSettings().setJavaScriptEnabled(true);
         webview.setWebViewClient(new WebViewClient() {
@@ -50,16 +51,7 @@ public class BrowserActivity extends Activity {
             		if(url.matches("princepolo://oauthresponse\\?code=[\\dA-z]+") && !isPostSent) {
     	        		String accessCode = url.split("code=")[1];
     	        		Log.d(logTag, "accessCode: " + accessCode);
-    	        		AsyncTask<String, Void, Void> aTask = new AsyncTask<String, Void, Void>(){
-    	        			@Override
-    	        			protected Void doInBackground(String... params) {
-    	        				HttpConnection.requestAccessToken(params[0]);
-    	        				HttpConnection.requestUser();
-    							HttpConnection.requestRepositories();
-    	        				return null;
-    	        			}
-    	        		};
-                		aTask.execute(accessCode);
+    	        		accessTokenRequest.execute(accessCode);
                 		isPostSent = true;
     	        	}else{
     	        		Log.d(logTag, "Url don't match \"princepolo://oauthresponse\\?code=[\\dA-z]+\"");
@@ -71,5 +63,14 @@ public class BrowserActivity extends Activity {
         		super.onPageStarted(view, url, favicon);
             }});
         webview.loadUrl(url);
+	}
+
+	@Override
+	public void requestFinished() {
+		RequestUser userRequest = new RequestUser();
+		RequestRepositories reposRequest = new RequestRepositories();
+		userRequest.execute();
+		reposRequest.execute();
+		
 	}
 }

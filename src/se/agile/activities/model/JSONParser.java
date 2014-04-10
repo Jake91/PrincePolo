@@ -38,6 +38,7 @@ public class JSONParser {
 	public static ArrayList<Repository> parseRepositories(String json){
 		ArrayList<Repository> list = new ArrayList<Repository>();
 		try {
+			Log.d(logTag, "json: " + json);
 			JSONArray jsonArray = new JSONArray(json);
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -55,17 +56,20 @@ public class JSONParser {
 	}
 	
 	public static User parseUser(String json){
-		User user = null;
-		try {
-//			JSONObject object = (JSONObject) new JSONTokener(json).nextValue();
-			JSONObject object = new JSONObject(json);
-//			String user = object.getString("login");
-			user = new User(object.getString("login"));
-		} catch (JSONException e) {
-			Log.e(logTag, "Error in interpreting JSON");
-			e.printStackTrace();
+		if(json == null){
+			return null;
+		}else{
+			User user = null;
+			try {
+				JSONObject object = new JSONObject(json);
+				user = new User(object.getString("login"));
+			} catch (JSONException e) {
+				Log.e(logTag, "Error in interpreting JSON");
+				e.printStackTrace();
+			}
+			return user;
 		}
-		return user;
+		
 	}
 	
 }

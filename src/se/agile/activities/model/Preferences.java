@@ -33,6 +33,7 @@ public class Preferences {
     		Editor edit = prefs.edit();
             edit.putString(key.getKey(), value);
             edit.apply();
+            fireStateChanged(key);
             Log.d(logTag,"saved " + key + ": " + value + " to preferences");
     	}else{
     		Log.e(logTag, "Preferences is not initialized");
@@ -53,12 +54,22 @@ public class Preferences {
     	}
     }
     
+    public static void ClearPreferences(){
+    	setAccessToken("");
+    	setRepositories(new ArrayList<Repository>());
+    	setScope("");
+    	setTokenType("");
+    	setUser(new User(""));
+    	setSelectedRepository(new Repository(""));
+    	setUserAcountCreated("");
+    }
+    
     public static enum PREF_KEY {
     	ACCESS_TOKEN("access_token"),
     	TOKEN_TYPE("token_type"),
     	SCOPE("scope"),
     	USER_NAME("username"),
-    	USER_REPOS("repos"),
+    	USER_REPOSITORIES("repos"),
     	SELECTED_REPOSITORY("selected_repository"),
     	USER_ACCOUNT_CREATED("account_created"),
     	CLIENT_ID("387b05f90574b6fede43"),
@@ -129,13 +140,15 @@ public class Preferences {
     	for(Repository repo : repos){
     		builder.append(repo.getName() + ",");
     	}
-    	setGeneral(PREF_KEY.USER_REPOS, builder.toString());
+    	setGeneral(PREF_KEY.USER_REPOSITORIES, builder.toString());
     }
     public static ArrayList<Repository> getRepositories() {
     	ArrayList<Repository> list = new ArrayList<Repository>();
-    	String repos = getGeneral(PREF_KEY.USER_REPOS);
+    	String repos = getGeneral(PREF_KEY.USER_REPOSITORIES);
     	for(String repo: repos.split(",")){
-    		list.add(new Repository(repo));
+    		if(!repo.equals("")){
+    			list.add(new Repository(repo));
+    		}
     	}
     	return list;
     }
@@ -164,26 +177,20 @@ public class Preferences {
     public static String getClientSecret() {
     	return PREF_KEY.CLIENT_SECRET.getKey();
     }
-    
+
     private static ArrayList<PreferenceListener> prefListener = new ArrayList<PreferenceListener>();
-    private static OnSharedPreferenceChangeListener onChangeListern; // Need to keep this reference, otherwise we don't get any events....
-    //Wrapping the OnSharedPreferenceChangeListener since i dont want to give away the sharedpreferences....
-    public static void addListener(PreferenceListener listener){
-    	if(isInitialized()){
-    		prefListener.add(listener);
-    		if(onChangeListern == null){
-    			onChangeListern = new OnSharedPreferenceChangeListener() {
-    				public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-    					for(PreferenceListener list : prefListener){
-    	          	    	list.preferenceChanged(PREF_KEY.getKey(key));
-    	          	    }
-    				}
-    			};
-    			prefs.registerOnSharedPreferenceChangeListener(onChangeListern);
-    		}
-    	}else{
-    		Log.e(logTag, "Preferences is not initialized");
+    
+    private static void fireStateChanged(PREF_KEY key){
+    	for(PreferenceListener listener : prefListener){
+    		listener.preferenceChanged(key);
     	}
+    }
+
+    public static void addListener(PreferenceListener listener){
+    	prefListener.add(listener);
+    }
+    public static boolean removeListener(PreferenceListener listener){
+    	return prefListener.remove(listener);
     }
     
     public static boolean isConnectedToGitHub()

@@ -1,5 +1,7 @@
 package se.agile.activities.model.GitHubData;
 
+import android.os.AsyncTask;
+
 
 public class Branch implements GitHubDataInterface{
 	private String name;

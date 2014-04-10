@@ -2,114 +2,78 @@ package se.agile.activities;
 
 import java.util.ArrayList;
 
-import se.agile.activities.model.HttpConnection;
-import se.agile.activities.model.HttpConnectionResponseListener;
+import se.agile.activities.model.PreferenceListener;
 import se.agile.activities.model.Preferences;
+import se.agile.activities.model.Preferences.PREF_KEY;
+import se.agile.activities.model.RequestRepositories;
 import se.agile.activities.model.GitHubData.Repository;
-import se.agile.activities.model.HttpConnection.URL;
 import se.agile.princepolo.R;
 import android.app.Fragment;
-import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.webkit.WebView.FindListener;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-public class SelectRepositoryFragment extends Fragment {
+public class SelectRepositoryFragment extends Fragment{
 	private String logTag;
 	private View rootView;
-	public SelectRepositoryFragment(){}
-	private ArrayList<Repository> reposList;
-	private ArrayList<Button> radioButtonList;
-	private RadioGroup radioGroup;
-	private OnClickListener radioButtonListener; 
+	
+	private PreferenceListener prefListener;
+	
+	private RequestRepositories thread;
+	
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
 		rootView = inflater.inflate(R.layout.fragment_select_repository, container, false);
-		reposList = new ArrayList<Repository>();
-		radioButtonList = new ArrayList<Button>();
-		radioGroup = (RadioGroup) rootView.findViewById(R.id.radiogroup_repos);
-		HttpConnection.addListener(new HttpConnectionResponseListener() {
+		thread = new RequestRepositories();
+		
+		prefListener = new PreferenceListener() {
 			@Override
-			public void receivedResponse(URL url, String response) {
-				switch (url) {
-				case GET_REPOSITORIES:
-					reposList = Preferences.getRepositories();
+			public void preferenceChanged(PREF_KEY key) {
+				switch (key) {
+				case USER_REPOSITORIES:
+					RadioGroup radioGroup = (RadioGroup) rootView.findViewById(R.id.radiogroup_repos);
+					radioGroup.removeAllViews();
+					ArrayList<Repository> repoList = Preferences.getRepositories();
+					OnClickListener radioButtonListener = new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Preferences.setSelectedRepository(new Repository(((RadioButton) v).getText().toString()));
+						}
+					};
+					String selectedRepo = Preferences.getSelectedRepository().getName();
+					for(Repository repo : repoList){
+						RadioButton button = new RadioButton(rootView.getContext());
+						button.setText(repo.getName());
+						button.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
+						button.setOnClickListener(radioButtonListener);
+						radioGroup.addView(button);
+						if(repo.getName().equals(selectedRepo)){
+							button.setChecked(true);
+						}
+					}
 					break;
 				default:
 					break;
 				}
-			}
-		});
-		radioButtonListener = new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				for(Button radioButton: radioButtonList){
-					if(radioButton.getId() == v.getId()){
-						for(Repository repo : reposList){
-							if(repo.getName().equals(radioButton.getText())){
-								Preferences.setSelectedRepository(repo);
-							}
-						}
-					}
-				}
 				
 			}
 		};
-		((Button) rootView.findViewById(R.id.button_select_repo_refresh)).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				new AsyncTask<Void, Void, Void>(){
-        			@Override
-        			protected Void doInBackground(Void... params) {
-						HttpConnection.requestRepositories();
-        				return null;
-        			}
-        		}.execute();
-				};
-			}
-		);
+		Preferences.addListener(prefListener);
+		
+		thread.execute();
         return rootView;
     }
 	
-	private void updateGUI(){
-		for(Repository repo : reposList){
-			boolean buttonExist = false;
-			for(Button button : radioButtonList){
-				if(repo.getName().equals(button.getText())){
-					buttonExist = true;
-					break;
-				}
-			}
-			if(!buttonExist){
-				RadioButton button = new RadioButton(rootView.getContext());
-				button.setText(repo.getName());
-				button.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
-				button.setOnClickListener(radioButtonListener);
-				radioGroup.addView(button);
-				radioButtonList.add(button);
-			}
-		}
-	}
-	
-	
 	@Override
-	public void onResume(){
-		updateGUI();
-		super.onResume();
+	public void onDestroy(){
+		Preferences.removeListener(prefListener);
+		thread.cancel(true);
+		super.onDestroy();
 	}
-	/*
-layout = (LinearLayout) findViewById(R.id.statsviewlayout);
-
-	 */
 }

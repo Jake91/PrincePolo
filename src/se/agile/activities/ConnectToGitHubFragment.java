@@ -36,7 +36,7 @@ public class ConnectToGitHubFragment extends Fragment {
         		switch (v.getId()) 
         		{
     			case R.id.button_get2_github:
-    				Intent intent = new Intent(getActivity(), BrowserActivity.class);
+    				Intent intent = new Intent(getActivity(), StartActivity.class);
             	    startActivity(intent);
     				break;
     			case R.id.button_reset_connection:

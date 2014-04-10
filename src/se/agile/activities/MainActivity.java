@@ -67,15 +67,6 @@ public class MainActivity extends Activity
 		
 		// At the start of the app no new commits have arrived by definition
 		Util.haveNewCommitsArrived = false;
-		
-		// Initializing shared preferences
-		Preferences.initializePreferences(this);
-		
-		if (Preferences.getAccessToken().equals(""))
-		{
-			Intent intent = new Intent(MainActivity.this, BrowserActivity.class);
-    	    startActivity(intent);
-		}
 	
 		logTag = getResources().getString(R.string.logtag_main);
 		mTitle = mDrawerTitle = getTitle();

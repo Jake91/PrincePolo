@@ -239,10 +239,10 @@ public class MainActivity extends Activity
 				fragment = new SettingsFragment();
 				break;
 			case 8:
-				fragment = new HelpFragment();
+				fragment = new AboutFragment();
 				break;
 			case 9:
-				fragment = new AboutFragment();
+				fragment = new SignOutFragment();
 				break;
 	
 			default:

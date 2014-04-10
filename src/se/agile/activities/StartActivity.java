@@ -30,10 +30,11 @@ public class StartActivity extends Activity {
 		// Initializing shared preferences
 		Preferences.initializePreferences(this);
 		
-		if (!Preferences.getAccessToken().equals(""))
+		if (!Preferences.getAccessToken().equals("") )
 		{
 			Intent intent = new Intent(StartActivity.this, MainActivity.class);
     	    startActivity(intent);
+    	    finish();
 		}
 		
 		else

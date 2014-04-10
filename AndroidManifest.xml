@@ -42,7 +42,7 @@
             android:label="@string/title_activity_about_fragment" >
         </activity>
         <activity
-            android:name="se.agile.activities.HelpFragment"
+            android:name="se.agile.activities.SignOutFragment"
             android:label="@string/title_activity_help_fragment" >
         </activity>
         <activity

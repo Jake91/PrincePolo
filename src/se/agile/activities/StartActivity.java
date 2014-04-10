@@ -80,6 +80,8 @@ public class StartActivity extends Activity {
 	    	        	}
 					}
 	            	if(isPostSent){
+	        			Intent intent = new Intent(StartActivity.this, MainActivity.class);
+	            	    startActivity(intent);
 	            		finish();
 	            	}
 	        		

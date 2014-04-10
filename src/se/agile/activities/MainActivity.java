@@ -132,17 +132,8 @@ public class MainActivity extends Activity
 
 		if (savedInstanceState == null) 
 		{
-			// on first time display view for first nav item
-			if (Preferences.isConnectedToGitHub())
-			{
-				displayView(0);
-				Log.d(logTag, "Displayview 0 isconnected");
-			}
-			else
-			{
-				displayView(5);
-				Log.d(logTag, "Displayview 1 is not connected");
-			}
+			displayView(0);
+			Log.d(logTag, "Displayview 0 isconnected");
 		}
 		
 		// Opens up the menu from the left when the app is openeds

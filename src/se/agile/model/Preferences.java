@@ -62,6 +62,7 @@ public class Preferences {
     	setUser(new User(""));
     	setSelectedRepository(new Repository(""));
     	setUserAcountCreated("");
+    	setIsFirstTime(true);
     }
     
     public static enum PREF_KEY {

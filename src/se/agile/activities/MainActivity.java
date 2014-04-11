@@ -17,6 +17,7 @@ import android.app.FragmentManager;
 import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.media.RingtoneManager;
@@ -129,8 +130,14 @@ public class MainActivity extends Activity
 
 		if (savedInstanceState == null) 
 		{
-			displayView(0);
-			Log.d(logTag, "Displayview 0 isconnected");
+				
+			if(Preferences.isFirstTimeUsingApp()){
+				Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+				startActivity(intent);
+				displayView(5);
+			}else{
+				displayView(0);
+			}
 		}
 		
 		// Opens up the menu from the left when the app is openeds
@@ -203,13 +210,13 @@ public class MainActivity extends Activity
 	}
 
 	// displays the fragment view for selected fragment
-	private void displayView(int position) 
+	protected void displayView(int position) 
 	{
 		Fragment fragment = null;
 		switch (position) 
 		{
 			case 0:
-				fragment = new SelectRepositoryFragment();
+				fragment = new RepositoryOverviewFragment();
 				break;
 			case 1:
 				fragment = new NotificationsFragment();
@@ -224,7 +231,7 @@ public class MainActivity extends Activity
 				fragment = new CollaboratorsFragment();
 				break;
 			case 5:
-				fragment = new RepositoryOverviewFragment();
+				fragment = new SelectRepositoryFragment();
 				break;
 			case 6:
 				fragment = new ConnectToGitHubFragment();

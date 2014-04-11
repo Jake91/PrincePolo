@@ -28,6 +28,8 @@ public class SignOutFragment extends Fragment {
         		Preferences.ClearPreferences();
         		Intent intent = new Intent(getActivity(), LoginActivity.class);
         	    startActivity(intent);
+        	    MainActivity main = (MainActivity) getActivity();
+        	    main.displayView(5);
         	}
         };
         

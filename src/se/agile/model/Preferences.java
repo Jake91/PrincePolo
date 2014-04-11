@@ -73,6 +73,7 @@ public class Preferences {
     	USER_REPOSITORIES("repos"),
     	SELECTED_REPOSITORY("selected_repository"),
     	USER_ACCOUNT_CREATED("account_created"),
+    	FIRST_TIME_USING_APP("is_first_time"),
     	CLIENT_ID("387b05f90574b6fede43"),
     	CLIENT_SECRET("557392acf8c742ac6e6a3a4ff36b172f378c1633"),
     	EMPTY("");
@@ -133,6 +134,18 @@ public class Preferences {
     	return getGeneral(PREF_KEY.SCOPE);
     }
     
+    public static void setIsFirstTime(Boolean is_first_time) {
+    	if(is_first_time){
+    		setGeneral(PREF_KEY.FIRST_TIME_USING_APP, "True");
+    	}else{
+    		setGeneral(PREF_KEY.FIRST_TIME_USING_APP, "False");
+    	}
+    	
+    }
+    public static boolean isFirstTimeUsingApp() {
+    	String isFirstTime = getGeneral(PREF_KEY.FIRST_TIME_USING_APP);
+    		return (isFirstTime.equals("True") || isFirstTime.equals(""));
+    }    
 
     
     public static void setUser(User user) {

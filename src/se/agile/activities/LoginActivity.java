@@ -11,10 +11,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class StartActivity extends Activity implements RequestListener{
+public class LoginActivity extends Activity implements RequestListener{
 	private static String OAUTH_URL = "https://github.com/login/oauth/authorize";
     private static String CALLBACK_URL = "princepolo://oauthresponse";//"http://localhost";
     
@@ -25,17 +28,15 @@ public class StartActivity extends Activity implements RequestListener{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_browser);
+		setContentView(R.layout.activity_login);
 		
 		logTag = getResources().getString(R.string.logtag_main);
 		Log.d(logTag, "new intent started: testbrowseractivity");
 		accessTokenThread = new RequestAccessToken(this);
-		// Initializing shared preferences
-		Preferences.initializePreferences(this);
 		
 		if (!Preferences.getAccessToken().equals("") )
 		{
-			Intent intent = new Intent(StartActivity.this, MainActivity.class);
+			Intent intent = new Intent(LoginActivity.this, MainActivity.class);
     	    startActivity(intent);
     	    finish();
 		}
@@ -44,8 +45,15 @@ public class StartActivity extends Activity implements RequestListener{
 		{
 			String url = OAUTH_URL + "?client_id=" + Preferences.getClientId() + "&redirect_uri=" + CALLBACK_URL;
 			
+			CookieSyncManager.createInstance(this);
+			CookieManager cookieManager = CookieManager.getInstance();
+			cookieManager.removeAllCookie();
+			
 			WebView webview = (WebView)findViewById(R.id.webview);
 			webview.getSettings().setJavaScriptEnabled(true);
+			WebSettings ws = webview.getSettings();
+			ws.setSaveFormData(false);
+//			ws.setSavePassword(false);
 	        webview.setWebViewClient(new WebViewClient() {
 	        	@Override
 	            public void onPageFinished(WebView view, String url) {
@@ -75,7 +83,7 @@ public class StartActivity extends Activity implements RequestListener{
 	    	        	}
 					}
 	            	if(isPostSent){
-	        			Intent intent = new Intent(StartActivity.this, MainActivity.class);
+	        			Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 	            	    startActivity(intent);
 	            		finish();
 	            	}

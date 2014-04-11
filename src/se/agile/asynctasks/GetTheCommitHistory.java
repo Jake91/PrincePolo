@@ -54,12 +54,12 @@ public class GetTheCommitHistory extends AsyncTask<String, Void, String>
     protected void onPostExecute(String result) 
     {
     	String newValue = getMD5EncryptedString(result);
-	    Log.d(logTag, "Old value is: "+Preferences.getMD5Value());
-	    Log.d(logTag, "NEW value is: "+newValue);
+//	    Log.d(logTag, "Old value is: "+Preferences.getMD5Value());
+//	    Log.d(logTag, "NEW value is: "+newValue);
 	    
 	    if (Preferences.getMD5Value().equals(""))
 	    {
-	    	Log.d(logTag, "MD5 value in prefs was empty!");
+//	    	Log.d(logTag, "MD5 value in prefs was empty!");
 	    	Preferences.setMD5Value(newValue);
 	    }
 	    
@@ -82,7 +82,6 @@ public class GetTheCommitHistory extends AsyncTask<String, Void, String>
         } 
         catch (NoSuchAlgorithmException e) 
         {
-            System.out.println("Exception while encrypting to md5");
             e.printStackTrace();
         } 
         // Encryption algorithm

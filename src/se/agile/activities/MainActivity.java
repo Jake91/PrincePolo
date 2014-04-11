@@ -6,7 +6,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import se.agile.asynctasks.GetTheCommitHistory;
-import se.agile.asynctasks.CountBranches;
 import se.agile.model.Preferences;
 import se.agile.model.Util;
 import se.agile.navigator.NavDrawerItem;
@@ -18,7 +17,6 @@ import android.app.FragmentManager;
 import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.media.RingtoneManager;
@@ -28,7 +26,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,7 +61,7 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+		Preferences.initializePreferences(this);
 		// At the start of the app no new commits have arrived by definition
 		Util.haveNewCommitsArrived = false;
 	
@@ -139,9 +136,6 @@ public class MainActivity extends Activity
 		// Opens up the menu from the left when the app is openeds
 		//mDrawerLayout.openDrawer(Gravity.LEFT);
 		
-		// Just a test, at the moment. Counts the number of Branches in a repo
-		CountBranches task = new CountBranches();
-		task.execute(new String[] { "https://api.github.com/repos/Jake91/PrincePolo/branches?access_token=aa534e873012c9a6881ee6826f31e494ad6ca6db" });
 		
 		// Checks every 10 sec whether new commits have arrived
 		scheduler.scheduleAtFixedRate (new Runnable() 
@@ -215,7 +209,7 @@ public class MainActivity extends Activity
 		switch (position) 
 		{
 			case 0:
-				fragment = new RepositoryOverviewFragment();
+				fragment = new SelectRepositoryFragment();
 				break;
 			case 1:
 				fragment = new NotificationsFragment();
@@ -230,7 +224,7 @@ public class MainActivity extends Activity
 				fragment = new CollaboratorsFragment();
 				break;
 			case 5:
-				fragment = new SelectRepositoryFragment();
+				fragment = new RepositoryOverviewFragment();
 				break;
 			case 6:
 				fragment = new ConnectToGitHubFragment();

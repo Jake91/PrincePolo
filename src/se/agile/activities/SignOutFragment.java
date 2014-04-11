@@ -1,7 +1,5 @@
 package se.agile.activities;	
 
-import java.text.BreakIterator;
-
 import se.agile.model.Preferences;
 import se.agile.princepolo.R;
 import android.app.Fragment;
@@ -9,8 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 public class SignOutFragment extends Fragment {
@@ -28,7 +26,7 @@ public class SignOutFragment extends Fragment {
         	public void onClick(View v) 
         	{
         		Preferences.ClearPreferences();
-        		Intent intent = new Intent(getActivity(), BrowserActivity.class);
+        		Intent intent = new Intent(getActivity(), LoginActivity.class);
         	    startActivity(intent);
         	}
         };

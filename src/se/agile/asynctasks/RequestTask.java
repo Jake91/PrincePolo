@@ -1,4 +1,4 @@
-package se.agile.activities.model;
+package se.agile.asynctasks;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +12,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import se.agile.model.Preferences;
 import android.os.AsyncTask;
 import android.util.Log;
 

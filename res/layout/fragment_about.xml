@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="se.agile.princepolo.AboutFragment$PlaceholderFragment" >
+    tools:context="se.agile.princepolo.HelpFragment$PlaceholderFragment" >
 
     <TextView
         android:layout_width="wrap_content"

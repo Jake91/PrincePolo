@@ -1,8 +1,9 @@
-package se.agile.activities.model;
+package se.agile.asynctasks;
 
 import java.util.ArrayList;
 
 import se.agile.activities.model.GitHubData.Branch;
+import se.agile.model.JSONParser;
 
 public class RequestBranches extends RequestTask<Void, Void, ArrayList<Branch>>{
 	private final String logTag = "PrincePolo";

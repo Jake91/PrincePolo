@@ -8,7 +8,7 @@
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
-        <item>Repository Overview</item>
+        <item>Repositories</item>
         <item>Notifications</item>
         <item>Issues</item>
         <item>Branches</item>
@@ -17,7 +17,7 @@
         <item>GitHub Connection</item>
         <item>Settings</item>
         <item>Help</item>
-        <item>About</item>
+        <item>Sign out</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
@@ -29,7 +29,7 @@
         <item>@drawable/ic_4</item>
         <item>@drawable/ic_5</item>
         <item>@drawable/thor</item>
-		<item>@drawable/ic_3</item>
+        <item>@drawable/ic_3</item>
         <item>@drawable/ic_4</item>
         <item>@drawable/ic_5</item>
     </array>
@@ -45,5 +45,7 @@
     <string name="title_activity_settings_fragment">SettingsFragment</string>
     <string name="title_activity_about_fragment">AboutFragment</string>
     <string name="title_activity_help_fragment">HelpFragment</string>
+    <string name="title_activity_notification">NotificationActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package se.agile.activities.model;
+package se.agile.model;
 
 import java.util.ArrayList;
 
@@ -65,6 +65,7 @@ public class Preferences {
     }
     
     public static enum PREF_KEY {
+    	COMMITS_MD5_VALUE("commits_md5_value"),
     	ACCESS_TOKEN("access_token"),
     	TOKEN_TYPE("token_type"),
     	SCOPE("scope"),
@@ -103,6 +104,13 @@ public class Preferences {
     }
     public static String getAccessToken() {
     	return getGeneral(PREF_KEY.ACCESS_TOKEN);
+    }
+    
+    public static void setMD5Value(String commits_md5_value) {
+    	setGeneral(PREF_KEY.COMMITS_MD5_VALUE, commits_md5_value);
+    }
+    public static String getMD5Value() {
+    	return getGeneral(PREF_KEY.COMMITS_MD5_VALUE);
     }
     
     
@@ -164,10 +172,10 @@ public class Preferences {
     public static void setSelectedRepository(Repository selected_repository) {
     	setGeneral(PREF_KEY.SELECTED_REPOSITORY, selected_repository.getName());
     }
+    
     public static Repository getSelectedRepository() {
     	return new Repository(getGeneral(PREF_KEY.SELECTED_REPOSITORY));
     }
-    
     //-------------------------------
     
     public static String getClientId() {

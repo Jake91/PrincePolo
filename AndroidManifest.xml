@@ -5,10 +5,11 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="16"
         android:targetSdkVersion="17" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -16,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="se.agile.activities.MainActivity"
+            android:name="se.agile.activities.StartActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +30,7 @@
             android:label="@string/title_activity_home_fragment" >
         </activity>
         <activity
-            android:name="se.agile.activities.BrowserActivity"
+            android:name="se.agile.activities.MainActivity"
             android:label="@string/title_activity_browser" >
         </activity>
         <activity
@@ -41,8 +42,12 @@
             android:label="@string/title_activity_about_fragment" >
         </activity>
         <activity
-            android:name="se.agile.activities.HelpFragment"
+            android:name="se.agile.activities.SignOutFragment"
             android:label="@string/title_activity_help_fragment" >
+        </activity>
+        <activity
+            android:name="se.agile.activities.NotificationActivity"
+            android:label="@string/title_activity_notification" >
         </activity>
     </application>
 

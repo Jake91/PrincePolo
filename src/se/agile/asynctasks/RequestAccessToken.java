@@ -1,4 +1,4 @@
-package se.agile.activities.model;
+package se.agile.asynctasks;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import se.agile.model.Preferences;
 import android.util.Log;
 
 public class RequestAccessToken extends RequestTask<String, Void, String>{

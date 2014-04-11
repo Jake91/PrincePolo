@@ -1,10 +1,10 @@
 package se.agile.activities;
 
-import se.agile.activities.model.RequestListener;
-import se.agile.activities.model.Preferences;
-import se.agile.activities.model.RequestAccessToken;
-import se.agile.activities.model.RequestRepositories;
-import se.agile.activities.model.RequestUser;
+import se.agile.asynctasks.RequestAccessToken;
+import se.agile.asynctasks.RequestListener;
+import se.agile.asynctasks.RequestRepositories;
+import se.agile.asynctasks.RequestUser;
+import se.agile.model.Preferences;
 import se.agile.princepolo.R;
 import android.app.Activity;
 import android.graphics.Bitmap;

@@ -2,11 +2,11 @@ package se.agile.activities;
 
 import java.util.ArrayList;
 
-import se.agile.activities.model.PreferenceListener;
-import se.agile.activities.model.Preferences;
-import se.agile.activities.model.Preferences.PREF_KEY;
-import se.agile.activities.model.RequestRepositories;
 import se.agile.activities.model.GitHubData.Repository;
+import se.agile.asynctasks.RequestRepositories;
+import se.agile.model.PreferenceListener;
+import se.agile.model.Preferences;
+import se.agile.model.Preferences.PREF_KEY;
 import se.agile.princepolo.R;
 import android.app.Fragment;
 import android.os.Bundle;

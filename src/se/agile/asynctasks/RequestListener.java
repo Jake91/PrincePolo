@@ -1,4 +1,4 @@
-package se.agile.activities.model;
+package se.agile.asynctasks;
 
 public interface RequestListener {
 	void requestFinished();

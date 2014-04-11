@@ -73,7 +73,7 @@ public class SelectRepositoryFragment extends Fragment{
 	@Override
 	public void onDestroy(){
 		Preferences.removeListener(prefListener);
-		thread.cancel(true);
+		thread.abortRequest(false);
 		super.onDestroy();
 	}
 }

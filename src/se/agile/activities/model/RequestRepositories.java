@@ -23,8 +23,10 @@ public class RequestRepositories extends RequestTask<Void, Void, ArrayList<Repos
 	}
 	@Override
 	protected void onPostExecute(ArrayList<Repository> repoList){
-		Preferences.setRepositories(repoList);
-		finishedWithRequest(repoList);
+		if(!isCancelled()){
+			Preferences.setRepositories(repoList);
+			finishedWithRequest(repoList);
+		}
 	}
 	
 }

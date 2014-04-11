@@ -82,22 +82,24 @@ public class RequestAccessToken extends RequestTask<String, Void, String>{
 	
 	@Override
 	protected void onPostExecute(String json){
-		String access_token = "";
-		if(json != null){
-			Log.d(logTag, "json= " + json);
-			try {
-				JSONObject object = (JSONObject) new JSONTokener(json).nextValue();
-				access_token = object.getString("access_token");
-				Preferences.setAccessToken(access_token);
-				Preferences.setTokenType(object.getString("token_type"));
-				Preferences.setScope(object.getString("scope"));
-				
-			} catch (JSONException e) {
-				Log.e(logTag, "Error in interpreting JSON");
-				e.printStackTrace();
+		if(!isCancelled()){
+			String access_token = "";
+			if(json != null){
+				Log.d(logTag, "json= " + json);
+				try {
+					JSONObject object = (JSONObject) new JSONTokener(json).nextValue();
+					access_token = object.getString("access_token");
+					Preferences.setAccessToken(access_token);
+					Preferences.setTokenType(object.getString("token_type"));
+					Preferences.setScope(object.getString("scope"));
+					
+				} catch (JSONException e) {
+					Log.e(logTag, "Error in interpreting JSON");
+					e.printStackTrace();
+				}
 			}
+			finishedWithRequest(access_token);
 		}
-		finishedWithRequest(access_token);
 	}
 
 }

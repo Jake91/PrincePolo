@@ -21,8 +21,11 @@ public class RequestUser extends RequestTask<String, Void, User>{
 	}
 	@Override
 	protected void onPostExecute(User user){
-		Preferences.setUser(user);
-		finishedWithRequest(user);
+		if(!isCancelled()){
+			Preferences.setUser(user);
+			finishedWithRequest(user);
+		}
+		
 	}
 	
 }

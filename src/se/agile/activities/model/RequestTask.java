@@ -15,6 +15,16 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.os.AsyncTask;
 import android.util.Log;
 
+
+/**
+ * So this abstract class it to make our http request a bit "easier" to implement.
+ * 
+ * @author Jacob
+ *
+ * @param <Params>
+ * @param <Progress>
+ * @param <Result>
+ */
 public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result>{
 	private final String logTag = "PrincePolo";
 	
@@ -30,7 +40,14 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 		this.listener = listener;
 	}
 	
-	
+	/**
+	 * General class for doing the GET http request to GitHub. It will automatically add the access_token.
+	 * What you have to do is to parse the json string that is returned from the http request.
+	 * 
+	 * 
+	 * @param url
+	 * @return the respond (as a json string) or null if the responding message's statuscode wasn't "OK"
+	 */
 	protected String generalGETRequest(String url) {
 		
 		HttpClient client = new DefaultHttpClient();
@@ -62,12 +79,27 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 	
 	public void finishedWithRequest(Result result){
 		this.result = result;
-		if(listener != null){
+		if(listener != null && !isCancelled()){
 			listener.requestFinished();
+		}else{
 		}
 	}
 	
 	public Result getResult(){
 		return this.result;
+	}
+	
+	/**
+	 * Remove some references. But otherwise it is just like calling cancel(but better).
+	 * You're recommended to set mayInterruptIfRunning = false; (if you don't want to, talk to Jacob....
+	 * 
+	 * @param mayInterruptIfRunning
+	 * @return
+	 */
+	public boolean abortRequest(boolean mayInterruptIfRunning){
+		//remove references so the garbagecollector can work....
+		this.listener = null;
+		this.result = null;
+		return super.cancel(mayInterruptIfRunning);
 	}
 }

@@ -23,6 +23,8 @@ public class RequestBranches extends RequestTask<Void, Void, ArrayList<Branch>>{
 	}
 	@Override
 	protected void onPostExecute(ArrayList<Branch> branchList){
-		finishedWithRequest(branchList);
+		if(!isCancelled()){
+			finishedWithRequest(branchList);
+		}
 	}
 }

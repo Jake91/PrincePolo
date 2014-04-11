@@ -74,6 +74,7 @@ public class LoginActivity extends Activity implements RequestListener{
     	        	}
 				}
             	if(isPostSent){
+    				Preferences.setIsFirstTime(false);
             		finish();
             	}
         		

@@ -24,7 +24,7 @@ import android.util.Log;
 public class RequestAccessToken extends RequestTask<String, Void, String>{
 	private static String OAUTH_ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token";
 	private final String logTag = "PrincePolo";
-	
+	private static boolean isRequestingAccessToken;
 	public RequestAccessToken(RequestListener listener){
 		super(listener);
 	}
@@ -36,7 +36,8 @@ public class RequestAccessToken extends RequestTask<String, Void, String>{
 
 	@Override
 	protected String doInBackground(String... params) {
-		String code = params[0];
+		isRequestingAccessToken = true;
+		String code = params[0];	
 		if(code == null || !code.matches("[\\dA-z]+")){
 			Log.e(logTag, "parameter to HttpConnection don't contain 'code'");
 			return null;
@@ -83,6 +84,7 @@ public class RequestAccessToken extends RequestTask<String, Void, String>{
 	
 	@Override
 	protected void onPostExecute(String json){
+		isRequestingAccessToken = false;
 		if(!isCancelled()){
 			String access_token = "";
 			if(json != null){
@@ -102,5 +104,9 @@ public class RequestAccessToken extends RequestTask<String, Void, String>{
 			finishedWithRequest(access_token);
 		}
 	}
-
+	
+	
+	public static boolean isRequestingAccessToken(){
+		return isRequestingAccessToken;
+	}
 }

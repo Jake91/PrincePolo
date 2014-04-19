@@ -18,9 +18,4 @@ public class User implements GitHubDataInterface{
 	public String toString(){
 		return "Username: " + name;
 	}
-
-	@Override
-	public Type getType() {
-		return Type.USER;
-	}
 }

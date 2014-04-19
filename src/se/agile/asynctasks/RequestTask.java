@@ -11,7 +11,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
+import se.agile.activities.MainActivity;
 import se.agile.model.Preferences;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -38,6 +40,12 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 	}
 	
 	public RequestTask(RequestListener listener){
+		if(!MainActivity.isNetworkConnected()){
+			Log.e(logTag, "Warning: No Internet Connection");
+			if(listener != null){
+				listener.whenNoInternetConnection();
+			}
+		}
 		this.listener = listener;
 	}
 	
@@ -50,9 +58,9 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 	 * @return the respond (as a json string) or null if the responding message's statuscode wasn't "OK"
 	 */
 	protected String generalGETRequest(String url) {
-		
 		HttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(url);
+		Log.d(logTag,"generalGETRequest: url -> " + url);
 		try {
 			httpGet.addHeader("Authorization", "token " + Preferences.getAccessToken());
 			HttpResponse response = client.execute(httpGet);
@@ -71,22 +79,30 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 				Log.e(logTag, "Didn't get statuscode 200");
 			}
 		} catch (ClientProtocolException e) {
-			Log.d(logTag, "Error in testBrowser2");
+			Log.e(logTag, "generalGETRequest: ClientProtocolException");
+			e.printStackTrace();
 		} catch (IOException e) {
-			Log.d(logTag, "Error in testBrowser3");
+			Log.e(logTag, "generalGETRequest: IOException");
+			e.printStackTrace();
 		}
 		return null;
 	}
 	
 	public void finishedWithRequest(Result result){
-		this.result = result;
-		if(listener != null && !isCancelled()){
-			listener.requestFinished();
+		if(result == null){
+			Log.e(logTag, "RequestTask: Result is null!");
 		}else{
+			this.result = result;
+			if(listener != null && !isCancelled()){
+				listener.requestFinished();
+			}
 		}
 	}
 	
 	public Result getResult(){
+		if(result == null){
+			Log.i(logTag, "RequestTask 'getResult' returned null");
+		}
 		return this.result;
 	}
 	
@@ -103,4 +119,18 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 		this.result = null;
 		return super.cancel(mayInterruptIfRunning);
 	}
+	
+	public String getSelectedRepositoryName(){
+		String repoName = Preferences.getSelectedRepository().getName();
+		if(repoName.matches("[A-z0-9]+/[A-z0-9]+")){
+			return repoName;
+		}else{
+			Log.e(logTag, "RequestBranch: Couldn't get selected repository");
+			listener.whenNoSelectedRepository();
+			return "";
+			
+		}
+		
+	}
+
 }

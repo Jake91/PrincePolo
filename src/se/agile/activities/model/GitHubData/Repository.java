@@ -18,9 +18,4 @@ public class Repository implements GitHubDataInterface{
 	public String toString(){
 		return "Repositoryname: " + name;
 	}
-
-	@Override
-	public Type getType() {
-		return Type.REPOSITORY;
-	}
 }

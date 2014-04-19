@@ -7,7 +7,6 @@ import se.agile.asynctasks.RequestUser;
 import se.agile.model.Preferences;
 import se.agile.princepolo.R;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,17 +28,22 @@ public class LoginActivity extends Activity implements RequestListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		
 		logTag = getResources().getString(R.string.logtag_main);
-		Log.d(logTag, "new intent started: testbrowseractivity");
-		accessTokenThread = new RequestAccessToken(this);
 		
-		String url = OAUTH_URL + "?client_id=" + Preferences.getClientId() + "&redirect_uri=" + CALLBACK_URL;
+		if(MainActivity.isNetworkConnected()){
+			startWebView();
+		}else{
+			whenNoInternetConnection();
+		}
 		
 		CookieSyncManager.createInstance(this);
 		CookieManager cookieManager = CookieManager.getInstance();
-		cookieManager.removeAllCookie();
-		
+		cookieManager.removeAllCookie();	
+	}
+	
+	private void startWebView(){
+		String url = OAUTH_URL + "?client_id=" + Preferences.getClientId() + "&redirect_uri=" + CALLBACK_URL;
+		accessTokenThread = new RequestAccessToken(this);
 		WebView webview = (WebView)findViewById(R.id.webview);
 		webview.getSettings().setJavaScriptEnabled(true);
 		WebSettings ws = webview.getSettings();
@@ -48,13 +52,13 @@ public class LoginActivity extends Activity implements RequestListener{
         webview.setWebViewClient(new WebViewClient() {
         	@Override
             public void onPageFinished(WebView view, String url) {
-        		Log.d(logTag, "onPageFinished url: " + url);
+//        		Log.d(logTag, "onPageFinished url: " + url);
         		super.onPageFinished(view, url);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            	Log.d(logTag, "shouldOverrideUrlLoading url: " + url);
+//            	Log.d(logTag, "shouldOverrideUrlLoading url: " + url);
             	return super.shouldOverrideUrlLoading(view, url);
             }
             private boolean isPostSent;
@@ -72,19 +76,30 @@ public class LoginActivity extends Activity implements RequestListener{
     	        	}else{
     	        		Log.d(logTag, "Url don't match \"princepolo://oauthresponse\\?code=[\\dA-z]+\"");
     	        	}
+                	if(isPostSent){
+                		Preferences.setIsFirstTime(false);
+                		finish();
+                	}
 				}
-            	if(isPostSent){
-            		finish();
-            	}
         		
             }});
         webview.loadUrl(url);
-		
 	}
 
 	@Override
 	public void requestFinished() {
 		new RequestUser().execute();
 		new RequestRepositories().execute();
+	}
+
+	@Override
+	public void whenNoInternetConnection() {
+		MainActivity.hasNoInternetConnection(this);
+	}
+
+	@Override
+	public void whenNoSelectedRepository() {
+		MainActivity.hasNoSelectedRepository(this);
+		
 	}
 }

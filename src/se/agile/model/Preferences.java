@@ -219,5 +219,10 @@ public class Preferences {
     {
     	return getAccessToken().matches("[\\dA-z]+");
     }
+    
+    public static boolean hasSelectedRepository()
+    {
+    	return !getSelectedRepository().getName().equals("");
+    }
 }
 

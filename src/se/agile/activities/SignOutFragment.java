@@ -1,5 +1,6 @@
 package se.agile.activities;	
 
+import se.agile.activities.MainActivity.VIEW;
 import se.agile.model.Preferences;
 import se.agile.princepolo.R;
 import android.app.Fragment;
@@ -29,7 +30,7 @@ public class SignOutFragment extends Fragment {
         		Intent intent = new Intent(getActivity(), LoginActivity.class);
         	    startActivity(intent);
         	    MainActivity main = (MainActivity) getActivity();
-        	    main.displayView(5);
+        	    main.displayView(VIEW.SELECT_REPOSITORY);
         	}
         };
         

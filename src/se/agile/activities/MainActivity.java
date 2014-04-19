@@ -6,21 +6,27 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import se.agile.asynctasks.GetTheCommitHistory;
+import se.agile.asynctasks.RequestAccessToken;
+import se.agile.asynctasks.RequestListener;
 import se.agile.model.Preferences;
-import se.agile.model.Util;
+import se.agile.model.TemporaryStorage;
 import se.agile.navigator.NavDrawerItem;
 import se.agile.navigator.NavDrawerListAdapter;
 import se.agile.princepolo.R;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -33,7 +39,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-public class MainActivity extends Activity 
+public class MainActivity extends Activity
 {
 	private int notificationID = 100;
 	
@@ -48,11 +54,12 @@ public class MainActivity extends Activity
 	private CharSequence mTitle;
 
 	// slide menu items
-	private String[] navMenuTitles;
-	private TypedArray navMenuIcons;
+//	private String[] navMenuTitles;
+//	private TypedArray navMenuIcons;
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private NavDrawerListAdapter adapter;
-	private String logTag;
+	private static String logTag;
+	private static MainActivity activity;
 	
 	// For the GetCommitHistory
 	ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -63,17 +70,12 @@ public class MainActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		Preferences.initializePreferences(this);
-		// At the start of the app no new commits have arrived by definition
-		Util.haveNewCommitsArrived = false;
+		activity = this;
 	
 		logTag = getResources().getString(R.string.logtag_main);
+		
+		
 		mTitle = mDrawerTitle = getTitle();
-
-		// load slide menu items
-		navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
-
-		// get drawer icons from resources
-		navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
@@ -81,20 +83,9 @@ public class MainActivity extends Activity
 		navDrawerItems = new ArrayList<NavDrawerItem>();
 
 		// nagivagion drawer items added to array
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1), true, "50+"));
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[9], navMenuIcons.getResourceId(9, -1)));
-		
-
-		// Recycle the typed array
-		navMenuIcons.recycle();
+		for(VIEW view: VIEW.values()){
+			navDrawerItems.add(view.getNavDrawerItem());
+		}
 		
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
@@ -130,14 +121,8 @@ public class MainActivity extends Activity
 
 		if (savedInstanceState == null) 
 		{
-				
-			if(Preferences.isFirstTimeUsingApp()){
-				Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-				startActivity(intent);
-				displayView(5);
-			}else{
-				displayView(0);
-			}
+			
+			displayView(VIEW.REPOSITORY_OVERVIEW);
 		}
 		
 		// Opens up the menu from the left when the app is openeds
@@ -145,19 +130,19 @@ public class MainActivity extends Activity
 		
 		
 		// Checks every 10 sec whether new commits have arrived
-		scheduler.scheduleAtFixedRate (new Runnable() 
-		{
-			public void run() 
-			{
-				GetTheCommitHistory task = new GetTheCommitHistory();
-				task.execute(new String[] { "https://api.github.com/repos/" + Preferences.getSelectedRepository().getName() + "/commits?access_token=" + Preferences.getAccessToken()});
-				
-				if (Util.haveNewCommitsArrived == true)
-				{
-					issueNotification();
-				}
-			}
-		}, 0, 10, TimeUnit.SECONDS);
+//		scheduler.scheduleAtFixedRate (new Runnable() 
+//		{
+//			public void run() 
+//			{
+//				GetTheCommitHistory task = new GetTheCommitHistory();
+//				task.execute(new String[] { "https://api.github.com/repos/" + Preferences.getSelectedRepository().getName() + "/commits?access_token=" + Preferences.getAccessToken()});
+//				
+//				if (Util.haveNewCommitsArrived == true)
+//				{
+//					issueNotification();
+//				}
+//			}
+//		}, 0, 10, TimeUnit.SECONDS);
 	}
 
 	
@@ -169,7 +154,7 @@ public class MainActivity extends Activity
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			// display view for selected nav drawer item
-			displayView(position);
+			displayView(VIEW.getVIEW(position));
 		}
 	}
 
@@ -209,40 +194,106 @@ public class MainActivity extends Activity
 		return super.onPrepareOptionsMenu(menu);
 	}
 
+	/**
+	 * Here you can add a new view. 
+	 * (Don't forget to add the title and the icon in /res/values/strings.xml)
+	 * (And in the MainActivity.displayView(VIEW view))
+	 * 
+	 * @author Jacob
+	 *
+	 */
+	public enum VIEW{
+		//The titleIconArrayIndex is to make sure you get the icon and title you specified when first creating the view.
+		//The position is now easy to change.
+		//But if you change the position you also have to change the order that they are specified! position 0 -> Specified first (in this enum).
+		NOTIFICATIONS(0,true,"50", 1),
+		REPOSITORY_OVERVIEW(1,false,"", 0),
+		ISSUES(2,false,"", 2),
+		BRANCHES(3,false,"", 3),
+		COLLABORATORS(4,false,"", 4),
+		SELECT_REPOSITORY(5,false,"", 5),
+		CONNECT_TO_GITHUB(6,false,"", 6),
+		SETTINGS(7,false,"", 7),
+		ABOUT(8,false,"", 8),
+		SIGNOUT(9,false,"", 9);
+
+        private final int position, titleIconArrayIndex;
+        private boolean isCounterVisible;
+        private String count;
+        
+        
+        private static final String[] navMenuTitles = activity.getResources().getStringArray(R.array.nav_drawer_items);
+        private static final TypedArray navMenuIcons = activity.getResources().obtainTypedArray(R.array.nav_drawer_icons);
+        private VIEW(final int position, boolean isCounterVisible, String count, int titleIconArrayIndex) {
+            this.position = position;
+            this.isCounterVisible = isCounterVisible;
+            this.count = count;
+            this.titleIconArrayIndex = titleIconArrayIndex;
+        }
+
+        public int getPosition() {
+        	return position; 
+        }
+        public String getTitle(){
+        	return navMenuTitles[titleIconArrayIndex];
+        }
+        
+        public int getIconValue(){
+        	return navMenuIcons.getResourceId(titleIconArrayIndex, -1);
+        }
+        
+        public NavDrawerItem getNavDrawerItem(){
+        	if(isCounterVisible){
+        		return new NavDrawerItem(navMenuTitles[titleIconArrayIndex], navMenuIcons.getResourceId(titleIconArrayIndex, -1), isCounterVisible, count);
+        	}else{
+        		return new NavDrawerItem(navMenuTitles[titleIconArrayIndex], navMenuIcons.getResourceId(titleIconArrayIndex, -1));
+        	}
+        	
+        }
+        public static VIEW getVIEW(int position){
+        	for(VIEW view : values()){
+        		if(view.getPosition() == position){
+        			return view;
+        		}
+        	}
+        	return null;
+        }
+    }
+	
 	// displays the fragment view for selected fragment
-	protected void displayView(int position) 
+	protected void displayView(VIEW view) 
 	{
 		Fragment fragment = null;
-		switch (position) 
+		switch (view) 
 		{
-			case 0:
+			case REPOSITORY_OVERVIEW:
 				fragment = new RepositoryOverviewFragment();
 				break;
-			case 1:
+			case NOTIFICATIONS:
 				fragment = new NotificationsFragment();
 				break;
-			case 2:
+			case ISSUES:
 				fragment = new IssuesFragment();
 				break;
-			case 3:
+			case BRANCHES:
 				fragment = new BranchesFragment();
 				break;
-			case 4:
+			case COLLABORATORS:
 				fragment = new CollaboratorsFragment();
 				break;
-			case 5:
+			case SELECT_REPOSITORY:
 				fragment = new SelectRepositoryFragment();
 				break;
-			case 6:
+			case CONNECT_TO_GITHUB:
 				fragment = new ConnectToGitHubFragment();
 				break;
-			case 7:
+			case SETTINGS:
 				fragment = new SettingsFragment();
 				break;
-			case 8:
+			case ABOUT:
 				fragment = new AboutFragment();
 				break;
-			case 9:
+			case SIGNOUT:
 				fragment = new SignOutFragment();
 				break;
 	
@@ -256,9 +307,9 @@ public class MainActivity extends Activity
 			fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
 
 			// update selected item and title, then close the drawer
-			mDrawerList.setItemChecked(position, true);
-			mDrawerList.setSelection(position);
-			setTitle(navMenuTitles[position]);
+			mDrawerList.setItemChecked(view.getPosition(), true);
+			mDrawerList.setSelection(view.getPosition());
+			setTitle(view.getTitle());
 			mDrawerLayout.closeDrawer(mDrawerList);
 		} 
 		else 
@@ -296,26 +347,98 @@ public class MainActivity extends Activity
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 	
-	private void issueNotification()
-	{
-		Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-		Uri funSound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/glad");
-    	long[] pattern = {500,500,500,500,500,500,500,500,500};
-    	 
-    	NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MainActivity.this);
-    	mBuilder.setSmallIcon(R.drawable.ic_launcher);
-    	mBuilder.setContentTitle("Incoming commit!");
-    	mBuilder.setContentText("Click to view it");
-    	mBuilder.setSound(alarmSound);
-    	mBuilder.setVibrate(pattern);
-    	
-    	NotificationManager mNotificationManager =
-    		    (NotificationManager) MainActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
-    		    
-    		// notificationID allows you to update the notification later on.
-    		mNotificationManager.notify(notificationID, mBuilder.build());
-    		
-    		Util.haveNewCommitsArrived = false;
+//	private void issueNotification()
+//	{
+//		Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//		Uri funSound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/glad");
+//    	long[] pattern = {500,500,500,500,500,500,500,500,500};
+//    	 
+//    	NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MainActivity.this);
+//    	mBuilder.setSmallIcon(R.drawable.ic_launcher);
+//    	mBuilder.setContentTitle("Incoming commit!");
+//    	mBuilder.setContentText("Click to view it");
+//    	mBuilder.setSound(alarmSound);
+//    	mBuilder.setVibrate(pattern);
+//    	
+//    	NotificationManager mNotificationManager =
+//    		    (NotificationManager) MainActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+//    		    
+//    		// notificationID allows you to update the notification later on.
+//    		mNotificationManager.notify(notificationID, mBuilder.build());
+//    		
+//    		TemporaryStorage.haveNewCommitsArrived = false;
+//	}
+	
+	public static boolean isNetworkConnected() {
+		if(activity != null){
+			ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+			return (cm.getActiveNetworkInfo() != null);
+		}else{
+			Log.e(logTag, "isNetworkConnected: Couldn't check connection proberly");
+			return false;
+		}
+	}
+	
+	public static void hasNoInternetConnection(Context context){
+		final Context finalContext = context;
+		new AlertDialog.Builder(context)
+		.setTitle("No Internet Access")
+		.setMessage("Connect to Internet and then try again")
+		.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				if(MainActivity.isNetworkConnected()){
+					if(Preferences.getAccessToken().equals("")){
+						Intent intent = new Intent(activity, LoginActivity.class);
+						activity.startActivity(intent);
+						activity.displayView(VIEW.SELECT_REPOSITORY);
+					}
+				}else{
+					hasNoInternetConnection(finalContext);
+				}
+			}
+		})
+		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				activity.displayView(VIEW.CONNECT_TO_GITHUB);
+			}
+		}).show();
+	}
+	
+	public static void hasNoSelectedRepository(Context context){
+		final Context finalContext = context;
+		new AlertDialog.Builder(context)
+		.setTitle("No Selected Repository")
+		.setMessage("Select a Repository")
+		.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				activity.displayView(VIEW.SELECT_REPOSITORY);
+			}
+		}).show();
+	}
+	
+	/**
+	 * Check that we have an access token and a selected repository.
+	 */
+	private void initialCheck(){
+		Log.d(logTag, "initialCheck");
+		if(!Preferences.isConnectedToGitHub() && !RequestAccessToken.isRequestingAccessToken()){
+			if(isNetworkConnected()){
+				Log.d(logTag, "start login");
+				Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+				startActivity(intent);
+			}else{
+				hasNoInternetConnection(activity);
+			}
+		}else if(!Preferences.hasSelectedRepository()){
+			Log.d(logTag, "Select repo");
+			displayView(VIEW.SELECT_REPOSITORY);
+		}
+	}
+	
+	@Override
+	public void onResume(){
+		initialCheck();
+		super.onResume();
 	}
 
 }

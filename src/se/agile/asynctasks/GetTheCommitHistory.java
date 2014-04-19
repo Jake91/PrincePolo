@@ -13,7 +13,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import se.agile.activities.MainActivity;
 import se.agile.model.Preferences;
-import se.agile.model.Util;
+import se.agile.model.TemporaryStorage;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -66,7 +66,7 @@ public class GetTheCommitHistory extends AsyncTask<String, Void, String>
 	    if (!newValue.equals(Preferences.getMD5Value()))
 	    {
 	    	Preferences.setMD5Value(newValue);
-	    	Util.haveNewCommitsArrived = true;
+//	    	TemporaryStorage.haveNewCommitsArrived = true;
 	    	
 	    }
 	    else return;

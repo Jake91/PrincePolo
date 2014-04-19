@@ -2,7 +2,9 @@ package se.agile.activities;
 
 import java.util.ArrayList;
 
+import se.agile.activities.MainActivity.VIEW;
 import se.agile.activities.model.GitHubData.Repository;
+import se.agile.asynctasks.RequestListener;
 import se.agile.asynctasks.RequestRepositories;
 import se.agile.model.PreferenceListener;
 import se.agile.model.Preferences;
@@ -18,7 +20,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-public class SelectRepositoryFragment extends Fragment{
+public class SelectRepositoryFragment extends Fragment implements RequestListener{
 	private String logTag;
 	private View rootView;
 	
@@ -30,7 +32,7 @@ public class SelectRepositoryFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
 		rootView = inflater.inflate(R.layout.fragment_select_repository, container, false);
-		thread = new RequestRepositories();
+		thread = new RequestRepositories(this);
 		
 		prefListener = new PreferenceListener() {
 			@Override
@@ -44,6 +46,7 @@ public class SelectRepositoryFragment extends Fragment{
 						@Override
 						public void onClick(View v) {
 							Preferences.setSelectedRepository(new Repository(((RadioButton) v).getText().toString()));
+							((MainActivity) getActivity()).displayView(VIEW.REPOSITORY_OVERVIEW);
 						}
 					};
 					String selectedRepo = Preferences.getSelectedRepository().getName();
@@ -75,5 +78,23 @@ public class SelectRepositoryFragment extends Fragment{
 		Preferences.removeListener(prefListener);
 		thread.abortRequest(false);
 		super.onDestroy();
+	}
+
+	@Override
+	public void requestFinished() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void whenNoInternetConnection() {
+		MainActivity.hasNoInternetConnection(getActivity());
+		
+	}
+
+	@Override
+	public void whenNoSelectedRepository() {
+		MainActivity.hasNoSelectedRepository(getActivity());
+		
 	}
 }

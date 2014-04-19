@@ -1,29 +1,28 @@
 package se.agile.activities.model.GitHubData;
 
-import android.os.AsyncTask;
 
 
 public class Branch implements GitHubDataInterface{
-	private String name;
-	private String url;
-	private String sha;
+	private String name, url;
+	private Commit latestCommit;
 
 	public Branch(String name){
 		this.name = name;
 	}
 	
-	public String getSha() {
-		return sha;
+	public Commit getLatestCommit() {
+		return latestCommit;
 	}
 
-	public void setSha(String sha) {
-		this.sha = sha;
+	public void setLatestCommit(Commit latestCommit) {
+		this.latestCommit = latestCommit;
 	}
 
-	
+	@Override
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -35,12 +34,7 @@ public class Branch implements GitHubDataInterface{
 	}
 	
 	@Override
-	public Type getType() {
-		return Type.BRANCH;
-	}
-	
-	@Override
 	public String toString(){
-		return "Branchname: " + name + ", sha: " + sha + ", url: " + url;
+		return "Branchname: " + name + " Latest commit: " + latestCommit.getName();
 	}
 }

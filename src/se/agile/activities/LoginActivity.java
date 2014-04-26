@@ -79,8 +79,7 @@ public class LoginActivity extends Activity implements RequestListener{
                 		Preferences.setIsFirstTime(false);
                 		finish();
                 	}
-				}
-        		
+				}        		
             }});
         webview.loadUrl(url);
 	}

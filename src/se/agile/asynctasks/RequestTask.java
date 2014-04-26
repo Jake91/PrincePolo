@@ -14,6 +14,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import se.agile.activities.MainActivity;
+import se.agile.activities.model.GitHubData.Commit;
+import se.agile.model.JSONParser;
 import se.agile.model.Preferences;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -40,13 +42,18 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 	}
 	
 	public RequestTask(RequestListener listener){
+		this.listener = listener;
+	}
+	
+	@Override
+	protected void onPreExecute (){
 		if(!MainActivity.isNetworkConnected()){
 			Log.e(logTag, "Warning: No Internet Connection");
 			if(listener != null){
 				listener.whenNoInternetConnection();
+				abortRequest(false);
 			}
 		}
-		this.listener = listener;
 	}
 	
 	/**
@@ -58,32 +65,34 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 	 * @return the respond (as a json string) or null if the responding message's statuscode wasn't "OK"
 	 */
 	protected String generalGETRequest(String url) {
-		HttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(url);
-		Log.d(logTag,"generalGETRequest: url -> " + url);
-		try {
-			httpGet.addHeader("Authorization", "token " + Preferences.getAccessToken());
-			HttpResponse response = client.execute(httpGet);
-			HttpEntity respEntity = response.getEntity();
-			StatusLine statusLine = response.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
-			if (statusCode == 200) {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(respEntity.getContent(), "UTF-8"));
-				StringBuilder builder = new StringBuilder();
-				String line;
-				while ((line = reader.readLine()) != null) {
-					builder.append(line);
+		if(!isCancelled()){
+			HttpClient client = new DefaultHttpClient();
+			HttpGet httpGet = new HttpGet(url);
+			Log.d(logTag,"generalGETRequest: url -> " + url);
+			try {
+				httpGet.addHeader("Authorization", "token " + Preferences.getAccessToken());
+				HttpResponse response = client.execute(httpGet);
+				HttpEntity respEntity = response.getEntity();
+				StatusLine statusLine = response.getStatusLine();
+				int statusCode = statusLine.getStatusCode();
+				if (statusCode == 200) {
+					BufferedReader reader = new BufferedReader(new InputStreamReader(respEntity.getContent(), "UTF-8"));
+					StringBuilder builder = new StringBuilder();
+					String line;
+					while ((line = reader.readLine()) != null) {
+						builder.append(line);
+					}
+					return builder.toString();
+				}else{
+					Log.e(logTag, "Didn't get statuscode 200");
 				}
-				return builder.toString();
-			}else{
-				Log.e(logTag, "Didn't get statuscode 200");
+			} catch (ClientProtocolException e) {
+				Log.e(logTag, "generalGETRequest: ClientProtocolException");
+				e.printStackTrace();
+			} catch (IOException e) {
+				Log.e(logTag, "generalGETRequest: IOException");
+				e.printStackTrace();
 			}
-		} catch (ClientProtocolException e) {
-			Log.e(logTag, "generalGETRequest: ClientProtocolException");
-			e.printStackTrace();
-		} catch (IOException e) {
-			Log.e(logTag, "generalGETRequest: IOException");
-			e.printStackTrace();
 		}
 		return null;
 	}
@@ -127,6 +136,7 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 		}else{
 			Log.e(logTag, "RequestBranch: Couldn't get selected repository");
 			listener.whenNoSelectedRepository();
+			abortRequest(false);
 			return "";
 			
 		}

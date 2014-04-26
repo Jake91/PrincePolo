@@ -3,13 +3,11 @@ package se.agile.activities;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-import se.agile.asynctasks.GetTheCommitHistory;
 import se.agile.asynctasks.RequestAccessToken;
-import se.agile.asynctasks.RequestListener;
+import se.agile.model.Notification;
+import se.agile.model.NotificationHandler;
 import se.agile.model.Preferences;
-import se.agile.model.TemporaryStorage;
 import se.agile.navigator.NavDrawerItem;
 import se.agile.navigator.NavDrawerListAdapter;
 import se.agile.princepolo.R;
@@ -17,20 +15,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.NotificationManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -40,9 +32,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class MainActivity extends Activity
-{
-	private int notificationID = 100;
-	
+{	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -61,6 +51,8 @@ public class MainActivity extends Activity
 	private static String logTag;
 	private static MainActivity activity;
 	
+	private NotificationHandler notificationHandler;
+	
 	// For the GetCommitHistory
 	ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
@@ -71,22 +63,16 @@ public class MainActivity extends Activity
 		setContentView(R.layout.activity_main);
 		Preferences.initializePreferences(this);
 		activity = this;
-	
 		logTag = getResources().getString(R.string.logtag_main);
 		
-		
 		mTitle = mDrawerTitle = getTitle();
-
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
-
 		navDrawerItems = new ArrayList<NavDrawerItem>();
-
 		// nagivagion drawer items added to array
 		for(VIEW view: VIEW.values()){
 			navDrawerItems.add(view.getNavDrawerItem());
 		}
-		
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
 		// setting the navigation drawer list adapter
@@ -124,25 +110,12 @@ public class MainActivity extends Activity
 			
 			displayView(VIEW.REPOSITORY_OVERVIEW);
 		}
+		notificationHandler = new NotificationHandler(this);
+		notificationHandler.start();
 		
 		// Opens up the menu from the left when the app is openeds
 		//mDrawerLayout.openDrawer(Gravity.LEFT);
 		
-		
-		// Checks every 10 sec whether new commits have arrived
-//		scheduler.scheduleAtFixedRate (new Runnable() 
-//		{
-//			public void run() 
-//			{
-//				GetTheCommitHistory task = new GetTheCommitHistory();
-//				task.execute(new String[] { "https://api.github.com/repos/" + Preferences.getSelectedRepository().getName() + "/commits?access_token=" + Preferences.getAccessToken()});
-//				
-//				if (Util.haveNewCommitsArrived == true)
-//				{
-//					issueNotification();
-//				}
-//			}
-//		}, 0, 10, TimeUnit.SECONDS);
 	}
 
 	
@@ -206,8 +179,8 @@ public class MainActivity extends Activity
 		//The titleIconArrayIndex is to make sure you get the icon and title you specified when first creating the view.
 		//The position is now easy to change.
 		//But if you change the position you also have to change the order that they are specified! position 0 -> Specified first (in this enum).
-		NOTIFICATIONS(0,true,"50", 1),
-		REPOSITORY_OVERVIEW(1,false,"", 0),
+		REPOSITORY_OVERVIEW(0,false,"", 0),
+		NOTIFICATIONS(1,true,"0", 1),
 		ISSUES(2,false,"", 2),
 		BRANCHES(3,false,"", 3),
 		COLLABORATORS(4,false,"", 4),
@@ -257,6 +230,19 @@ public class MainActivity extends Activity
         		}
         	}
         	return null;
+        }
+        
+        public static VIEW getView(String name){
+        	for(VIEW view : values()){
+        		if(view.name().equals(name)){
+        			return view;
+        		}
+        	}
+        	return null;
+        }
+        
+        public String getName(){
+        	return this.name();
         }
     }
 	
@@ -347,28 +333,6 @@ public class MainActivity extends Activity
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 	
-//	private void issueNotification()
-//	{
-//		Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//		Uri funSound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/glad");
-//    	long[] pattern = {500,500,500,500,500,500,500,500,500};
-//    	 
-//    	NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MainActivity.this);
-//    	mBuilder.setSmallIcon(R.drawable.ic_launcher);
-//    	mBuilder.setContentTitle("Incoming commit!");
-//    	mBuilder.setContentText("Click to view it");
-//    	mBuilder.setSound(alarmSound);
-//    	mBuilder.setVibrate(pattern);
-//    	
-//    	NotificationManager mNotificationManager =
-//    		    (NotificationManager) MainActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
-//    		    
-//    		// notificationID allows you to update the notification later on.
-//    		mNotificationManager.notify(notificationID, mBuilder.build());
-//    		
-//    		TemporaryStorage.haveNewCommitsArrived = false;
-//	}
-	
 	public static boolean isNetworkConnected() {
 		if(activity != null){
 			ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -440,5 +404,12 @@ public class MainActivity extends Activity
 		initialCheck();
 		super.onResume();
 	}
-
+	
+	@Override
+	public void onNewIntent(Intent intent){
+		if(intent.getAction().equals(VIEW.NOTIFICATIONS.getName())){
+			displayView(VIEW.NOTIFICATIONS);
+		}
+		super.onNewIntent(intent);
+	}
 }

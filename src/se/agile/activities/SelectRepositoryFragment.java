@@ -8,6 +8,7 @@ import se.agile.asynctasks.RequestListener;
 import se.agile.asynctasks.RequestRepositories;
 import se.agile.model.PreferenceListener;
 import se.agile.model.Preferences;
+import se.agile.model.TemporaryStorage;
 import se.agile.model.Preferences.PREF_KEY;
 import se.agile.princepolo.R;
 import android.app.Fragment;
@@ -46,6 +47,7 @@ public class SelectRepositoryFragment extends Fragment implements RequestListene
 						@Override
 						public void onClick(View v) {
 							Preferences.setSelectedRepository(new Repository(((RadioButton) v).getText().toString()));
+							TemporaryStorage.branchList = null;
 							((MainActivity) getActivity()).displayView(VIEW.REPOSITORY_OVERVIEW);
 						}
 					};

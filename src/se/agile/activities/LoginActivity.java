@@ -29,7 +29,6 @@ public class LoginActivity extends Activity implements RequestListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		logTag = getResources().getString(R.string.logtag_main);
-		
 		if(MainActivity.isNetworkConnected()){
 			startWebView();
 		}else{

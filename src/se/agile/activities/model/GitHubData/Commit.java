@@ -26,6 +26,7 @@ public class Commit implements GitHubDataInterface{
 		this.message = message;
 		this.changedFiles = new ArrayList<File>();
 		this.parentList = new ArrayList<Commit>();
+		this.date = new Date(); 
 	}
 
 	public String getSha() {
@@ -73,7 +74,7 @@ public class Commit implements GitHubDataInterface{
 	
 	@Override
 	public String getName() {
-		return "Date: " + date.toString() + " Author: " + committer.getName() + " Message: " + message;
+		return "Committer: " + committer.getName() + " Message: " + message;
 	}
 
 	@Override
@@ -124,5 +125,31 @@ public class Commit implements GitHubDataInterface{
 		return isComplete;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((sha == null) ? 0 : sha.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Commit other = (Commit) obj;
+		if (sha == null) {
+			if (other.sha != null)
+				return false;
+		} else if (!sha.equals(other.sha))
+			return false;
+		return true;
+	}
+	
+	
 
 }

@@ -19,7 +19,7 @@ public class RequestBranches extends RequestTask<Void, Void, ArrayList<Branch>>{
 	
 	public RequestBranches(RequestListener listener){
 		super(listener);
-		url +=  super.getSelectedRepositoryName() + "/branches/";
+		url +=  super.getSelectedRepositoryName() + "/branches";
 	}
 	
 	@Override

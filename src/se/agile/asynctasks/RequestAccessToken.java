@@ -28,56 +28,53 @@ public class RequestAccessToken extends RequestTask<String, Void, String>{
 	public RequestAccessToken(RequestListener listener){
 		super(listener);
 	}
-	
-	@Override
-	protected void onPreExecute(){
-		//
-	}
 
 	@Override
 	protected String doInBackground(String... params) {
-		isRequestingAccessToken = true;
-		String code = params[0];	
-		if(code == null || !code.matches("[\\dA-z]+")){
-			Log.e(logTag, "parameter to HttpConnection don't contain 'code'");
-			return null;
-		}
-		HttpClient client = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(OAUTH_ACCESS_TOKEN_URL);
-		try {
-			JSONObject holder = new JSONObject();
-			try {
-				holder.put("client_id", Preferences.getClientId());
-				holder.put("client_secret", Preferences.getClientSecret());
-				holder.put("code", code);
-			} catch (JSONException e1) {
-				Log.e(logTag,"Error creating JSON string");
-				e1.printStackTrace();
+		if(!isCancelled()){
+			isRequestingAccessToken = true;
+			String code = params[0];	
+			if(code == null || !code.matches("[\\dA-z]+")){
+				Log.e(logTag, "parameter to HttpConnection don't contain 'code'");
 				return null;
 			}
-			StringEntity se = new StringEntity( holder.toString());  
-			se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-			httppost.setEntity(se);
-			HttpResponse response = client.execute(httppost);
-			HttpEntity respEntity = response.getEntity();
-			//	        Log.d(logTag, "response Entity Utils: " + EntityUtils.toString(respEntity));
-			StatusLine statusLine = response.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
-			if (statusCode == 200) {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(respEntity.getContent(), "UTF-8"));
-				StringBuilder builder = new StringBuilder();
-				String line;
-				while ((line = reader.readLine()) != null) {
-					builder.append(line);
+			HttpClient client = new DefaultHttpClient();
+			HttpPost httppost = new HttpPost(OAUTH_ACCESS_TOKEN_URL);
+			try {
+				JSONObject holder = new JSONObject();
+				try {
+					holder.put("client_id", Preferences.getClientId());
+					holder.put("client_secret", Preferences.getClientSecret());
+					holder.put("code", code);
+				} catch (JSONException e1) {
+					Log.e(logTag,"Error creating JSON string");
+					e1.printStackTrace();
+					return null;
 				}
-				return builder.toString();
-			}else{
-				Log.e(logTag, "Didn't get statuscode 200");
+				StringEntity se = new StringEntity( holder.toString());  
+				se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+				httppost.setEntity(se);
+				HttpResponse response = client.execute(httppost);
+				HttpEntity respEntity = response.getEntity();
+				//	        Log.d(logTag, "response Entity Utils: " + EntityUtils.toString(respEntity));
+				StatusLine statusLine = response.getStatusLine();
+				int statusCode = statusLine.getStatusCode();
+				if (statusCode == 200) {
+					BufferedReader reader = new BufferedReader(new InputStreamReader(respEntity.getContent(), "UTF-8"));
+					StringBuilder builder = new StringBuilder();
+					String line;
+					while ((line = reader.readLine()) != null) {
+						builder.append(line);
+					}
+					return builder.toString();
+				}else{
+					Log.e(logTag, "Didn't get statuscode 200");
+				}
+			} catch (ClientProtocolException e) {
+				Log.d(logTag, "Error in testBrowser2");
+			} catch (IOException e) {
+				Log.d(logTag, "Error in testBrowser3");
 			}
-		} catch (ClientProtocolException e) {
-			Log.d(logTag, "Error in testBrowser2");
-		} catch (IOException e) {
-			Log.d(logTag, "Error in testBrowser3");
 		}
 		return null;
 	}

@@ -28,7 +28,7 @@
         </activity>
         <activity
             android:name="se.agile.activities.MainActivity"
-            android:label="@string/title_activity_browser"
+            android:label="@string/app_name"
             android:launchMode="singleTop">
             
              <intent-filter>

@@ -43,6 +43,7 @@ public class RequestAccessToken extends RequestTask<String, Void, String>{
 			try {
 				JSONObject holder = new JSONObject();
 				try {
+					holder.put("Accept", "application/json");
 					holder.put("client_id", Preferences.getClientId());
 					holder.put("client_secret", Preferences.getClientSecret());
 					holder.put("code", code);

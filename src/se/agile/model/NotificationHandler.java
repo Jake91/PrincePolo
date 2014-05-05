@@ -49,6 +49,8 @@ public class NotificationHandler implements RequestListener{
 	public void start(){
 		scheduler = Executors.newSingleThreadScheduledExecutor();
 		future = scheduler.scheduleAtFixedRate(runnable, 0, 10, TimeUnit.SECONDS);
+		// Time is set in the Settings fragment and the value is stored in the Preferences class
+		// Integer.parseInt(Preferences.getTimeInterval())
 	}
 	
 	public void stop(){

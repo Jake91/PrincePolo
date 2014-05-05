@@ -63,10 +63,12 @@ public class Preferences {
     	setSelectedRepository(new Repository(""));
     	setUserAcountCreated("");
     	setIsFirstTime(true);
+    	setTimeInterval("10"); // 10 seconds between checks
     }
     
     public static enum PREF_KEY {
     	COMMITS_MD5_VALUE("commits_md5_value"),
+    	TIME_INTERVAL("time_interval"),
     	ACCESS_TOKEN("access_token"),
     	TOKEN_TYPE("token_type"),
     	SCOPE("scope"),
@@ -103,6 +105,12 @@ public class Preferences {
     
     public static void setAccessToken(String access_token) {
     	setGeneral(PREF_KEY.ACCESS_TOKEN, access_token);
+    }
+    public static void setTimeInterval(String time_interval) {
+    	setGeneral(PREF_KEY.TIME_INTERVAL, time_interval);
+    }
+    public static String getTimeInterval() {
+    	return getGeneral(PREF_KEY.TIME_INTERVAL);
     }
     public static String getAccessToken() {
     	return getGeneral(PREF_KEY.ACCESS_TOKEN);

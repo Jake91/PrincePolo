@@ -74,7 +74,7 @@ public class Commit implements GitHubDataInterface{
 	
 	@Override
 	public String getName() {
-		return "Committer: " + committer.getName() + " Message: " + message;
+		return "Committer: " + committer.getName() + "\nMessage: " + message;
 	}
 
 	@Override

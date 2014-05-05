@@ -1,14 +1,13 @@
 package se.agile.activities;	
 
-import se.agile.model.HttpConnection;
+
+import se.agile.activities.model.GitHubData.Repository;
 import se.agile.model.PreferenceListener;
 import se.agile.model.Preferences;
-import se.agile.model.HttpConnection.URL;
 import se.agile.model.Preferences.PREF_KEY;
 import se.agile.princepolo.R;
 import android.app.Fragment;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +21,7 @@ public class ConnectToGitHubFragment extends Fragment {
 	private View rootView;
 	public ConnectToGitHubFragment(){}
 	
+	private PreferenceListener prefListener;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
@@ -36,23 +36,19 @@ public class ConnectToGitHubFragment extends Fragment {
         		switch (v.getId()) 
         		{
     			case R.id.button_get2_github:
-    				Intent intent = new Intent(getActivity(), BrowserActivity.class);
+    				Intent intent = new Intent(getActivity(), LoginActivity.class);
             	    startActivity(intent);
     				break;
     			case R.id.button_reset_connection:
-    				Preferences.setAccessToken("");
-    				Preferences.setScope("");
-    				Preferences.setTokenType("");
-    				Preferences.setUserName("");
-    				Preferences.setUserRepos(new String[] {""});
+    				Preferences.ClearPreferences();
     				break;
         		}	
         	}
         };
         ((Button) rootView.findViewById(R.id.button_get2_github)).setOnClickListener(buttonListener);
         ((Button) rootView.findViewById(R.id.button_reset_connection)).setOnClickListener(buttonListener);
-        PreferenceListener listener = new PreferenceListener() 
-        {
+
+        prefListener = new PreferenceListener() {
 			@Override
 			public void preferenceChanged(PREF_KEY key) 
 			{
@@ -64,7 +60,7 @@ public class ConnectToGitHubFragment extends Fragment {
 					case USER_NAME:
 						updateUser();
 						break;
-					case USER_REPOS:
+					case USER_REPOSITORIES:
 						updateUserRepos();
 						break;
 						
@@ -72,22 +68,21 @@ public class ConnectToGitHubFragment extends Fragment {
 			}
 		};
 		
-        Preferences.addListener(listener);
+        Preferences.addListener(prefListener);
         
         return rootView;
     }
 	
-	private void updateUser()
-	{
-		((TextView) rootView.findViewById(R.id.textView_User)).setText("User: " + Preferences.getUserName());
+	private void updateUser(){
+		((TextView) rootView.findViewById(R.id.textView_User)).setText("User: " + Preferences.getUser().getName());
 	}
 	
 	private void updateUserRepos()
 	{
 		StringBuilder builder = new StringBuilder();
 		builder.append("Repositories:\n");
-		for(String s : Preferences.getUserRepos()){
-			builder.append(s + "\n");
+		for(Repository repo : Preferences.getRepositories()){
+			builder.append(repo.getName() + "\n");
 		}
 		((TextView) rootView.findViewById(R.id.textView_Repositories)).setText(builder.toString());
 	}
@@ -117,5 +112,10 @@ public class ConnectToGitHubFragment extends Fragment {
 		updateUser();
 		updateUserRepos();
 		super.onResume();
+	}
+	@Override
+	public void onDestroy(){
+		Preferences.removeListener(prefListener);
+		super.onDestroy();
 	}
 }

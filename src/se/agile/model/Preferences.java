@@ -2,6 +2,10 @@ package se.agile.model;
 
 import java.util.ArrayList;
 
+import se.agile.activities.model.GitHubData.Branch;
+import se.agile.activities.model.GitHubData.Repository;
+import se.agile.activities.model.GitHubData.User;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -14,7 +18,11 @@ public class Preferences {
     private static SharedPreferences prefs;
     
     public static void initializePreferences(Context context){
-    	prefs = context.getSharedPreferences(PREF_STRINGS_NAME, Context.MODE_PRIVATE); 
+    	if(prefs == null){
+    		prefs = context.getSharedPreferences(PREF_STRINGS_NAME, Context.MODE_PRIVATE);
+    	}else{
+    		Log.e(logTag, "Preferences is already initialized");
+    	}
     }
     
     private static boolean isInitialized(){
@@ -26,6 +34,7 @@ public class Preferences {
     		Editor edit = prefs.edit();
             edit.putString(key.getKey(), value);
             edit.apply();
+            fireStateChanged(key);
             Log.d(logTag,"saved " + key + ": " + value + " to preferences");
     	}else{
     		Log.e(logTag, "Preferences is not initialized");
@@ -42,19 +51,34 @@ public class Preferences {
             return value;
     	}else{
     		Log.e(logTag, "Preferences is not initialized");
-    		return "Error, preferences is not initialized";
+    		return "";
     	}
+    }
+    
+    public static void ClearPreferences(){
+    	setAccessToken("");
+    	setRepositories(new ArrayList<Repository>());
+    	setScope("");
+    	setTokenType("");
+    	setUser(new User(""));
+    	setSelectedRepository(new Repository(""));
+    	setUserAcountCreated("");
+    	setIsFirstTime(true);
+    	setTimeInterval("10"); // 10 seconds between checks
     }
     
     public static enum PREF_KEY {
     	COMMITS_MD5_VALUE("commits_md5_value"),
+    	TIME_INTERVAL("time_interval"),
     	ACCESS_TOKEN("access_token"),
     	TOKEN_TYPE("token_type"),
     	SCOPE("scope"),
     	USER_NAME("username"),
-    	USER_REPOS("repos"),
+    	USER_REPOSITORIES("repos"),
     	SELECTED_REPOSITORY("selected_repository"),
+    	UNSELECTED_REPOSITORIES("unselected_repositories"),
     	USER_ACCOUNT_CREATED("account_created"),
+    	FIRST_TIME_USING_APP("is_first_time"),
     	CLIENT_ID("387b05f90574b6fede43"),
     	CLIENT_SECRET("557392acf8c742ac6e6a3a4ff36b172f378c1633"),
     	EMPTY("");
@@ -83,6 +107,12 @@ public class Preferences {
     
     public static void setAccessToken(String access_token) {
     	setGeneral(PREF_KEY.ACCESS_TOKEN, access_token);
+    }
+    public static void setTimeInterval(String time_interval) {
+    	setGeneral(PREF_KEY.TIME_INTERVAL, time_interval);
+    }
+    public static String getTimeInterval() {
+    	return getGeneral(PREF_KEY.TIME_INTERVAL);
     }
     public static String getAccessToken() {
     	return getGeneral(PREF_KEY.ACCESS_TOKEN);
@@ -115,31 +145,65 @@ public class Preferences {
     	return getGeneral(PREF_KEY.SCOPE);
     }
     
-    
-//    public static String USER_NAME = "username";
-    
-    public static void setUserName(String username) {
-    	setGeneral(PREF_KEY.USER_NAME, username);
-    }
-    public static String getUserName() {
-    	return getGeneral(PREF_KEY.USER_NAME);
-    }
-    
-//    public static String USER_REPOS = "repos";
-    
-    public static void setUserRepos(String[] repos) {
-    	StringBuilder builder = new StringBuilder();
-    	for(String repo : repos){
-    		builder.append(repo + ",");
+    public static void setIsFirstTime(Boolean is_first_time) {
+    	if(is_first_time){
+    		setGeneral(PREF_KEY.FIRST_TIME_USING_APP, "True");
+    	}else{
+    		setGeneral(PREF_KEY.FIRST_TIME_USING_APP, "False");
     	}
-    	setGeneral(PREF_KEY.USER_REPOS, builder.toString());
+    	
     }
-    public static String[] getUserRepos() {
-    	String repos = getGeneral(PREF_KEY.USER_REPOS);
-    	return repos.split(",");
+    public static boolean isFirstTimeUsingApp() {
+    	String isFirstTime = getGeneral(PREF_KEY.FIRST_TIME_USING_APP);
+    		return (isFirstTime.equals("True") || isFirstTime.equals(""));
+    }    
+
+    
+    public static void setUser(User user) {
+    	setGeneral(PREF_KEY.USER_NAME, user.getName());
+    }
+    public static User getUser() {
+    	return new User(getGeneral(PREF_KEY.USER_NAME));
     }
     
-//    public static String USER_ACCOUNT_CREATED = "account_created";
+    
+    public static void setRepositories(ArrayList<Repository> repos) {
+    	StringBuilder builder = new StringBuilder();
+    	for(Repository repo : repos){
+    		builder.append(repo.getName() + ",");
+    	}
+    	setGeneral(PREF_KEY.USER_REPOSITORIES, builder.toString());
+    }
+    public static ArrayList<Repository> getRepositories() {
+    	ArrayList<Repository> list = new ArrayList<Repository>();
+    	String repos = getGeneral(PREF_KEY.USER_REPOSITORIES);
+    	for(String repo: repos.split(",")){
+    		if(!repo.equals("")){
+    			list.add(new Repository(repo));
+    		}
+    	}
+    	return list;
+    }
+    
+    
+    public static void setUnselectedBranches(ArrayList<Branch> unselectedBranches) {
+    	StringBuilder builder = new StringBuilder();
+    	for(Branch branch : unselectedBranches){
+    		builder.append(branch.getName() + ",");
+    	}
+    	setGeneral(PREF_KEY.UNSELECTED_REPOSITORIES, builder.toString());
+    }
+    public static ArrayList<Branch> getUnselectedBranches() {
+    	ArrayList<Branch> list = new ArrayList<Branch>();
+    	String branches = getGeneral(PREF_KEY.UNSELECTED_REPOSITORIES);
+    	for(String branch: branches.split(",")){
+    		if(!branch.equals("")){
+    			list.add(new Branch(branch));
+    		}
+    	}
+    	return list;
+    }
+    
     
     public static void setUserAcountCreated(String account_created) {
     	setGeneral(PREF_KEY.USER_ACCOUNT_CREATED, account_created);
@@ -148,14 +212,13 @@ public class Preferences {
     	return getGeneral(PREF_KEY.USER_ACCOUNT_CREATED);
     }
     
-    public static void setSelectedRepository(String selected_repository) {
-    	setGeneral(PREF_KEY.SELECTED_REPOSITORY, selected_repository);
-    }
-    public static String getSelectedRepository() {
-    	//return getGeneral(PREF_KEY.SELECTED_REPOSITORY);
-    	return "Jake91/PrincePolo";
+    public static void setSelectedRepository(Repository selected_repository) {
+    	setGeneral(PREF_KEY.SELECTED_REPOSITORY, selected_repository.getName());
     }
     
+    public static Repository getSelectedRepository() {
+    	return new Repository(getGeneral(PREF_KEY.SELECTED_REPOSITORY));
+    }
     //-------------------------------
     
     public static String getClientId() {
@@ -165,31 +228,30 @@ public class Preferences {
     public static String getClientSecret() {
     	return PREF_KEY.CLIENT_SECRET.getKey();
     }
-    
+
     private static ArrayList<PreferenceListener> prefListener = new ArrayList<PreferenceListener>();
-    private static OnSharedPreferenceChangeListener onChangeListern; // Need to keep this reference, otherwise we don't get any events....
-    //Wrapping the OnSharedPreferenceChangeListener since i dont want to give away the sharedpreferences....
-    public static void addListener(PreferenceListener listener){
-    	if(isInitialized()){
-    		prefListener.add(listener);
-    		if(onChangeListern == null){
-    			onChangeListern = new OnSharedPreferenceChangeListener() {
-    				public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-    					for(PreferenceListener list : prefListener){
-    	          	    	list.preferenceChanged(PREF_KEY.getKey(key));
-    	          	    }
-    				}
-    			};
-    			prefs.registerOnSharedPreferenceChangeListener(onChangeListern);
-    		}
-    	}else{
-    		Log.e(logTag, "Preferences is not initialized");
+    
+    private static void fireStateChanged(PREF_KEY key){
+    	for(PreferenceListener listener : prefListener){
+    		listener.preferenceChanged(key);
     	}
+    }
+
+    public static void addListener(PreferenceListener listener){
+    	prefListener.add(listener);
+    }
+    public static boolean removeListener(PreferenceListener listener){
+    	return prefListener.remove(listener);
     }
     
     public static boolean isConnectedToGitHub()
     {
     	return getAccessToken().matches("[\\dA-z]+");
+    }
+    
+    public static boolean hasSelectedRepository()
+    {
+    	return !getSelectedRepository().getName().equals("");
     }
 }
 

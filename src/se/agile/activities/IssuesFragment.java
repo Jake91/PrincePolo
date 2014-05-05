@@ -15,6 +15,7 @@ import android.widget.Button;
 public class IssuesFragment extends Fragment 
 {
 	private String logTag;
+	
 	public IssuesFragment(){}
 	
 	
@@ -23,7 +24,7 @@ public class IssuesFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
         View rootView = inflater.inflate(R.layout.fragment_issues, container, false);
-        
+
         android.view.View.OnClickListener bttnListener = new View.OnClickListener() {
 			
 			@Override
@@ -52,7 +53,6 @@ public class IssuesFragment extends Fragment
         ((Button) rootView.findViewById(R.id.bttnPok40)).setOnClickListener(bttnListener);
         ((Button) rootView.findViewById(R.id.bttnPok100)).setOnClickListener(bttnListener);
         ((Button) rootView.findViewById(R.id.bttnPokQ)).setOnClickListener(bttnListener);
-        
         return rootView;
         
     }

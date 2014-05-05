@@ -1,6 +1,9 @@
 package se.agile.activities;	
 
+import se.agile.activities.model.GitHubData.Repository;
+import se.agile.model.PreferenceListener;
 import se.agile.model.Preferences;
+import se.agile.model.Preferences.PREF_KEY;
 import se.agile.princepolo.R;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -16,6 +19,8 @@ public class RepositoryOverviewFragment extends Fragment
 	private View rootView;
 	public RepositoryOverviewFragment(){}
 	
+	private PreferenceListener prefListener;
+	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
@@ -23,8 +28,30 @@ public class RepositoryOverviewFragment extends Fragment
         View rootView = inflater.inflate(R.layout.fragment_repository_overview, container, false);
         this.rootView = rootView;
         
-		updateUser();
-		updateUserRepos();
+        
+        
+        prefListener = new PreferenceListener() {
+			@Override
+			public void preferenceChanged(PREF_KEY key) 
+			{
+				switch(key)
+				{
+					case USER_NAME:
+						updateUser();
+						break;
+					case USER_REPOSITORIES:
+						updateUserRepos();
+						break;
+						
+				}
+			}
+		};
+		
+        Preferences.addListener(prefListener);
+
+        updateUser();
+        updateUserRepos();
+		
 		// latest commits
 		// issues
 		// branches
@@ -34,7 +61,7 @@ public class RepositoryOverviewFragment extends Fragment
 	
 	private void updateUser()
 	{
-		((TextView) rootView.findViewById(R.id.textView_User)).setText("User: " + Preferences.getUserName());
+		((TextView) rootView.findViewById(R.id.textView_User)).setText("User: " + Preferences.getUser().getName());
 	}
 	
 	
@@ -42,15 +69,20 @@ public class RepositoryOverviewFragment extends Fragment
 	{
 		StringBuilder builder = new StringBuilder();
 		builder.append("Currently selected repository:\n");
-		for(String s : Preferences.getUserRepos())
+		String selectedRepo = Preferences.getSelectedRepository().getName();
+		for(Repository repo : Preferences.getRepositories())
 		{
-			if (Preferences.getSelectedRepository().equals(s))
+			if (selectedRepo.equals(repo.getName()))
 			{
-				builder.append(s + "\n");
+				builder.append(repo.getName() + "\n");
 			}
 		}
 		((TextView) rootView.findViewById(R.id.textView_Repositories)).setText(builder.toString());
 	}
 	
-	
+	@Override
+	public void onDestroy(){
+		Preferences.removeListener(prefListener);
+		super.onDestroy();
+	}
 }

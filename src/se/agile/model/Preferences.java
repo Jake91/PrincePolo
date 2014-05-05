@@ -2,6 +2,7 @@ package se.agile.model;
 
 import java.util.ArrayList;
 
+import se.agile.activities.model.GitHubData.Branch;
 import se.agile.activities.model.GitHubData.Repository;
 import se.agile.activities.model.GitHubData.User;
 
@@ -73,6 +74,7 @@ public class Preferences {
     	USER_NAME("username"),
     	USER_REPOSITORIES("repos"),
     	SELECTED_REPOSITORY("selected_repository"),
+    	UNSELECTED_REPOSITORIES("unselected_repositories"),
     	USER_ACCOUNT_CREATED("account_created"),
     	FIRST_TIME_USING_APP("is_first_time"),
     	CLIENT_ID("387b05f90574b6fede43"),
@@ -170,6 +172,25 @@ public class Preferences {
     	for(String repo: repos.split(",")){
     		if(!repo.equals("")){
     			list.add(new Repository(repo));
+    		}
+    	}
+    	return list;
+    }
+    
+    
+    public static void setUnselectedBranches(ArrayList<Branch> unselectedBranches) {
+    	StringBuilder builder = new StringBuilder();
+    	for(Branch branch : unselectedBranches){
+    		builder.append(branch.getName() + ",");
+    	}
+    	setGeneral(PREF_KEY.UNSELECTED_REPOSITORIES, builder.toString());
+    }
+    public static ArrayList<Branch> getUnselectedBranches() {
+    	ArrayList<Branch> list = new ArrayList<Branch>();
+    	String branches = getGeneral(PREF_KEY.UNSELECTED_REPOSITORIES);
+    	for(String branch: branches.split(",")){
+    		if(!branch.equals("")){
+    			list.add(new Branch(branch));
     		}
     	}
     	return list;

@@ -49,6 +49,8 @@ public class NotificationHandler implements RequestListener{
 	public void start(){
 		scheduler = Executors.newSingleThreadScheduledExecutor();
 		future = scheduler.scheduleAtFixedRate(runnable, 0, 10, TimeUnit.SECONDS);
+		// Time is set in the Settings fragment and the value is stored in the Preferences class
+		// Integer.parseInt(Preferences.getTimeInterval())
 	}
 	
 	public void stop(){
@@ -74,7 +76,7 @@ public class NotificationHandler implements RequestListener{
 					Commit latestCommit = branch.getLatestCommit();
 					if(!earlierCommit.equals(latestCommit)){
 //						Commits are different. A new commit have been received.
-						getFullCommit(latestCommit);
+						getFullCommit(branch);
 					}
 				}else{
 					//New branch
@@ -90,7 +92,8 @@ public class NotificationHandler implements RequestListener{
 	
 	private ArrayList<RequestCommit> requestCommitList = new ArrayList<RequestCommit>();
 	
-	private void getFullCommit(final Commit simpleCommit){
+	private void getFullCommit(Branch branch){
+		final Commit simpleCommit = branch.getLatestCommit();
 		RequestListener listener = new RequestListener() {
 			
 			@Override
@@ -122,7 +125,7 @@ public class NotificationHandler implements RequestListener{
 		};
 		RequestCommit requestCommit = new RequestCommit(listener);
 		requestCommitList.add(requestCommit);
-		requestCommit.execute(simpleCommit.getSha());
+		requestCommit.execute(simpleCommit.getSha(),branch.getName());
 	}
 
 	private void fireNotification(Notification notification){

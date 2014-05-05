@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class Commit implements GitHubDataInterface{
 	private final String logTag = "PrincePolo";
-	private String message, sha, url;
+	private String message, sha, url, branchName;
 	private ArrayList<Commit> parentList;
 	private User committer;
 	private Date date;
@@ -74,7 +74,17 @@ public class Commit implements GitHubDataInterface{
 	
 	@Override
 	public String getName() {
-		return "Committer: " + committer.getName() + " Message: " + message;
+		return "Committer: " + committer.getName() + "\nMessage: " + message;
+	}
+	
+	
+
+	public String getBranchName() {
+		return branchName;
+	}
+
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
 	}
 
 	@Override

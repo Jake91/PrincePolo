@@ -21,7 +21,8 @@ public class RequestCommit extends RequestTask<String, Void, Commit>{
 	@Override
 	protected Commit doInBackground(String... params) {
 		String sha = params[0]; 
-		return JSONParser.parseCommit(generalGETRequest(url + sha));
+		String branchName = params[1];
+		return JSONParser.parseCommit(generalGETRequest(url + sha), branchName);
 	}
 	@Override
 	protected void onPostExecute(Commit commit){

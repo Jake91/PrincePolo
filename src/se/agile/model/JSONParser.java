@@ -123,12 +123,13 @@ public class JSONParser {
 		
 	}
 	
-	public static Commit parseCommit(String json){
+	public static Commit parseCommit(String json, String branchName){
 		Commit commit = null;
 		if(json != null){
 			try {
 				JSONObject object = new JSONObject(json);
 				commit = parseCommitObject(object);
+				commit.setBranchName(branchName);
 			} catch (JSONException e) {
 				Log.e(logTag, "Couldn't parse commit");
 				e.printStackTrace();

@@ -354,7 +354,7 @@ public class MainActivity extends Activity
 					if(Preferences.getAccessToken().equals("")){
 						Intent intent = new Intent(activity, LoginActivity.class);
 						activity.startActivity(intent);
-						activity.displayView(VIEW.SELECT_REPOSITORY);
+						activity.displayView(VIEW.SETTINGS);
 					}
 				}else{
 					hasNoInternetConnection(finalContext);

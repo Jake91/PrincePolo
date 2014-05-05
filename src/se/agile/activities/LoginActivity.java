@@ -7,6 +7,7 @@ import se.agile.asynctasks.RequestUser;
 import se.agile.model.Preferences;
 import se.agile.princepolo.R;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -99,5 +100,15 @@ public class LoginActivity extends Activity implements RequestListener{
 	public void whenNoSelectedRepository() {
 		MainActivity.hasNoSelectedRepository(this);
 		
+	}
+	
+	@Override
+	public void onBackPressed() {
+		Log.d(logTag, "onbackpressed");
+	     Intent startMain = new Intent(Intent.ACTION_MAIN);
+	        startMain.addCategory(Intent.CATEGORY_HOME);
+	        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	        startActivity(startMain);
+
 	}
 }

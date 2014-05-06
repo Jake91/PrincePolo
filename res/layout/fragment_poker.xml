@@ -11,25 +11,51 @@
             android:orientation="horizontal" >
 
             <Button
+				android:textColor="#1F1F1F"
+				android:textSize="30sp"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/bttnPok0"
-                android:text="0" />
-
+                android:text="0"
+                android:background="@drawable/buttonshape"
+				android:shadowColor="#544545"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"
+				android:layout_margin="2dp" />
+            
             <Button
+				android:textColor="#1F1F1F"
+                android:textSize="30sp"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/bttnPok1"
-                android:text="1" />
-
+                android:text="1"
+                android:background="@drawable/buttonshape"
+				android:shadowColor="#473A3A"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"
+				android:layout_margin="2dp" />
+            
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/bttnPok2"
-                android:text="2" />
+                android:text="2"
+				android:textColor="#1F1F1F"
+                android:textSize="30sp"
+                android:background="@drawable/buttonshape"
+				android:shadowColor="#473A3A"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"
+				android:layout_margin="2dp" />
+            
+            
         </LinearLayout>
 
         <LinearLayout
@@ -42,21 +68,45 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/bttnPok3"
-                android:text="3" />
+                android:text="3" 
+				android:textColor="#1F1F1F"
+                android:textSize="30sp"
+                android:background="@drawable/buttonshape"
+				android:shadowColor="#473A3A"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"
+				android:layout_margin="2dp" />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/bttnPok5"
-                android:text="5" />
+                android:text="5" 
+				android:textColor="#1F1F1F"
+                android:textSize="30sp"
+                android:background="@drawable/buttonshape"
+				android:shadowColor="#473A3A"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"
+				android:layout_margin="2dp"  />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/bttnPok8"
-                android:text="8" />
+                android:text="8" 
+				android:textColor="#1F1F1F"
+                android:textSize="30sp"
+                android:background="@drawable/buttonshape"
+				android:shadowColor="#473A3A"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"
+				android:layout_margin="2dp"  />
         </LinearLayout>
 
         <LinearLayout
@@ -69,21 +119,45 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/bttnPok13"
-                android:text="13" />
+                android:text="13" 
+				android:textColor="#1F1F1F"
+                android:textSize="30sp"
+                android:background="@drawable/buttonshape"
+				android:shadowColor="#473A3A"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"
+				android:layout_margin="2dp"  />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/bttnPok20"
-                android:text="20" />
+                android:text="20" 
+				android:textColor="#1F1F1F"
+                android:textSize="30sp"
+                android:background="@drawable/buttonshape"
+				android:shadowColor="#473A3A"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"
+				android:layout_margin="2dp"  />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/bttnPok40"
-                android:text="40" />
+                android:text="40" 
+				android:textColor="#1F1F1F"
+                android:textSize="30sp"
+                android:background="@drawable/buttonshape"
+				android:shadowColor="#473A3A"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"
+				android:layout_margin="2dp"  />
         </LinearLayout>
 
         <LinearLayout
@@ -96,20 +170,44 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/bttnPok100"
-                android:text="100" />
+                android:text="100" 
+				android:textColor="#1F1F1F"
+                android:textSize="30sp"
+                android:background="@drawable/buttonshape"
+				android:shadowColor="#473A3A"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"
+				android:layout_margin="2dp"  />
             
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/bttnPok150"
-                android:text="150" />
+                android:text="150" 
+				android:textColor="#1F1F1F"
+                android:textSize="30sp"
+                android:background="@drawable/buttonshape"
+				android:shadowColor="#473A3A"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"
+				android:layout_margin="2dp"  />
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:id="@+id/bttnPokQ"
-                android:text="\?" />
+                android:text="\?" 
+				android:textColor="#1F1F1F"
+                android:textSize="30sp"
+                android:background="@drawable/buttonshape"
+				android:shadowColor="#473A3A"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"
+				android:layout_margin="2dp"  />
         </LinearLayout>
     </LinearLayout>

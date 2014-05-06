@@ -13,29 +13,39 @@ import android.widget.Button;
 import android.widget.TextView;
 
 @SuppressLint("ValidFragment")
-public class CardFragment extends Fragment {
+public class CardFragment extends Fragment 
+{
 	private String logTag;
 	private CharSequence text;
-	@SuppressLint("ValidFragment")
-	public CardFragment(){
+
+	public CardFragment()
+	{
 		Log.d(logTag, "Constructor");
 	}
-	public CardFragment(CharSequence txt){
+
+	@SuppressLint("ValidFragment")
+	public CardFragment(CharSequence txt)
+	{
 		Log.d(logTag, "Constructor text");
 		text=txt;
 	}
-	
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
         View rootView = inflater.inflate(R.layout.fragment_card, container, false);
-        TextView tv = (TextView) rootView.findViewById(R.id.textOnCard);
-        tv.setText(text);
+        
+        Button p1_button = (Button) rootView.findViewById(R.id.bttnCloseCard);
+        p1_button.setText(text);
+        
+//        TextView tv = (TextView) rootView.findViewById(R.id.textOnCard);
+//        tv.setText(text);
+        
         final Fragment fragment = this;
-        android.view.View.OnClickListener bttnListener = new View.OnClickListener() {
+        android.view.View.OnClickListener bttnListener = new View.OnClickListener() 
+        {
         	@Override
-        	public void onClick(View v) {
+        	public void onClick(View v) 
+        	{
              getActivity().getFragmentManager().popBackStack();
              FragmentManager fragmentManager = getFragmentManager();
              fragmentManager.beginTransaction().remove(fragment).commit();

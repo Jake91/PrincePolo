@@ -67,7 +67,7 @@ public class NotificationHandler implements RequestListener{
 	public void requestFinished() {
 		ArrayList<Branch> branches = requestBranches.getResult();
 		ArrayList<Branch> earlierBranches = TemporaryStorage.branchList;
-		if(earlierBranches != null){
+		if(earlierBranches != null && branches != null){
 			for(Branch branch : branches){
 				int index = earlierBranches.indexOf(branch);
 				if(index >= 0){
@@ -87,7 +87,10 @@ public class NotificationHandler implements RequestListener{
 				}
 			}
 		}
-		TemporaryStorage.branchList = branches.size() > 0 ? branches : null;
+		if(branches != null){
+			TemporaryStorage.branchList = branches.size() > 0 ? branches : null;
+		}
+		
 	}
 	
 	private ArrayList<RequestCommit> requestCommitList = new ArrayList<RequestCommit>();

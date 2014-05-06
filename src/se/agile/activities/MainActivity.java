@@ -134,8 +134,7 @@ public class MainActivity extends Activity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) 
 	{
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		return false;
 	}
 
 	@Override
@@ -181,7 +180,7 @@ public class MainActivity extends Activity
 		//But if you change the position you also have to change the order that they are specified! position 0 -> Specified first (in this enum).
 		REPOSITORY_OVERVIEW(0,false,"", 0),
 		NOTIFICATIONS(1,true,"0", 1),
-		ISSUES(2,false,"", 2),
+		PLANNING_POKER(2,false,"", 2),
 		BRANCHES(3,false,"", 3),
 		COLLABORATORS(4,false,"", 4),
 		SELECT_REPOSITORY(5,false,"", 5),
@@ -258,8 +257,8 @@ public class MainActivity extends Activity
 			case NOTIFICATIONS:
 				fragment = new NotificationsFragment();
 				break;
-			case ISSUES:
-				fragment = new IssuesFragment();
+			case PLANNING_POKER:
+				fragment = new PlanningPokerFragment();
 				break;
 			case BRANCHES:
 				fragment = new BranchesFragment();

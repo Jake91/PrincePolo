@@ -259,7 +259,7 @@ public class MainActivity extends Activity
 				fragment = new NotificationsFragment();
 				break;
 			case ISSUES:
-				fragment = new IssuesFragment();
+				fragment = new PokerFragment();
 				break;
 			case BRANCHES:
 				fragment = new BranchesFragment();

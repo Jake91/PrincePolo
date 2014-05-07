@@ -127,7 +127,7 @@ public class Commit implements GitHubDataInterface{
 	 * When using the GitHub Api a branch has for example a connected commit. 
 	 * But when we're reading a branch and also create a commit for that branch, 
 	 * that commit doesn't get all information.
-	 * For example you cannot se changedFiles.
+	 * For example you cannot see changedFiles.
 	 * 
 	 * @return
 	 */

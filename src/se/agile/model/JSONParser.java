@@ -29,6 +29,7 @@ public class JSONParser {
 					Branch branch = new Branch(jsonArray.getJSONObject(i).getString("name"));
 					Commit commit = new Commit(jsonArray.getJSONObject(i).getJSONObject("commit").getString("url"));
 					commit.setSha(jsonArray.getJSONObject(i).getJSONObject("commit").getString("sha"));
+					commit.setIsComplete(false);
 					branch.setLatestCommit(commit);
 					list.add(branch);
 				}
@@ -82,15 +83,22 @@ public class JSONParser {
 		commit.setDate(startDate);
 		commit.setMessage(object2.getString("message"));
 		
-		ArrayList<Commit> parentCommits = new ArrayList<Commit>();
-		JSONArray parentArray = object.getJSONArray("parents");
-		for(int i = 0; i < parentArray.length(); i++){
-			JSONObject fileObject = parentArray.getJSONObject(i);
-			Commit parent = new Commit(fileObject.getString("url"));
-			parent.setSha(fileObject.getString("sha"));
-			parentCommits.add(parent);
+		try{
+			ArrayList<Commit> parentCommits = new ArrayList<Commit>();
+			JSONArray parentArray = object.getJSONArray("parents");
+			for(int i = 0; i < parentArray.length(); i++){
+				JSONObject fileObject = parentArray.getJSONObject(i);
+				Commit parent = new Commit(fileObject.getString("url"));
+				parent.setSha(fileObject.getString("sha"));
+				parentCommits.add(parent);
+			}
+			commit.setParentList(parentCommits);
+		}catch(JSONException e){
+			Log.d(logTag, "The commit has no Parent");
+			e.printStackTrace();
+			commit.setIsComplete(false);
 		}
-		commit.setParentList(parentCommits);
+		
 		
 		ArrayList<File> changedFiles = new ArrayList<File>();
 		try{

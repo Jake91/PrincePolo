@@ -10,7 +10,7 @@
     <string-array name="nav_drawer_items">
         <item>Repositories</item>
         <item>Notifications</item>
-        <item>Planning poker</item>
+        <item>Planning Poker</item>
         <item>Branches</item>
         <item>Collaborators</item>
         <item>Select Repository</item>

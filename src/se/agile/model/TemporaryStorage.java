@@ -1,6 +1,9 @@
 package se.agile.model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 
 import se.agile.activities.model.GitHubData.Branch;
 
@@ -11,14 +14,20 @@ public class TemporaryStorage
 	
 	public static ArrayList<Branch> branchList;
 	
-	private static ArrayList<Notification> notificationList = new ArrayList<Notification>();
+	private static LinkedList<Notification> notificationList = new LinkedList<Notification>();
 	
 	
-	public static boolean addNotification(Notification notification){
-		return notificationList.add(notification);
+	public static void addNotification(Notification notification){
+		notificationList.addFirst(notification);
 	}
 	
 	public static boolean removeNotification(Notification notification){
 		return notificationList.remove(notification);
+	}
+	
+	public static ArrayList<Notification> getNotifications(){
+		ArrayList<Notification> temp = new ArrayList<Notification>();
+		temp.addAll(notificationList);
+		return temp;
 	}
 }

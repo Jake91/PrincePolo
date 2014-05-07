@@ -27,8 +27,8 @@ import android.util.Log;
 public class NotificationHandler implements RequestListener{
 	private ScheduledFuture<?> future;
 	private RequestBranches requestBranches;
-	private NotificationManager notificationManager;
-	private Context context;
+	private static NotificationManager notificationManager;
+	private static Context context;
 	private String logTag = "PrincePolo";
 	private Runnable runnable;
 	private ScheduledExecutorService scheduler;
@@ -156,7 +156,13 @@ public class NotificationHandler implements RequestListener{
     	notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     	notificationManager.notify(notification.getId(), builder.build());
 	}
-
+	
+	public static void viewedNotification(Notification notification){
+		notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		Log.d("PrincePolo", "cancel id: " + notification.getId());
+		notificationManager.cancel(notification.getId());
+	}
+	
 	@Override
 	public void whenNoInternetConnection() {
 		// Since this is for notifications we dont show any messages

@@ -253,7 +253,7 @@ public class MainActivity extends Activity {
 			fragment = new RepositoryOverviewFragment();
 			break;
 		case NOTIFICATIONS:
-			fragment = new NotificationsFragment();
+			fragment = new NotificationFragmentSwitcher();
 			break;
 		case PLANNING_POKER:
 			fragment = new PokerFragment();

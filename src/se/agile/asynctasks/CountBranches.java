@@ -61,6 +61,6 @@ public class CountBranches extends AsyncTask<String, Void, String>
 				 lastIndex+=findStr.length();
 			 }
 		}
-		Log.d(logTag, "numberofBranches:"+count);
+		//Log.d(logTag, "numberofBranches:"+count);
     }
 }

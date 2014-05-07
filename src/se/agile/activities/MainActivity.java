@@ -102,7 +102,7 @@ public class MainActivity extends Activity
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[9], navMenuIcons.getResourceId(9, -1)));
-		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[10], navMenuIcons.getResourceId(10, -1)));
 
 		// Recycle the typed array
 		navMenuIcons.recycle();
@@ -261,6 +261,9 @@ public class MainActivity extends Activity
 				break;
 			case 9:
 				fragment = new AboutFragment();
+				break;
+			case 10:
+				fragment = new PersonalNotesFragment();
 				break;
 	
 			default:

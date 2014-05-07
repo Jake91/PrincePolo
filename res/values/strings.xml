@@ -5,6 +5,9 @@
     <string name="action_settings">Settings eyyh</string>
     <string name="drawer_open">Slider Menu Opened</string>
     <string name="drawer_close">Slider Menu Closed</string>
+    <string name="note_textField">Write something...</string>
+    <string name="saveNote_Button">Save</string>
+    
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
@@ -18,6 +21,7 @@
         <item>Settings</item>
         <item>Help</item>
         <item>About</item>
+        <item>Personal Notes</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
@@ -32,6 +36,7 @@
         <item>@drawable/ic_3</item>
         <item>@drawable/ic_4</item>
         <item>@drawable/ic_5</item>
+        <item>@drawable/ic_2</item>
     </array>
 
     <!-- Content Description -->

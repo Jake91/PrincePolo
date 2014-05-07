@@ -64,7 +64,7 @@ public class AboutFragment extends Fragment
         updateUser();
 		updateUserRepos();
 		String token = Preferences.getAccessToken();
-		Log.d(logTag, ""+token);
+		//Log.d(logTag, ""+token);
 		
 		scheduler.scheduleAtFixedRate (new Runnable() 
 		{
@@ -121,8 +121,8 @@ public class AboutFragment extends Fragment
 	    protected void onPostExecute(String result) 
 	    {
 	    	String newValue = getMD5EncryptedString(result);
-    	    Log.d(logTag, "Old value is: "+Preferences.getMD5Value());
-    	    Log.d(logTag, "NEW value is: "+newValue);
+    	    //Log.d(logTag, "Old value is: "+Preferences.getMD5Value());
+    	    //Log.d(logTag, "NEW value is: "+newValue);
     	    
     	    if (Preferences.getMD5Value().equals(""))
     	    {
@@ -188,7 +188,7 @@ public class AboutFragment extends Fragment
         } 
         catch (NoSuchAlgorithmException e) 
         {
-            System.out.println("Exception while encrypting to md5");
+            //System.out.println("Exception while encrypting to md5");
             e.printStackTrace();
         } 
         // Encryption algorithm
@@ -252,7 +252,7 @@ public class AboutFragment extends Fragment
 					 lastIndex+=findStr.length();
 				 }
 			}
-			Log.d(logTag, "numberofBranches:"+count);
+			//Log.d(logTag, "numberofBranches:"+count);
 	    }
 	}
 }

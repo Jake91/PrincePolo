@@ -3,24 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="#FFFFFF" >
-
-    <TextView
-        android:id="@+id/textOnCard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_horizontal"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="100dp" />
-
-    <Button
+    android:background="#FFFFFF"
+    android:clickable="true"
+    android:focusable="true"  >
+    
+	<Button
         android:id="@+id/bttnCloseCard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:text="Back"/>
+        android:gravity="center_vertical|center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="150dp"
+        android:width="4dp"
+		android:background="@drawable/whole_screen_button"
+        android:text="asdf"/>
+
 
 </LinearLayout>

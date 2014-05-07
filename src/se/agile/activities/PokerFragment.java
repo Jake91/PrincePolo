@@ -12,18 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-public class PlanningPokerFragment extends Fragment 
+public class PokerFragment extends Fragment 
 {
 	private String logTag;
 	
-	public PlanningPokerFragment(){}
+	public PokerFragment(){}
 	
 	
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
-        View rootView = inflater.inflate(R.layout.fragment_issues, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_poker, container, false);
 
         android.view.View.OnClickListener bttnListener = new View.OnClickListener() {
 			
@@ -52,6 +52,7 @@ public class PlanningPokerFragment extends Fragment
         ((Button) rootView.findViewById(R.id.bttnPok20)).setOnClickListener(bttnListener);
         ((Button) rootView.findViewById(R.id.bttnPok40)).setOnClickListener(bttnListener);
         ((Button) rootView.findViewById(R.id.bttnPok100)).setOnClickListener(bttnListener);
+        ((Button) rootView.findViewById(R.id.bttnPok150)).setOnClickListener(bttnListener);
         ((Button) rootView.findViewById(R.id.bttnPokQ)).setOnClickListener(bttnListener);
         return rootView;
         

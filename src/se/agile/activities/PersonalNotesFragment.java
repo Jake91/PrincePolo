@@ -13,7 +13,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import se.agile.princepolo.R;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -161,13 +163,12 @@ public class PersonalNotesFragment extends Fragment implements OnClickListener, 
         /**********Display the headings************/
         map1.put("date", " Date");
         map1.put("note", "Note");
-        map1.put("nothing", "");
         mylist_title.add(map1);
 
         try {
             adapter_title = new SimpleAdapter(getActivity(), mylist_title, R.layout.headrow,
-                    new String[] {"date", "note", "nothing"}, new int[] {
-                            R.id.dateHead, R.id.noteHead, R.id.nothingHead});
+                    new String[] {"date", "note"}, new int[] {
+                            R.id.dateHead, R.id.noteHead});
             list_head.setAdapter(adapter_title);
         } catch (Exception e) {
            
@@ -179,17 +180,15 @@ public class PersonalNotesFragment extends Fragment implements OnClickListener, 
         	map2 = new HashMap<String, String>();
             map2.put("date", dates.get(i));
             map2.put("note", personalNotes.get(i));
-            map2.put("deleteButton", "X");
             mylist.add(map2);
         }
         personalNotes.clear();
         dates.clear();
-
        
         try {
             adapter = new SimpleAdapter(getActivity(), mylist, R.layout.row,
-                    new String[] {"date", "note", "deleteButton" }, new int[] {
-                            R.id.date, R.id.note, R.id.deleteButton });
+                    new String[] {"date", "note" }, new int[] {
+                            R.id.date, R.id.note});
             list.setAdapter(adapter);
         } catch (Exception e) {
            
@@ -200,28 +199,39 @@ public class PersonalNotesFragment extends Fragment implements OnClickListener, 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		System.out.println("HEY MAN CLICK FOUDN");
-		System.out.println("HEY MAN CLICK FOUDN");
-		System.out.println("HEY MAN CLICK FOUDN");
-		System.out.println("HEY MAN CLICK FOUDN");
-		System.out.println("HEY MAN CLICK FOUDN");
-		System.out.println("HEY MAN CLICK FOUDN");
-		System.out.println("HEY MAN CLICK FOUDN");
-		System.out.println("HEY MAN CLICK FOUDN");System.out.println("HEY MAN CLICK FOUDN");
-		System.out.println("HEY MAN CLICK FOUDN");
-		System.out.println("HEY MAN CLICK FOUDN");
+		final Integer pip = (int) id;
+		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        switch (which){
+		        case DialogInterface.BUTTON_POSITIVE:
+
+		    		if (notes.size() > 1){
+		    			notes.remove((notes.size()-1) - (pip*2+1));
+		    			notes.remove((notes.size()-1) - (pip*2));
+		    		}
+		        	try {
+		    			writeToFile(notes);
+		    			updateList();
+		            } catch (FileNotFoundException e1) {
+		           	 fileNotFoundToast();
+		    			e1.printStackTrace();
+		    		} catch (IOException e) {
+		    			ioToast();
+		    			e.printStackTrace();
+		    		}
+		            break;
+
+		        case DialogInterface.BUTTON_NEGATIVE:
+		            //No button clicked
+		            break;
+		        }
+		    }
+		};
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage("Delete this note?").setNegativeButton("Nay", dialogClickListener)
+		.setPositiveButton("Yeah", dialogClickListener).show();
 		
-		notes.remove((id*2)+1);
-        notes.remove(id*2);
-        try {
-			updateList();
-        } catch (FileNotFoundException e1) {
-       	 fileNotFoundToast();
-			e1.printStackTrace();
-		} catch (IOException e) {
-			ioToast();
-			e.printStackTrace();
-		}
 		// TODO Auto-generated method stub
 		
 	}

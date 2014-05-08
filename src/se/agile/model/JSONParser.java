@@ -68,8 +68,14 @@ public class JSONParser {
 		String url = "https://api.github.com/repos/" + Preferences.getSelectedRepository().getName() + "/commits/" + sha;
 		Commit commit = new Commit(url);
 		commit.setSha(sha);
+		JSONObject object2;
+		try{
+			object2 = object.getJSONObject("commit");
+		}catch(JSONException e){
+			object2 = object;
+			//when parsing a shortcommit the "commit" object doesn't exist
+		}
 		
-		JSONObject object2 = object.getJSONObject("commit");
 		commit.setCommitter(new User(object2.getJSONObject("committer").getString("name")));
 		
 	    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); 
@@ -143,7 +149,7 @@ public class JSONParser {
 				e.printStackTrace();
 			}
 		}else{
-			Log.e(logTag, "parseCommit: json string is null");
+			Log.e(logTag, "parseFullCommit: json string is null");
 		}
 		return commit;
 	}

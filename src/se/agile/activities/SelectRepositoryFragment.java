@@ -47,7 +47,7 @@ public class SelectRepositoryFragment extends Fragment implements RequestListene
 						@Override
 						public void onClick(View v) {
 							Preferences.setSelectedRepository(new Repository(((RadioButton) v).getText().toString()));
-							TemporaryStorage.branchList = null;
+//							TemporaryStorage.branchList = null;
 							((MainActivity) getActivity()).displayView(VIEW.REPOSITORY_OVERVIEW);
 						}
 					};

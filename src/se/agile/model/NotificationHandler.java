@@ -12,7 +12,7 @@ import se.agile.activities.MainActivity.VIEW;
 import se.agile.activities.model.GitHubData.Branch;
 import se.agile.activities.model.GitHubData.Commit;
 import se.agile.asynctasks.RequestBranches;
-import se.agile.asynctasks.RequestCommit;
+import se.agile.asynctasks.RequestFullCommit;
 import se.agile.asynctasks.RequestListener;
 import se.agile.princepolo.R;
 import android.app.NotificationManager;
@@ -93,7 +93,7 @@ public class NotificationHandler implements RequestListener{
 		
 	}
 	
-	private ArrayList<RequestCommit> requestCommitList = new ArrayList<RequestCommit>();
+	private ArrayList<RequestFullCommit> requestCommitList = new ArrayList<RequestFullCommit>();
 	
 	private void getFullCommit(Branch branch){
 		final Commit simpleCommit = branch.getLatestCommit();
@@ -114,7 +114,7 @@ public class NotificationHandler implements RequestListener{
 			@Override
 			public void requestFinished() {
 				Log.d("PrincePolo", "New commit recieved");
-				for(RequestCommit req : requestCommitList){
+				for(RequestFullCommit req : requestCommitList){
 					Commit commit = req.getResult();
 					if(commit != null && commit.equals(simpleCommit)){
 						CommitNotification commitNotificaiton = new CommitNotification(commit);
@@ -126,7 +126,7 @@ public class NotificationHandler implements RequestListener{
 				}
 			}
 		};
-		RequestCommit requestCommit = new RequestCommit(listener);
+		RequestFullCommit requestCommit = new RequestFullCommit(listener);
 		requestCommitList.add(requestCommit);
 		requestCommit.execute(simpleCommit.getSha(),branch.getName());
 	}

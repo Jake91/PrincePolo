@@ -6,7 +6,7 @@
 
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/dateHead"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
@@ -14,16 +14,19 @@
         android:text="" />
 
     <TextView
-        android:id="@+id/note"
+        android:id="@+id/noteHead"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:layout_weight="1"
         android:text="" />
-    
-    <Button android:id="@+id/deleteButton"
+    <TextView
+        android:id="@+id/nothingHead"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.7"/>
+        android:textColor="@android:color/black"
+        android:layout_weight="1"
+        android:text="" />
+
 
 </LinearLayout>

@@ -18,7 +18,7 @@ public class PokerFragment extends Fragment
 	
 	public PokerFragment(){}
 	
-	
+	final Fragment thisFragment = this;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -31,12 +31,12 @@ public class PokerFragment extends Fragment
 			public void onClick(View v) {
 				Button b = (Button) v;
 				CharSequence text = b.getText();
-			    Fragment fragment = new CardFragment(text);
+			    Fragment fragment = new CardFragment(text, thisFragment);
 			    
 			    if (fragment != null) 
 				{
 					FragmentManager fragmentManager = getFragmentManager();
-					fragmentManager.beginTransaction().add(R.id.frame_container, fragment).commit();
+					fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
 					Log.d(logTag, "got text from button");
 				} 
 				

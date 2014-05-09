@@ -16,8 +16,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="150dp"
         android:width="4dp"
-		android:background="@drawable/whole_screen_button"
-        android:text="asdf"/>
+		android:background="@drawable/pokerf"
+        android:text=""/>
+
 
 
 </LinearLayout>

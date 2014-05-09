@@ -17,7 +17,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class LoginActivity extends Activity implements RequestListener{
+public class LoginActivity extends Activity implements RequestListener<String>{
 	private static String OAUTH_URL = "https://github.com/login/oauth/authorize";
     private static String CALLBACK_URL = "princepolo://oauthresponse";//"http://localhost";
     
@@ -86,7 +86,7 @@ public class LoginActivity extends Activity implements RequestListener{
 	}
 
 	@Override
-	public void requestFinished() {
+	public void requestFinished(String result) {
 		new RequestUser().execute();
 		new RequestRepositories().execute();
 	}
@@ -110,5 +110,11 @@ public class LoginActivity extends Activity implements RequestListener{
 	        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	        startActivity(startMain);
 
+	}
+
+	@Override
+	public void requestUpdate() {
+		// TODO Auto-generated method stub
+		
 	}
 }

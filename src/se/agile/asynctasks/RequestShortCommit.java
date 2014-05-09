@@ -2,20 +2,19 @@ package se.agile.asynctasks;
 
 import se.agile.activities.model.GitHubData.Commit;
 import se.agile.model.JSONParser;
-import se.agile.model.Preferences;
 
-public class RequestCommit extends RequestTask<String, Void, Commit>{
+public class RequestShortCommit extends RequestTask<String, Void, Commit>{
 	private final String logTag = "PrincePolo";
 	
 	private String url = "https://api.github.com/repos/";
 	
-	public RequestCommit(){
+	public RequestShortCommit(){
 		super();
 	}
 	
-	public RequestCommit(RequestListener listener){
+	public RequestShortCommit(RequestListener listener){
 		super(listener);
-		url +=  super.getSelectedRepositoryName() + "/commits/";
+		url +=  super.getSelectedRepositoryName() + "/git/commits/";
 	}
 	
 	@Override

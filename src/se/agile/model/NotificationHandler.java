@@ -1,7 +1,6 @@
 package se.agile.model;
 
 import java.util.ArrayList;
-import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -12,8 +11,9 @@ import se.agile.activities.MainActivity.VIEW;
 import se.agile.activities.model.GitHubData.Branch;
 import se.agile.activities.model.GitHubData.Commit;
 import se.agile.asynctasks.RequestBranches;
-import se.agile.asynctasks.RequestCommit;
+import se.agile.asynctasks.RequestFullCommit;
 import se.agile.asynctasks.RequestListener;
+import se.agile.asynctasks.RequestListenerAdapter;
 import se.agile.princepolo.R;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -24,18 +24,18 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-public class NotificationHandler implements RequestListener{
+public class NotificationHandler extends RequestListenerAdapter<ArrayList<Branch>>{
 	private ScheduledFuture<?> future;
 	private RequestBranches requestBranches;
-	private NotificationManager notificationManager;
-	private Context context;
+	private static NotificationManager notificationManager;
+	private static Context context;
 	private String logTag = "PrincePolo";
 	private Runnable runnable;
 	private ScheduledExecutorService scheduler;
 	
 	public NotificationHandler(Context context){
 		this.context = context;
-		final RequestListener listener = this;
+		final RequestListener<ArrayList<Branch>> listener = this;
 
 		runnable = new Runnable() {
 			public void run() {
@@ -64,8 +64,7 @@ public class NotificationHandler implements RequestListener{
 	}
 
 	@Override
-	public void requestFinished() {
-		ArrayList<Branch> branches = requestBranches.getResult();
+	public void requestFinished(ArrayList<Branch> branches) {
 		ArrayList<Branch> earlierBranches = TemporaryStorage.branchList;
 		if(earlierBranches != null && branches != null){
 			for(Branch branch : branches){
@@ -93,41 +92,21 @@ public class NotificationHandler implements RequestListener{
 		
 	}
 	
-	private ArrayList<RequestCommit> requestCommitList = new ArrayList<RequestCommit>();
-	
 	private void getFullCommit(Branch branch){
 		final Commit simpleCommit = branch.getLatestCommit();
-		RequestListener listener = new RequestListener() {
+		RequestListener<Commit> listener = new RequestListenerAdapter<Commit>() {
 			
 			@Override
-			public void whenNoSelectedRepository() {
-				// Since this is for notifications we dont show any messages
-				
-			}
-			
-			@Override
-			public void whenNoInternetConnection() {
-				// Since this is for notifications we dont show any messages
-				
-			}
-			
-			@Override
-			public void requestFinished() {
+			public void requestFinished(Commit commit) {
 				Log.d("PrincePolo", "New commit recieved");
-				for(RequestCommit req : requestCommitList){
-					Commit commit = req.getResult();
-					if(commit != null && commit.equals(simpleCommit)){
-						CommitNotification commitNotificaiton = new CommitNotification(commit);
-						TemporaryStorage.addNotification(commitNotificaiton );
-						fireNotification(commitNotificaiton);
-						requestCommitList.remove(req);
-						break;
-					}
+				if(commit != null && commit.equals(simpleCommit)){
+					CommitNotification commitNotificaiton = new CommitNotification(commit);
+					TemporaryStorage.addNotification(commitNotificaiton );
+					fireNotification(commitNotificaiton);
 				}
 			}
 		};
-		RequestCommit requestCommit = new RequestCommit(listener);
-		requestCommitList.add(requestCommit);
+		RequestFullCommit requestCommit = new RequestFullCommit(listener);
 		requestCommit.execute(simpleCommit.getSha(),branch.getName());
 	}
 
@@ -156,15 +135,10 @@ public class NotificationHandler implements RequestListener{
     	notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     	notificationManager.notify(notification.getId(), builder.build());
 	}
-
-	@Override
-	public void whenNoInternetConnection() {
-		// Since this is for notifications we dont show any messages
-		
-	}
-
-	@Override
-	public void whenNoSelectedRepository() {
-		// Since this is for notifications we dont show any messages	
+	
+	public static void viewedNotification(Notification notification){
+		notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		Log.d("PrincePolo", "cancel id: " + notification.getId());
+		notificationManager.cancel(notification.getId());
 	}
 }

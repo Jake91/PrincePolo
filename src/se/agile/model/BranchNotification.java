@@ -7,7 +7,7 @@ public class BranchNotification extends Notification<Branch>{
 	public BranchNotification(Branch branch) {
 		super(branch);
 		super.setContentTitle("New branch");
-		super.setContentText(branch.getName());
+		super.setContentText("A new branch named \"" + branch.getName() + "\" has been created.");
 	}
 
 }

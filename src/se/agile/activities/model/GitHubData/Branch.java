@@ -35,7 +35,7 @@ public class Branch implements GitHubDataInterface{
 	
 	@Override
 	public String toString(){
-		return "Branchname: " + name + " Latest commit: " + latestCommit.getName();
+		return "Branchname: " + name;
 	}
 
 	@Override

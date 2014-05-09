@@ -29,6 +29,7 @@ public class JSONParser {
 					Branch branch = new Branch(jsonArray.getJSONObject(i).getString("name"));
 					Commit commit = new Commit(jsonArray.getJSONObject(i).getJSONObject("commit").getString("url"));
 					commit.setSha(jsonArray.getJSONObject(i).getJSONObject("commit").getString("sha"));
+					commit.setIsComplete(false);
 					branch.setLatestCommit(commit);
 					list.add(branch);
 				}
@@ -67,8 +68,14 @@ public class JSONParser {
 		String url = "https://api.github.com/repos/" + Preferences.getSelectedRepository().getName() + "/commits/" + sha;
 		Commit commit = new Commit(url);
 		commit.setSha(sha);
+		JSONObject object2;
+		try{
+			object2 = object.getJSONObject("commit");
+		}catch(JSONException e){
+			object2 = object;
+			//when parsing a shortcommit the "commit" object doesn't exist
+		}
 		
-		JSONObject object2 = object.getJSONObject("commit");
 		commit.setCommitter(new User(object2.getJSONObject("committer").getString("name")));
 		
 	    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); 
@@ -82,15 +89,22 @@ public class JSONParser {
 		commit.setDate(startDate);
 		commit.setMessage(object2.getString("message"));
 		
-		ArrayList<Commit> parentCommits = new ArrayList<Commit>();
-		JSONArray parentArray = object.getJSONArray("parents");
-		for(int i = 0; i < parentArray.length(); i++){
-			JSONObject fileObject = parentArray.getJSONObject(i);
-			Commit parent = new Commit(fileObject.getString("url"));
-			parent.setSha(fileObject.getString("sha"));
-			parentCommits.add(parent);
+		try{
+			ArrayList<Commit> parentCommits = new ArrayList<Commit>();
+			JSONArray parentArray = object.getJSONArray("parents");
+			for(int i = 0; i < parentArray.length(); i++){
+				JSONObject fileObject = parentArray.getJSONObject(i);
+				Commit parent = new Commit(fileObject.getString("url"));
+				parent.setSha(fileObject.getString("sha"));
+				parentCommits.add(parent);
+			}
+			commit.setParentList(parentCommits);
+		}catch(JSONException e){
+			Log.d(logTag, "The commit has no Parent");
+			e.printStackTrace();
+			commit.setIsComplete(false);
 		}
-		commit.setParentList(parentCommits);
+		
 		
 		ArrayList<File> changedFiles = new ArrayList<File>();
 		try{
@@ -123,7 +137,7 @@ public class JSONParser {
 		
 	}
 	
-	public static Commit parseCommit(String json, String branchName){
+	public synchronized static Commit parseCommit(String json, String branchName){
 		Commit commit = null;
 		if(json != null){
 			try {
@@ -135,7 +149,7 @@ public class JSONParser {
 				e.printStackTrace();
 			}
 		}else{
-			Log.e(logTag, "parseCommit: json string is null");
+			Log.e(logTag, "parseFullCommit: json string is null");
 		}
 		return commit;
 	}

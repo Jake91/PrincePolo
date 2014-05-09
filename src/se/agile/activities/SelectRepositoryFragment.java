@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import se.agile.activities.MainActivity.VIEW;
 import se.agile.activities.model.GitHubData.Repository;
-import se.agile.asynctasks.RequestListener;
+import se.agile.asynctasks.RequestListenerAdapter;
 import se.agile.asynctasks.RequestRepositories;
 import se.agile.model.PreferenceListener;
 import se.agile.model.Preferences;
-import se.agile.model.TemporaryStorage;
 import se.agile.model.Preferences.PREF_KEY;
+import se.agile.model.TemporaryStorage;
 import se.agile.princepolo.R;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-public class SelectRepositoryFragment extends Fragment implements RequestListener{
+public class SelectRepositoryFragment extends Fragment{
 	private String logTag;
 	private View rootView;
 	
@@ -33,7 +33,18 @@ public class SelectRepositoryFragment extends Fragment implements RequestListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
 		rootView = inflater.inflate(R.layout.fragment_select_repository, container, false);
-		thread = new RequestRepositories(this);
+		thread = new RequestRepositories(new RequestListenerAdapter<Integer>() {
+			@Override
+			public void whenNoInternetConnection() {
+				MainActivity.hasNoInternetConnection(getActivity());
+				
+			}
+			@Override
+			public void whenNoSelectedRepository() {
+				MainActivity.hasNoSelectedRepository(getActivity());
+				
+			}
+		});
 		
 		prefListener = new PreferenceListener() {
 			@Override
@@ -47,7 +58,7 @@ public class SelectRepositoryFragment extends Fragment implements RequestListene
 						@Override
 						public void onClick(View v) {
 							Preferences.setSelectedRepository(new Repository(((RadioButton) v).getText().toString()));
-//							TemporaryStorage.branchList = null;
+							TemporaryStorage.branchList = null;
 							((MainActivity) getActivity()).displayView(VIEW.REPOSITORY_OVERVIEW);
 						}
 					};
@@ -80,23 +91,5 @@ public class SelectRepositoryFragment extends Fragment implements RequestListene
 		Preferences.removeListener(prefListener);
 		thread.abortRequest(false);
 		super.onDestroy();
-	}
-
-	@Override
-	public void requestFinished() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void whenNoInternetConnection() {
-		MainActivity.hasNoInternetConnection(getActivity());
-		
-	}
-
-	@Override
-	public void whenNoSelectedRepository() {
-		MainActivity.hasNoSelectedRepository(getActivity());
-		
 	}
 }

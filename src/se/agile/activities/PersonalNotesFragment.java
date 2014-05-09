@@ -59,10 +59,8 @@ public class PersonalNotesFragment extends Fragment implements OnClickListener, 
 		try {
 			updateList();
 		} catch (FileNotFoundException e1) {
-			fileNotFoundToast();
 			e1.printStackTrace();
 		} catch (IOException e) {
-			ioToast();
 			e.printStackTrace();
 		}       
         return rootView;

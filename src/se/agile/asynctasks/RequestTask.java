@@ -15,6 +15,7 @@ import org.apache.http.util.EntityUtils;
 
 import se.agile.activities.MainActivity;
 import se.agile.activities.model.GitHubData.Commit;
+import se.agile.activities.model.GitHubData.GitHubDataInterface;
 import se.agile.model.JSONParser;
 import se.agile.model.Preferences;
 import android.os.AsyncTask;
@@ -33,7 +34,7 @@ import android.util.Log;
 public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result>{
 	private final String logTag = "PrincePolo";
 	
-	private RequestListener listener;
+	private RequestListener<Result> listener;
 	
 	private Result result;
 	
@@ -41,7 +42,7 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 		this(null);
 	}
 	
-	public RequestTask(RequestListener listener){
+	public RequestTask(RequestListener<Result> listener){
 		this.listener = listener;
 	}
 	
@@ -103,7 +104,7 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 		}else{
 			this.result = result;
 			if(listener != null && !isCancelled()){
-				listener.requestFinished();
+				listener.requestFinished(this.result);
 			}
 		}
 	}

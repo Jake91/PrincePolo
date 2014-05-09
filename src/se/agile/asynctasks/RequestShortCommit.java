@@ -2,7 +2,6 @@ package se.agile.asynctasks;
 
 import se.agile.activities.model.GitHubData.Commit;
 import se.agile.model.JSONParser;
-import se.agile.model.Preferences;
 
 public class RequestShortCommit extends RequestTask<String, Void, Commit>{
 	private final String logTag = "PrincePolo";

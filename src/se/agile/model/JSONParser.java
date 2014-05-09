@@ -137,7 +137,7 @@ public class JSONParser {
 		
 	}
 	
-	public static Commit parseCommit(String json, String branchName){
+	public synchronized static Commit parseCommit(String json, String branchName){
 		Commit commit = null;
 		if(json != null){
 			try {

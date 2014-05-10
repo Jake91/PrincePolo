@@ -25,9 +25,7 @@ public class TemporaryStorage
 		return notificationList.remove(notification);
 	}
 	
-	public static ArrayList<Notification> getNotifications(){
-		ArrayList<Notification> temp = new ArrayList<Notification>();
-		temp.addAll(notificationList);
-		return temp;
+	public static LinkedList<Notification> getNotifications(){
+		return notificationList;
 	}
 }

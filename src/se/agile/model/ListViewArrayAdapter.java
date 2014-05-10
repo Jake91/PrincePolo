@@ -1,7 +1,9 @@
 package se.agile.model;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 
 import se.agile.princepolo.R;
 import android.content.Context;
@@ -16,14 +18,15 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ListViewArrayAdapter extends ArrayAdapter<Notification>{
+public class ListViewArrayAdapter extends ArrayAdapter<Notification> implements NotificationListener{
 	private final Context context;
-	private final Notification[] values;
+	private LinkedList<Notification>  notificationList;
 
-	public ListViewArrayAdapter(Context context, Notification[] values) {
-		super(context, R.layout.list_view_notification, values);
+	public ListViewArrayAdapter(Context context, LinkedList<Notification> notificationList) {
+		super(context, R.layout.list_view_notification,R.id.List_View_Message, notificationList);
 		this.context = context;
-		this.values = values;
+		this.notificationList = TemporaryStorage.getNotifications();
+		NotificationHandler.addNotificationListener(this);
 	}
 
 	@Override
@@ -35,7 +38,7 @@ public class ListViewArrayAdapter extends ArrayAdapter<Notification>{
 		TextView dateView = (TextView) rowView.findViewById(R.id.List_View_Date);
 		TextView messageView = (TextView) rowView.findViewById(R.id.List_View_Message);
 		
-		Notification notification = values[position];
+		Notification notification = notificationList.get(position);
 		
 		if(notification.hasBeenViewed()){
 			View circleView = (View) rowView.findViewById(R.id.CircleView);
@@ -50,13 +53,20 @@ public class ListViewArrayAdapter extends ArrayAdapter<Notification>{
 		return rowView;
 	}
 	
+	public void setNotification(LinkedList<Notification> list){
+		this.notificationList = list;
+		this.notifyDataSetChanged();
+	}
 	
 	
 	public Notification getNotification(int position){
-		if(position >= 0 && position < values.length){
-			return values[position];
-		}else{
-			return null;
-		}
+		return notificationList.get(position);
+	}
+
+	@Override
+	public void notificationRecieved() {
+		this.notificationList = TemporaryStorage.getNotifications();
+		this.notifyDataSetChanged();
+		
 	}
 }

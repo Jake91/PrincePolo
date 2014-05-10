@@ -41,7 +41,7 @@ public class CommitFragment extends Fragment
         	{
         		FragmentManager fm = getFragmentManager();
     	        FragmentTransaction transaction = fm.beginTransaction();
-    	        transaction.replace(R.id.content_notification_holder, new NotificationsFragment());
+    	        fm.popBackStack();
     	        transaction.commit();
         	}
         };

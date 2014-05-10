@@ -33,6 +33,8 @@ public class NotificationHandler extends RequestListenerAdapter<ArrayList<Branch
 	private Runnable runnable;
 	private ScheduledExecutorService scheduler;
 	
+	private static ArrayList<NotificationListener> listenerList = new ArrayList<NotificationListener>();
+	
 	public NotificationHandler(Context context){
 		this.context = context;
 		final RequestListener<ArrayList<Branch>> listener = this;
@@ -134,11 +136,22 @@ public class NotificationHandler extends RequestListenerAdapter<ArrayList<Branch
 
     	notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     	notificationManager.notify(notification.getId(), builder.build());
+    	for(NotificationListener listener : listenerList){
+    		listener.notificationRecieved();
+    	}
 	}
 	
 	public static void viewedNotification(Notification notification){
 		notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		Log.d("PrincePolo", "cancel id: " + notification.getId());
 		notificationManager.cancel(notification.getId());
+	}
+	
+	public static boolean addNotificationListener(NotificationListener listener){
+		return listenerList.add(listener);
+	}
+	
+	public static boolean removeNotificationListener(NotificationListener listener){
+		return listenerList.remove(listener);
 	}
 }

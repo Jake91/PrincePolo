@@ -1,5 +1,7 @@
 package se.agile.activities;	
 
+import java.util.LinkedList;
+
 import se.agile.model.BranchNotification;
 import se.agile.model.CommitNotification;
 import se.agile.model.ListViewArrayAdapter;
@@ -27,11 +29,10 @@ public class NotificationsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_notifications, container, false);
         
         final ListView listview = (ListView) rootView.findViewById(R.id.Listview);
-        Notification[] note = TemporaryStorage.getNotifications().toArray(new Notification[1]);
-        if(note[0] != null){
-        	final ListViewArrayAdapter adapter = new ListViewArrayAdapter(getActivity(), note);
+        LinkedList<Notification> list = TemporaryStorage.getNotifications();
+        if(list != null){
+        	final ListViewArrayAdapter adapter = new ListViewArrayAdapter(getActivity(), list);
             listview.setAdapter(adapter);
-
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             	@Override
@@ -49,6 +50,7 @@ public class NotificationsFragment extends Fragment {
             			}
             			FragmentManager fm = getFragmentManager();
             	        FragmentTransaction transaction = fm.beginTransaction();
+            	        transaction.addToBackStack("Notes");
             	        transaction.replace(R.id.content_notification_holder, commitFragment);
             	        transaction.commit();
             		}else if(not instanceof BranchNotification){
@@ -62,6 +64,7 @@ public class NotificationsFragment extends Fragment {
             			}
             			FragmentManager fm = getFragmentManager();
             	        FragmentTransaction transaction = fm.beginTransaction();
+            	        transaction.addToBackStack("Notes");
             	        transaction.replace(R.id.content_notification_holder, branchFragment);
             	        transaction.commit();
             		}

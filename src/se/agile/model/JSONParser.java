@@ -12,7 +12,9 @@ import org.json.JSONObject;
 
 import se.agile.activities.model.GitHubData.Branch;
 import se.agile.activities.model.GitHubData.Commit;
+import se.agile.activities.model.GitHubData.Directory;
 import se.agile.activities.model.GitHubData.File;
+import se.agile.activities.model.GitHubData.Folder;
 import se.agile.activities.model.GitHubData.Repository;
 import se.agile.activities.model.GitHubData.User;
 import android.util.Log;
@@ -32,6 +34,38 @@ public class JSONParser {
 					commit.setIsComplete(false);
 					branch.setLatestCommit(commit);
 					list.add(branch);
+				}
+			} catch (JSONException e) {
+				Log.e(logTag, "Couldn't parse JSON String to JSONArray");
+				e.printStackTrace();
+			}
+		}else{
+			Log.e(logTag, "parseBranches: json string is null");
+		}
+		return list;
+	}
+	
+	public static ArrayList<Directory> parseDirectories(String json, String branchName){
+		ArrayList<Directory> list = new ArrayList<Directory>();
+		if(json != null){
+			try {
+				JSONArray jsonArray = new JSONArray(json);
+				for(int i = 0; i < jsonArray.length(); i++){
+					String type = jsonArray.getJSONObject(i).getString("type");
+					String name = jsonArray.getJSONObject(i).getString("name");
+					Directory dir = null;
+					if(type.equals("file")){
+						dir = new File(name);
+					}else if(type.equals("dir")){
+						dir = new Folder(name);
+					}else{
+						continue;
+					}
+					dir.setPath(jsonArray.getJSONObject(i).getString("path"));
+					dir.setSha(jsonArray.getJSONObject(i).getString("sha"));
+					dir.setUrl(jsonArray.getJSONObject(i).getString("url"));
+					dir.setBranchName(branchName);
+					list.add(dir);
 				}
 			} catch (JSONException e) {
 				Log.e(logTag, "Couldn't parse JSON String to JSONArray");

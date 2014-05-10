@@ -175,11 +175,17 @@ public class MainActivity extends Activity {
 		// The position is now easy to change.
 		// But if you change the position you also have to change the order that
 		// they are specified! position 0 -> Specified first (in this enum).
-		REPOSITORY_OVERVIEW(0, false, "", 0), NOTIFICATIONS(1, true, "0", 1), PLANNING_POKER(
-				2, false, "", 2), PERSONAL_NOTES(3, false, "", 3), BRANCHES(4, false, "", 4),
-				COLLABORATORS(5, false, "", 5), SELECT_REPOSITORY(6, false, "", 6),
-				CONNECT_TO_GITHUB(7, false, "", 7), SETTINGS(8, false, "", 8), ABOUT(9, false,
-				"", 9), SIGNOUT(10, false, "", 10);
+		REPOSITORY_OVERVIEW(0, false, "", 0), 
+		NOTIFICATIONS(1, true, "0", 1), 
+		PLANNING_POKER(2, false, "", 2), 
+		PERSONAL_NOTES(3, false, "", 3), 
+		BRANCHES(4, false, "", 4),
+		COLLABORATORS(5, false, "", 5), 
+		SELECT_REPOSITORY(6, false, "", 6),
+		CONNECT_TO_GITHUB(7, false, "", 7), 
+		SETTINGS(8, false, "", 8), 
+		ABOUT(9, false,"", 9), 
+		SIGNOUT(10, false, "", 10);
 
 		private final int position, titleIconArrayIndex;
 		private boolean isCounterVisible;

@@ -13,7 +13,7 @@ public class RequestUser extends RequestTask<String, Void, User>{
 		super();
 	}
 	
-	public RequestUser(RequestListener listener){
+	public RequestUser(RequestListener<User> listener){
 		super(listener);
 	}
 	

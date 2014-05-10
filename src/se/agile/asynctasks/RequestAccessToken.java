@@ -25,7 +25,7 @@ public class RequestAccessToken extends RequestTask<String, Void, String>{
 	private static String OAUTH_ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token";
 	private final String logTag = "PrincePolo";
 	private static boolean isRequestingAccessToken;
-	public RequestAccessToken(RequestListener listener){
+	public RequestAccessToken(RequestListener<String> listener){
 		super(listener);
 	}
 

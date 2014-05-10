@@ -12,7 +12,7 @@ public class RequestShortCommit extends RequestTask<String, Void, Commit>{
 		super();
 	}
 	
-	public RequestShortCommit(RequestListener listener){
+	public RequestShortCommit(RequestListener<Commit> listener){
 		super(listener);
 		url +=  super.getSelectedRepositoryName() + "/git/commits/";
 	}

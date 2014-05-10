@@ -15,7 +15,7 @@ public class RequestRepositories extends RequestTask<Void, Void, ArrayList<Repos
 		super();
 	}
 	
-	public RequestRepositories(RequestListener listener){
+	public RequestRepositories(RequestListener<ArrayList<Repository>> listener){
 		super(listener);
 	}
 	

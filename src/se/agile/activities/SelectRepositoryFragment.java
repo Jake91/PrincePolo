@@ -33,7 +33,7 @@ public class SelectRepositoryFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
 		rootView = inflater.inflate(R.layout.fragment_select_repository, container, false);
-		thread = new RequestRepositories(new RequestListenerAdapter<Integer>() {
+		thread = new RequestRepositories(new RequestListenerAdapter<ArrayList<Repository>>() {
 			@Override
 			public void whenNoInternetConnection() {
 				MainActivity.hasNoInternetConnection(getActivity());

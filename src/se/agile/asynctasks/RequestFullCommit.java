@@ -13,7 +13,7 @@ public class RequestFullCommit extends RequestTask<String, Void, Commit>{
 		super();
 	}
 	
-	public RequestFullCommit(RequestListener listener){
+	public RequestFullCommit(RequestListener<Commit> listener){
 		super(listener);
 		url +=  super.getSelectedRepositoryName() + "/commits/";
 	}

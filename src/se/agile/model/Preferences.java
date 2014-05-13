@@ -1,11 +1,13 @@
 package se.agile.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 import se.agile.activities.model.GitHubData.Branch;
 import se.agile.activities.model.GitHubData.Repository;
 import se.agile.activities.model.GitHubData.User;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -185,13 +187,49 @@ public class Preferences {
     	return list;
     }
     
-    
-    public static void setUnselectedBranches(ArrayList<Branch> unselectedBranches) {
+    // The List<String> passed in 
+    public static void setUnselectedBranchesArray(List<String> unselectedBranches) {
     	StringBuilder builder = new StringBuilder();
-    	for(Branch branch : unselectedBranches){
-    		builder.append(branch.getName() + ",");
+    	for(String branch : unselectedBranches){
+    		builder.append(branch + ",");
+    	}
+    	
+    	String result = builder.toString();
+    	String withoutLastComma = result.substring(0, result.length( ) - ",".length( ));
+    	setGeneral(PREF_KEY.UNSELECTED_BRANCHES, withoutLastComma);
+    	Log.d(logTag, "Branches :" + getGeneral(PREF_KEY.UNSELECTED_BRANCHES));
+    }
+    
+    public static void setUnselectedBranches(String unselectedBranch) {
+    	String branches = getGeneral(PREF_KEY.UNSELECTED_BRANCHES);
+    	StringBuilder builder = new StringBuilder();
+    	if (branches.equals(""))
+    	{
+    		builder.append(branches + unselectedBranch);
+    	}
+    	else
+    	{
+    		builder.append(branches + "," + unselectedBranch);
     	}
     	setGeneral(PREF_KEY.UNSELECTED_BRANCHES, builder.toString());
+    }
+    public static void removeUnselectedBranches(String unselectedBranch) {
+    	String branches = getGeneral(PREF_KEY.UNSELECTED_BRANCHES);
+    	
+        if (!branches.contains(","))
+        {
+        	setGeneral(PREF_KEY.UNSELECTED_BRANCHES, "");
+        }
+        else
+        {
+        	List<String> strings = new ArrayList<String>(Arrays.asList(branches.split(",")));
+        	Log.d(logTag, "Muh: " + unselectedBranch);
+        	while (strings.remove(unselectedBranch));
+            setUnselectedBranchesArray(strings);
+        }
+    }
+    public static void removeAllBranches() {
+        	setGeneral(PREF_KEY.UNSELECTED_BRANCHES, "");
     }
     public static ArrayList<Branch> getUnselectedBranches() {
     	ArrayList<Branch> list = new ArrayList<Branch>();

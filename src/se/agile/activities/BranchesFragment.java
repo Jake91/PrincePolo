@@ -1,65 +1,166 @@
-package se.agile.activities;	
+package se.agile.activities;  
 
 import java.util.ArrayList;
+import java.util.List;
 
+import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import se.agile.activities.model.GitHubData.Branch;
 import se.agile.asynctasks.RequestBranches;
-import se.agile.model.NotificationHandler;
+import se.agile.asynctasks.RequestListenerAdapter;
+import se.agile.model.BranchSelectionModel;
 import se.agile.model.Preferences;
-import se.agile.model.NotificationHandler;
-import se.agile.model.TemporaryStorage;
-import se.agile.model.Preferences.PREF_KEY;
+import se.agile.model.InteractiveArrayAdapter;
+import se.agile.princepolo.R;
 import android.app.ListFragment;
-import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
-
-public class BranchesFragment extends ListFragment {
-	
-	private RequestBranches requestBranches;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+public class BranchesFragment extends ListFragment 
+{
+	ArrayList<Branch> allBranches;
 	private final static String logTag = "PrincePolo";
-	private NotificationHandler notificationHandler;
-
-	  @Override
-	  public void onActivityCreated(Bundle savedInstanceState) 
-	  {
-	    super.onActivityCreated(savedInstanceState);
-	    
-	    RequestListener listener = new RequestListener
-	    
-	    
-	    
-	    //ArrayList<Branch> list = TemporaryStorage.branchList;
-		String listString = "";
+	public static boolean unselectButton;
+	Button selectionButton;
+	private ProgressBar spinner;
+	private TextView tv;
 	
-		for (Branch s : list)
+	RequestListenerAdapter<ArrayList<Branch>> listener = new RequestListenerAdapter<ArrayList<Branch>>() 
+	{
+		@Override
+		public void requestFinished(ArrayList<Branch> result) 
 		{
-			listString += s.getName() + "\t";
+			allBranches = result;
+			// Create an array of strings, that will be put to our ListActivity
+			ArrayAdapter<BranchSelectionModel> adapter = new InteractiveArrayAdapter(getActivity(), getModel());
+			setListAdapter(adapter);
+			spinner.setVisibility(View.GONE);
+			selectionButton.setVisibility(View.VISIBLE);
+			tv.setVisibility(View.VISIBLE);
 		}
-	    String[] values = new String[] { "Master", "thor", "thor2", "test" };
-	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), 
-	    		android.R.layout.simple_list_item_1, values);
-	    setListAdapter(adapter);
-	  }
+	};
+	
+	@Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
+	{
+	    View rootView = inflater.inflate(R.layout.fragment_branches, container, false);
+        spinner = (ProgressBar) rootView.findViewById(R.id.progressBar1);
+        spinner.setVisibility(View.VISIBLE);
+        tv = (TextView) rootView.findViewById(R.id.selecttext);
+        tv.setVisibility(View.INVISIBLE);
+        selectionButton = (Button) rootView.findViewById(R.id.unselectButton);
+        selectionButton.setVisibility(View.INVISIBLE);
 
-	  @Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		  String item = (String) getListAdapter().getItem(position);
-		  Toast.makeText(getActivity(), item + " selected", Toast.LENGTH_LONG).show();
+		RequestBranches reqbranches = new RequestBranches(listener);
+		reqbranches.execute();
+		
+		unselectButton = true;
+
+        // create our incredible click listener
+        OnClickListener seletionClickListener = new OnClickListener() 
+        {
+          @Override
+          public void onClick(View v) 
+          {
+      		//ArrayList<Branch> allBranches = new ArrayList<Branch>();
+      		RequestBranches reqbranches = new RequestBranches(listener);
+      		reqbranches.execute();
+      		
+      		if (selectionButton.getText().equals("Unselect all")) 
+      		{
+      	          selectionButton.setText("Select all");
+      	          unselectButton = false;
+      	          
+      			// All branches in an arraylist string
+      			List<String> namesOfAllBranches = new ArrayList<String>();
+    			for (int i = 0; i < allBranches.size(); i++)
+    			{
+    				namesOfAllBranches.add(allBranches.get(i).getName());
+    			}
+      			Preferences.setUnselectedBranchesArray(namesOfAllBranches);
+      			//Log.d(logTag,Arrays.toString(namesOfAllBranches.toArray()));
+  	        } 
+      		else 
+      		{
+      	          selectionButton.setText("Unselect all");
+      	          unselectButton = true;
+      	          Preferences.removeAllBranches();	          
+  	        }
+          }
+        };
+    
+        // assign click listener to the OK button (btnOK)
+        selectionButton.setOnClickListener(seletionClickListener);
+	        
+        return rootView;
+	}
+	
+	// The branch selection model
+	private List<BranchSelectionModel> getModel() 
+	{
+		List<BranchSelectionModel> list = new ArrayList<BranchSelectionModel>();
+		ArrayList<Branch> allUnselectedBranches = Preferences.getUnselectedBranches();
+		
+		// Adds checkboxes for all branches
+		for (Branch s : allBranches)
+		{
+			list.add(get(s.getName()));
+		}
+		
+		// Not finished
+		if (unselectButton == false)
+		{
+			return list;
+		}
+		else
+		{
+		// If no branches have been saved to preferences, then select all the checkboxes
+		if (allUnselectedBranches.isEmpty())
+		{
+			for (int i = 0; i< list.size(); i++)
+			{
+				list.get(i).setSelected(true);
+				selectionButton.setText("Unselect all");
+			}
+		}
+		
+		// If branches have been saved to preferences, then select just them
+		else
+		{
+			// Unselected branches in an arraylist string
+			ArrayList<String> namesOfUnselectedBranches = new ArrayList<String>();
+			for (int i = 0; i < allUnselectedBranches.size(); i++)
+			{
+				namesOfUnselectedBranches.add(allUnselectedBranches.get(i).getName());
+			}
 			
-		  ArrayList<Branch> list = TemporaryStorage.branchList;
-		  
-		  String listString = "";
-
-		  for (Branch s : list)
-		  {
-		      listString += s.getName() + "\t";
-		  }
-
-		  Log.d(logTag, ""+listString);
-	    	//Log.d(logTag, ""+ allBranches);
-	  }
-	} 
+			// All branches in an arraylist string
+			ArrayList<String> namesOfAllBranches = new ArrayList<String>();
+			for (int i = 0; i < allBranches.size(); i++)
+			{
+				namesOfAllBranches.add(allBranches.get(i).getName());
+			}
+			
+			// Pick those branches which belong to both arraylists ..		
+			for (int i = 0; i < namesOfAllBranches.size(); i++)
+			{
+				if (!namesOfUnselectedBranches.contains(namesOfAllBranches.get(i)))
+				{
+					list.get(i).setSelected(true);
+				}
+			}
+		}
+		
+		return list;
+		}
+	}
+	
+	private BranchSelectionModel get(String s) 
+	{
+		return new BranchSelectionModel(s);
+	}
+} 

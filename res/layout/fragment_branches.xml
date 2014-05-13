@@ -3,12 +3,36 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
+    
+    <TextView
+    android:id="@+id/selecttext"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Select branches to watch"
+    android:textSize="30px"
+    android:layout_marginLeft="4px"
+    android:paddingTop="10px"/>
  
-	<ListView
-	  android:id="@android:id/list"
-	  android:layout_width="match_parent"
-	  android:layout_height="wrap_content" >
-	</ListView> 
-	
+    <ListView
+      android:id="@android:id/list"
+      android:layout_marginTop="10dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" >
+    </ListView>
+    
+    <Button
+        android:id="@+id/unselectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select all" />
+                
+    <ProgressBar
+   android:id="@+id/progressBar1"
+   style="?android:attr/progressBarStyleLarge"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+    android:layout_gravity="center"
+/>
+
 </LinearLayout>
 

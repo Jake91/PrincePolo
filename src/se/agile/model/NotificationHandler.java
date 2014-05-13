@@ -70,6 +70,7 @@ public class NotificationHandler extends RequestListenerAdapter<ArrayList<Branch
 	public void requestFinished(ArrayList<Branch> branches) {
 		ArrayList<Branch> earlierBranches = TemporaryStorage.branchList;
 		if(earlierBranches != null && branches != null){
+			ArrayList<Branch> unselectedBrancherForNotification = Preferences.getUnselectedBranches();
 			for(Branch branch : branches){
 				int index = earlierBranches.indexOf(branch);
 				if(index >= 0){
@@ -77,7 +78,6 @@ public class NotificationHandler extends RequestListenerAdapter<ArrayList<Branch
 					
 					//Does the user want the notification??
 					boolean wantCommit = true;
-					ArrayList<Branch> unselectedBrancherForNotification = Preferences.getUnselectedBranches();
 					for(Branch unselectedBranch : unselectedBrancherForNotification){
 						if(branch.equals(unselectedBranch)){
 							wantCommit = false;
@@ -114,7 +114,6 @@ public class NotificationHandler extends RequestListenerAdapter<ArrayList<Branch
 			
 			@Override
 			public void requestFinished(Commit commit) {
-				Log.d("PrincePolo", "New commit recieved");
 				if(commit != null && commit.equals(simpleCommit)){
 					CommitNotification commitNotificaiton = new CommitNotification(commit);
 					ArrayList<File> workingFiles = TemporaryStorage.workingFiles;
@@ -130,7 +129,6 @@ public class NotificationHandler extends RequestListenerAdapter<ArrayList<Branch
 							}
 						}
 					}
-					
 				}
 			}
 		};

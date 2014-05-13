@@ -39,7 +39,7 @@ public class RequestAllFilesForBranch{
 						if(dir instanceof Folder){
 							Folder folder = (Folder) dir;
 							numberOfThreads++;
-							RequestFiles reqFiles = new RequestFiles(getDirectoryListener(), folder);
+							RequestFiles reqFiles = new RequestFiles(folder, getDirectoryListener());
 							reqFiles.execute();
 						}
 					}
@@ -53,13 +53,13 @@ public class RequestAllFilesForBranch{
 		return dirListener;
 	}
 	
-	public RequestAllFilesForBranch(final RequestListener<ArrayList<Directory>> listener, String branchName){
+	public RequestAllFilesForBranch(String branchName, RequestListener<ArrayList<Directory>> listener){
 		this.listener = listener;
 		this.folder = new Folder("ToppFolder");
 		folder.setBranchName(branchName);
 		folder.setPath("");
 		numberOfThreads++;
-		RequestFiles reqFiles = new RequestFiles(getDirectoryListener(), folder);
+		RequestFiles reqFiles = new RequestFiles(folder, getDirectoryListener());
 		reqFiles.execute("");
 	}
 	

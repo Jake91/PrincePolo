@@ -1,6 +1,6 @@
 package se.agile.activities.model.GitHubData;
 
-public interface Directory {
+public interface Directory extends Comparable<Directory>{
 
 	public String getPath();
 

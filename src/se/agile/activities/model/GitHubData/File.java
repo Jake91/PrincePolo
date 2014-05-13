@@ -1,12 +1,23 @@
 package se.agile.activities.model.GitHubData;
 
+import se.agile.model.TemporaryStorage;
+
 public class File implements GitHubDataInterface, Directory{
 	
 	private String name, status, path, sha, url, branchName;
 	private int deletions, additions, changes;
+	private boolean isWorkingFile;
 
-	public File(String name){
+	public File(String name, boolean checkIfWorkingFile){
 		this.name = name;
+		if(checkIfWorkingFile){
+			for(File file : TemporaryStorage.workingFiles){
+				if(file.getName().equals(this.name)){
+					isWorkingFile = true;
+					break;
+				}
+			}
+		}
 	}
 	
 	public String getStatus() {
@@ -124,5 +135,21 @@ public class File implements GitHubDataInterface, Directory{
 		
 	}
 	
+	@Override
+	public int compareTo(Directory another) {
+		if(another instanceof File){
+			return this.name.compareTo(another.getName());
+		}else{
+			return 1;
+		}
+		
+	}
 	
+	public boolean isWorkingFile(){
+		return isWorkingFile;
+	}
+	
+	public void switchIsWorkingFile(){
+		this.isWorkingFile = !isWorkingFile;
+	}
 }

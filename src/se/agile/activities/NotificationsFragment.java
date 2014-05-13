@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import se.agile.model.BranchNotification;
 import se.agile.model.CommitNotification;
-import se.agile.model.ListViewArrayAdapter;
+import se.agile.model.NotificationListArrayAdapter;
 import se.agile.model.Notification;
 import se.agile.model.NotificationHandler;
 import se.agile.model.TemporaryStorage;
@@ -26,12 +26,12 @@ public class NotificationsFragment extends Fragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
-        View rootView = inflater.inflate(R.layout.fragment_notifications, container, false);
+        View rootView = inflater.inflate(R.layout.list_view, container, false);
         
-        final ListView listview = (ListView) rootView.findViewById(R.id.Listview);
+        final ListView listview = (ListView) rootView.findViewById(R.id.listview);
         LinkedList<Notification> list = TemporaryStorage.getNotifications();
         if(list != null){
-        	final ListViewArrayAdapter adapter = new ListViewArrayAdapter(getActivity(), list);
+        	final NotificationListArrayAdapter adapter = new NotificationListArrayAdapter(getActivity(), list);
             listview.setAdapter(adapter);
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -68,16 +68,6 @@ public class NotificationsFragment extends Fragment {
             	        transaction.replace(R.id.content_notification_holder, branchFragment);
             	        transaction.commit();
             		}
-            		
-            		
-            		
-//            		final String item = (String) parent.getItemAtPosition(position);
-//            		view.animate().setDuration(2000).alpha(0).withEndAction(new Runnable() {
-//            			@Override
-//            			public void run() {
-//            				//do something
-//            			}
-//            		});
             	}
             });
         }

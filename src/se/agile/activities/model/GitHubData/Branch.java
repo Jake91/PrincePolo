@@ -2,7 +2,7 @@ package se.agile.activities.model.GitHubData;
 
 
 
-public class Branch implements GitHubDataInterface{
+public class Branch implements Comparable<Branch>, GitHubDataInterface{
 	private String name, url;
 	private Commit latestCommit;
 
@@ -35,7 +35,7 @@ public class Branch implements GitHubDataInterface{
 	
 	@Override
 	public String toString(){
-		return "Branchname: " + name;
+		return "BranchName: " + name;
 	}
 
 	@Override
@@ -61,6 +61,11 @@ public class Branch implements GitHubDataInterface{
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Branch another) {
+		return this.name.toLowerCase().compareTo(another.getName().toLowerCase());
 	}
 	
 	

@@ -19,10 +19,10 @@ public class RequestFiles extends RequestTask<String, Void, ArrayList<Directory>
 	}
 	
 	public RequestFiles(RequestListener<ArrayList<Directory>> listener){
-		this(listener, null);
+		this(null, listener);
 	}
 	
-	public RequestFiles(RequestListener<ArrayList<Directory>> listener, Folder folder){
+	public RequestFiles(Folder folder, RequestListener<ArrayList<Directory>> listener){
 		super(listener);
 		this.folder = folder;
 		url +=  super.getSelectedRepositoryName() + "/contents";
@@ -49,9 +49,9 @@ public class RequestFiles extends RequestTask<String, Void, ArrayList<Directory>
 		return list;
 	}
 	@Override
-	protected void onPostExecute(ArrayList<Directory> DirectoryList){
+	protected void onPostExecute(ArrayList<Directory> directoryList){
 		if(!isCancelled()){
-			finishedWithRequest(DirectoryList);
+			finishedWithRequest(directoryList);
 		}
 	}
 }

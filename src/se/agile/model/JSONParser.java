@@ -23,8 +23,9 @@ public class JSONParser {
 	private final static String logTag = "PrincePolo";
 
 	public static ArrayList<Branch> parseBranches(String json){
-		ArrayList<Branch> list = new ArrayList<Branch>();
+		ArrayList<Branch> list = null;
 		if(json != null){
+			list = new ArrayList<Branch>();
 			try {
 				JSONArray jsonArray = new JSONArray(json);
 				for(int i = 0; i < jsonArray.length(); i++){
@@ -46,8 +47,9 @@ public class JSONParser {
 	}
 	
 	public static ArrayList<Directory> parseDirectories(String json, String branchName){
-		ArrayList<Directory> list = new ArrayList<Directory>();
+		ArrayList<Directory> list = null;
 		if(json != null){
+			list = new ArrayList<Directory>();
 			try {
 				JSONArray jsonArray = new JSONArray(json);
 				for(int i = 0; i < jsonArray.length(); i++){
@@ -55,7 +57,7 @@ public class JSONParser {
 					String name = jsonArray.getJSONObject(i).getString("name");
 					Directory dir = null;
 					if(type.equals("file")){
-						dir = new File(name);
+						dir = new File(name, true);
 					}else if(type.equals("dir")){
 						dir = new Folder(name);
 					}else{
@@ -145,7 +147,7 @@ public class JSONParser {
 			JSONArray fileArray = object.getJSONArray("files");
 			for(int i = 0; i < fileArray.length(); i++){
 				JSONObject fileObject = fileArray.getJSONObject(i);
-				File file = new File(fileObject.getString("filename"));
+				File file = new File(fileObject.getString("filename"), true);
 				file.setStatus(fileObject.getString("status"));
 				try{
 					int additions = Integer.parseInt(fileObject.getString("additions"));
@@ -189,8 +191,9 @@ public class JSONParser {
 	}
 	
 	public static ArrayList<Repository> parseRepositories(String json){
-		ArrayList<Repository> list = new ArrayList<Repository>();
+		ArrayList<Repository> list = null;
 		if(json != null){
+			list = new ArrayList<Repository>();
 			try {
 				JSONArray jsonArray = new JSONArray(json);
 				for (int i = 0; i < jsonArray.length(); i++) {

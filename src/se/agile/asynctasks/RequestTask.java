@@ -101,6 +101,7 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 	public void finishedWithRequest(Result result){
 		if(result == null){
 			Log.e(logTag, "RequestTask: Result is null!");
+			listener.requestFailed();
 		}else{
 			this.result = result;
 			if(listener != null && !isCancelled()){

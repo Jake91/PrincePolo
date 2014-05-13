@@ -117,4 +117,10 @@ public class LoginActivity extends Activity implements RequestListener<String>{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void requestFailed() {
+		// TODO Auto-generated method stub
+		
+	}
 }

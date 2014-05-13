@@ -8,6 +8,7 @@ import se.agile.asynctasks.RequestAccessToken;
 import se.agile.model.Notification;
 import se.agile.model.NotificationHandler;
 import se.agile.model.Preferences;
+import se.agile.model.TemporaryStorage;
 import se.agile.navigator.NavDrawerItem;
 import se.agile.navigator.NavDrawerListAdapter;
 import se.agile.princepolo.R;
@@ -61,6 +62,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		Preferences.initializePreferences(this);
+		TemporaryStorage.workingFiles = Preferences.getWorkingFiles();
 		activity = this;
 		logTag = getResources().getString(R.string.logtag_main);
 
@@ -184,7 +186,7 @@ public class MainActivity extends Activity {
 		SELECT_REPOSITORY(6, false, "", 6),
 		CONNECT_TO_GITHUB(7, false, "", 7), 
 		SETTINGS(8, false, "", 8), 
-		ABOUT(9, false,"", 9), 
+		SELECT_WORKING_FILES(9, false,"", 9), 
 		SIGNOUT(10, false, "", 10);
 
 		private final int position, titleIconArrayIndex;
@@ -282,8 +284,8 @@ public class MainActivity extends Activity {
 		case SETTINGS:
 			fragment = new SettingsFragment();
 			break;
-		case ABOUT:
-			fragment = new AboutFragment();
+		case SELECT_WORKING_FILES:
+			fragment = new SelectWorkingFilesOverviewFragment();
 			break;
 		case SIGNOUT:
 			fragment = new SignOutFragment();
@@ -420,5 +422,10 @@ public class MainActivity extends Activity {
 			displayView(VIEW.NOTIFICATIONS);
 		}
 		super.onNewIntent(intent);
+	}
+	@Override
+	public void onStop(){
+		Preferences.setWorkingFiles(TemporaryStorage.workingFiles);
+		super.onStop();
 	}
 }

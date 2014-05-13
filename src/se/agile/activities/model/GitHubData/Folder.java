@@ -71,5 +71,13 @@ public class Folder implements Directory{
 	public void setBranchName(String branchName) {
 		this.branchName = branchName;
 	}
+	@Override
+	public int compareTo(Directory another) {
+		if(another instanceof Folder){
+			return this.name.compareTo(another.getName());
+		}else{
+			return -1;
+		}
+	}
 	
 }

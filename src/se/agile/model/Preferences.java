@@ -3,13 +3,12 @@ package se.agile.model;
 import java.util.ArrayList;
 
 import se.agile.activities.model.GitHubData.Branch;
+import se.agile.activities.model.GitHubData.File;
 import se.agile.activities.model.GitHubData.Repository;
 import se.agile.activities.model.GitHubData.User;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.util.Log;
 
 public class Preferences {
@@ -77,6 +76,7 @@ public class Preferences {
     	USER_REPOSITORIES("repos"),
     	SELECTED_REPOSITORY("selected_repository"),
     	UNSELECTED_REPOSITORIES("unselected_repositories"),
+    	WORKING_FILES("working_files"),
     	USER_ACCOUNT_CREATED("account_created"),
     	FIRST_TIME_USING_APP("is_first_time"),
     	CLIENT_ID("387b05f90574b6fede43"),
@@ -199,6 +199,29 @@ public class Preferences {
     	for(String branch: branches.split(",")){
     		if(!branch.equals("")){
     			list.add(new Branch(branch));
+    		}
+    	}
+    	return list;
+    }
+    
+    public static void setWorkingFiles(ArrayList<File> workingFiles) {
+    	StringBuilder builder = new StringBuilder();
+    	for(int i = 0; i < workingFiles.size(); i++){
+    		File file = workingFiles.get(i);
+    		builder.append(file.getName() + "+" + file.getPath() + (i == workingFiles.size() - 1 ? "" : ","));
+    	}
+    	setGeneral(PREF_KEY.WORKING_FILES, builder.toString());
+    }
+    
+    public static ArrayList<File> getWorkingFiles() {
+    	ArrayList<File> list = new ArrayList<File>();
+    	String files = getGeneral(PREF_KEY.WORKING_FILES);
+    	for(String file: files.split(",")){
+    		String[] temp = file.split("\\+");
+    		if(temp.length > 1){
+    			File f = new File(temp[0], false);
+    			f.setPath(temp[1]);
+    			list.add(f);
     		}
     	}
     	return list;

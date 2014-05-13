@@ -32,6 +32,11 @@
             android:label="@string/app_name" >
            
         </activity>
+        <activity
+            android:name="se.agile.activities.SelectWorkingFilesActivity"
+            android:label="@string/app_name" >
+           
+        </activity>
     </application>
 
 </manifest>

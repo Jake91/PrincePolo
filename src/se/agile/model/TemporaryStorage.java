@@ -1,11 +1,10 @@
 package se.agile.model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 
 import se.agile.activities.model.GitHubData.Branch;
+import se.agile.activities.model.GitHubData.File;
 
 public class TemporaryStorage 
 {
@@ -28,4 +27,5 @@ public class TemporaryStorage
 	public static LinkedList<Notification> getNotifications(){
 		return notificationList;
 	}
+	public static ArrayList<File> workingFiles;
 }

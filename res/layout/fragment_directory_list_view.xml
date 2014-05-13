@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    >
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+	    <Spinner
+	        android:id="@+id/directory_spinner"
+	        android:layout_width="wrap_content" 
+	        android:layout_weight="1"
+	        android:layout_height="50dp"
+	        android:layout_gravity="top|left"/>
+	    <Button 
+	        android:id="@+id/directory_done_button"
+			android:layout_width="100dp"
+			android:layout_height="match_parent"
+			android:layout_marginTop="3dp"
+			android:layout_marginBottom="3dp"
+        	android:layout_weight="0.1"
+			android:text="Done"
+			android:background="@drawable/done_buttonshape_selector"
+			android:textColor="#FFFFFF"
+			android:layout_gravity="right|center_vertical"/> 
+	</LinearLayout>
+    
+    <TextView 
+        android:id="@+id/directory_path"
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="5dp"
+        android:layout_gravity="top"
+        android:text="Path: initial"/>
+    
+    <View
+	    android:layout_width="fill_parent"
+	    android:layout_height="2dp"
+	    android:layout_gravity="top"
+	    android:background="@android:color/darker_gray"/>
+    
+	<ListView
+	    android:id="@+id/directory_list_view"
+	    android:layout_width="match_parent"
+	    android:layout_height="fill_parent" />
+    
+</LinearLayout>
+ 

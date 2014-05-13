@@ -9,4 +9,5 @@ public interface RequestListener<T> {
 	void requestUpdate();
 	void whenNoInternetConnection();
 	void whenNoSelectedRepository();
+	void requestFailed();
 }

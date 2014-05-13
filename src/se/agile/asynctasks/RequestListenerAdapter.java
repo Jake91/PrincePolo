@@ -26,4 +26,10 @@ public class RequestListenerAdapter<T> implements RequestListener<T>{
 		
 	}
 
+	@Override
+	public void requestFailed() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

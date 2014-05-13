@@ -18,12 +18,12 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ListViewArrayAdapter extends ArrayAdapter<Notification> implements NotificationListener{
+public class NotificationListArrayAdapter extends ArrayAdapter<Notification> implements NotificationListener{
 	private final Context context;
 	private LinkedList<Notification>  notificationList;
 
-	public ListViewArrayAdapter(Context context, LinkedList<Notification> notificationList) {
-		super(context, R.layout.list_view_notification,R.id.List_View_Message, notificationList);
+	public NotificationListArrayAdapter(Context context, LinkedList<Notification> notificationList) {
+		super(context, R.layout.list_view,R.id.List_View_Message, notificationList);
 		this.context = context;
 		this.notificationList = TemporaryStorage.getNotifications();
 		NotificationHandler.addNotificationListener(this);
@@ -32,7 +32,7 @@ public class ListViewArrayAdapter extends ArrayAdapter<Notification> implements 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View rowView = inflater.inflate(R.layout.list_view_notification, parent, false);
+		View rowView = inflater.inflate(R.layout.fragment_notifications_row, parent, false);
 		
 		TextView titleView = (TextView) rowView.findViewById(R.id.List_View_Title);
 		TextView dateView = (TextView) rowView.findViewById(R.id.List_View_Date);

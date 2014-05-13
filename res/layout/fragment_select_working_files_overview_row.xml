@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal">
+
+    
+    <LinearLayout
+    	android:layout_width="wrap_content"
+    	android:layout_height="fill_parent"
+    	android:gravity="center|left"
+    	android:paddingLeft="5dp">
+	    <ImageView
+	        android:id="@+id/directory_icon"
+	        android:layout_width="50dp"
+	        android:layout_height="fill_parent"
+	        android:contentDescription="TODO"
+	        android:layout_weight="1"
+	        android:gravity="left"
+	        android:src="@drawable/file_icon" />
+	</LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+    	android:layout_height="fill_parent"
+    	android:padding="6dip" 
+    	android:layout_weight="1"
+    	android:gravity="left"
+    	android:orientation="vertical">
+    	
+        <TextView
+            android:id="@+id/directory_name"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="CommitFragment.java"
+	        android:textSize="16sp" />
+    
+   		 <TextView
+	        android:id="@+id/directory_path"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="se/agile/activities"
+	        android:textSize="12sp" />
+        
+    </LinearLayout>
+    
+    <LinearLayout
+    	android:layout_width="wrap_content"
+    	android:layout_height="fill_parent"
+    	android:gravity="center|right"
+    	android:paddingRight="10dp">
+		  	<Button 
+		      	android:id="@+id/working_removeButton"
+				android:layout_width="60dp"
+				android:layout_height="40dp"
+				android:layout_gravity="right|center_vertical"
+	        	android:background="@drawable/remove_buttonshape_selector"
+				android:text="Remove"
+				android:textColor="#FFFFFF"
+				android:textSize="14sp"
+				
+				android:shadowColor="#696969"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"/>      
+ 	</LinearLayout>
+    
+</LinearLayout> 

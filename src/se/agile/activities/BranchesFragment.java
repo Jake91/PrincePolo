@@ -13,14 +13,20 @@ import se.agile.model.Preferences;
 import se.agile.model.InteractiveArrayAdapter;
 import se.agile.princepolo.R;
 import android.app.ListFragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 public class BranchesFragment extends ListFragment 
+
 {
 	ArrayList<Branch> allBranches;
 	private final static String logTag = "PrincePolo";
@@ -28,6 +34,7 @@ public class BranchesFragment extends ListFragment
 	Button selectionButton;
 	private ProgressBar spinner;
 	private TextView tv;
+	private CheckBox checkbox;
 	
 	RequestListenerAdapter<ArrayList<Branch>> listener = new RequestListenerAdapter<ArrayList<Branch>>() 
 	{
@@ -38,6 +45,7 @@ public class BranchesFragment extends ListFragment
 			// Create an array of strings, that will be put to our ListActivity
 			ArrayAdapter<BranchSelectionModel> adapter = new InteractiveArrayAdapter(getActivity(), getModel());
 			setListAdapter(adapter);
+			
 			spinner.setVisibility(View.GONE);
 			selectionButton.setVisibility(View.VISIBLE);
 			tv.setVisibility(View.VISIBLE);
@@ -45,7 +53,7 @@ public class BranchesFragment extends ListFragment
 	};
 	
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) 
 	{
 	    View rootView = inflater.inflate(R.layout.fragment_branches, container, false);
         spinner = (ProgressBar) rootView.findViewById(R.id.progressBar1);
@@ -54,11 +62,48 @@ public class BranchesFragment extends ListFragment
         tv.setVisibility(View.INVISIBLE);
         selectionButton = (Button) rootView.findViewById(R.id.unselectButton);
         selectionButton.setVisibility(View.INVISIBLE);
+        checkbox = (CheckBox) rootView.findViewById(R.id.chkAll);
 
 		RequestBranches reqbranches = new RequestBranches(listener);
 		reqbranches.execute();
 		
 		unselectButton = true;
+		
+		
+		if (checkbox.isChecked())
+		      checkbox.toggle();
+
+		    checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() 
+		    {
+
+		      public void onCheckedChanged(CompoundButton arg0, boolean isChecked) 
+		      {
+		      		RequestBranches reqbranches = new RequestBranches(listener);
+		      		reqbranches.execute();
+		      		
+		    	  if (checkbox.isChecked())
+		    	  {
+	      	          unselectButton = true;
+	      	          Preferences.removeAllBranches();	  
+	      	          
+		    	  }
+		    	  else
+		    	  {
+
+	      	          unselectButton = false;
+	      	          
+	        			// All branches in an arraylist string
+	        			List<String> namesOfAllBranches = new ArrayList<String>();
+	      			for (int i = 0; i < allBranches.size(); i++)
+	      			{
+	      				namesOfAllBranches.add(allBranches.get(i).getName());
+	      			}
+	        			Preferences.setUnselectedBranchesArray(namesOfAllBranches);
+		    	  }
+		      }
+		    });
+
+		
 
         // create our incredible click listener
         OnClickListener seletionClickListener = new OnClickListener() 
@@ -124,8 +169,8 @@ public class BranchesFragment extends ListFragment
 			for (int i = 0; i< list.size(); i++)
 			{
 				list.get(i).setSelected(true);
-				selectionButton.setText("Unselect all");
 			}
+			selectionButton.setText("Unselect all");
 		}
 		
 		// If branches have been saved to preferences, then select just them
@@ -153,6 +198,7 @@ public class BranchesFragment extends ListFragment
 					list.get(i).setSelected(true);
 				}
 			}
+			
 		}
 		
 		return list;

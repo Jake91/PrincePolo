@@ -3,6 +3,8 @@ package se.agile.activities;
 import java.util.ArrayList;
 
 import se.agile.activities.MainActivity.VIEW;
+import se.agile.activities.model.GitHubData.Branch;
+import se.agile.activities.model.GitHubData.File;
 import se.agile.activities.model.GitHubData.Repository;
 import se.agile.asynctasks.RequestListenerAdapter;
 import se.agile.asynctasks.RequestRepositories;
@@ -59,6 +61,9 @@ public class SelectRepositoryFragment extends Fragment{
 						public void onClick(View v) {
 							Preferences.setSelectedRepository(new Repository(((RadioButton) v).getText().toString()));
 							TemporaryStorage.branchList = null;
+							TemporaryStorage.workingFiles = new ArrayList<File>();
+							Preferences.setWorkingFiles(new ArrayList<File>());
+							Preferences.setUnselectedBranches(new ArrayList<Branch>());
 							((MainActivity) getActivity()).displayView(VIEW.REPOSITORY_OVERVIEW);
 						}
 					};

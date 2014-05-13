@@ -64,6 +64,8 @@ public class Preferences {
     	setUserAcountCreated("");
     	setIsFirstTime(true);
     	setTimeInterval("10"); // 10 seconds between checks
+    	setUnselectedBranches(new ArrayList<Branch>());
+    	setWorkingFiles(new ArrayList<File>());
     }
     
     public static enum PREF_KEY {

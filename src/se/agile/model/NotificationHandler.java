@@ -10,6 +10,7 @@ import se.agile.activities.MainActivity;
 import se.agile.activities.MainActivity.VIEW;
 import se.agile.activities.model.GitHubData.Branch;
 import se.agile.activities.model.GitHubData.Commit;
+import se.agile.activities.model.GitHubData.File;
 import se.agile.asynctasks.RequestBranches;
 import se.agile.asynctasks.RequestFullCommit;
 import se.agile.asynctasks.RequestListener;
@@ -73,12 +74,25 @@ public class NotificationHandler extends RequestListenerAdapter<ArrayList<Branch
 				int index = earlierBranches.indexOf(branch);
 				if(index >= 0){
 					//Branch exist
-					Commit earlierCommit = earlierBranches.get(index).getLatestCommit();
-					Commit latestCommit = branch.getLatestCommit();
-					if(!earlierCommit.equals(latestCommit)){
-//						Commits are different. A new commit have been received.
-						getFullCommit(branch);
+					
+					//Does the user want the notification??
+					boolean wantCommit = true;
+					ArrayList<Branch> unselectedBrancherForNotification = Preferences.getUnselectedBranches();
+					for(Branch unselectedBranch : unselectedBrancherForNotification){
+						if(branch.equals(unselectedBranch)){
+							wantCommit = false;
+							break;
+						}
 					}
+					if(wantCommit){
+						Commit earlierCommit = earlierBranches.get(index).getLatestCommit();
+						Commit latestCommit = branch.getLatestCommit();
+						if(!earlierCommit.equals(latestCommit)){
+//							Commits are different. A new commit have been received.
+							getFullCommit(branch);
+						}
+					}
+					
 				}else{
 					//New branch
 					Log.d("PrincePolo", "New branch recieved");
@@ -103,8 +117,20 @@ public class NotificationHandler extends RequestListenerAdapter<ArrayList<Branch
 				Log.d("PrincePolo", "New commit recieved");
 				if(commit != null && commit.equals(simpleCommit)){
 					CommitNotification commitNotificaiton = new CommitNotification(commit);
+					ArrayList<File> workingFiles = TemporaryStorage.workingFiles;
+					ArrayList<File> changedFiles = commit.getChangedFiles();
 					TemporaryStorage.addNotification(commitNotificaiton );
 					fireNotification(commitNotificaiton);
+					for(File changedFile : changedFiles){
+						for(File workingFile : workingFiles){
+							if(changedFile.equals(workingFile)){
+								ConflictNotification confNotif = new ConflictNotification(changedFile, commit);
+								TemporaryStorage.addNotification(confNotif);
+								fireNotification(confNotif);
+							}
+						}
+					}
+					
 				}
 			}
 		};

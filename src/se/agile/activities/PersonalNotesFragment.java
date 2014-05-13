@@ -35,7 +35,10 @@ public class PersonalNotesFragment extends Fragment implements OnClickListener, 
 	private String logTag;
 	private View rootView;
 	private static File noteFile;
-	private Button saveNoteButton;
+	private Button saveNoteButton, createButton, finishButton, 
+			addButton, deleteButton, mergeButton, branchButton,
+			classButton, packageButton, interfaceButton,
+			featureButton, taskButton, testButton;
     private ListView list,list_head;
     private ArrayList<HashMap<String, String>> mylist, mylist_title;
     private ListAdapter adapter_title, adapter;
@@ -54,6 +57,30 @@ public class PersonalNotesFragment extends Fragment implements OnClickListener, 
         list = (ListView) rootView.findViewById(R.id.listView2);
         list_head = (ListView) rootView.findViewById(R.id.listView1);
         saveNoteButton = (Button)rootView.findViewById(R.id.saveNote_Button);
+        createButton = (Button)rootView.findViewById(R.id.create_Button);
+        finishButton = (Button)rootView.findViewById(R.id.finish_Button);
+        addButton = (Button)rootView.findViewById(R.id.add_Button);
+        deleteButton = (Button)rootView.findViewById(R.id.delete_Button);
+        mergeButton = (Button)rootView.findViewById(R.id.merge_Button);
+        branchButton = (Button)rootView.findViewById(R.id.branch_Button);
+        classButton = (Button)rootView.findViewById(R.id.class_Button);
+        packageButton = (Button)rootView.findViewById(R.id.package_Button);
+        interfaceButton = (Button)rootView.findViewById(R.id.interface_Button);
+        featureButton = (Button)rootView.findViewById(R.id.feature_Button);
+        taskButton = (Button)rootView.findViewById(R.id.task_Button);
+        testButton = (Button)rootView.findViewById(R.id.test_Button);
+        createButton.setOnClickListener(this);
+        finishButton.setOnClickListener(this);
+        addButton.setOnClickListener(this);
+        deleteButton.setOnClickListener(this);
+        mergeButton.setOnClickListener(this);
+        branchButton.setOnClickListener(this);
+        classButton.setOnClickListener(this);
+        packageButton.setOnClickListener(this);
+        interfaceButton.setOnClickListener(this);
+        featureButton.setOnClickListener(this);
+        taskButton.setOnClickListener(this);
+        testButton.setOnClickListener(this);
         saveNoteButton.setOnClickListener(this);
         list.setOnItemClickListener(this);
 		try {
@@ -105,11 +132,10 @@ public class PersonalNotesFragment extends Fragment implements OnClickListener, 
 
 	@Override 
 	public void onClick(View v) {
-		
+		EditText et = (EditText)rootView.findViewById(R.id.note_textField);
+		String msg = et.getText().toString();
 		if (v == saveNoteButton) {
 			String date = getDate();
-			EditText et = (EditText)rootView.findViewById(R.id.note_textField);
-			String msg = et.getText().toString();
 			et.setText("");
 			if((msg != null) && (msg.trim().length() > 0)){
 				notes.add(date);
@@ -125,6 +151,114 @@ public class PersonalNotesFragment extends Fragment implements OnClickListener, 
 					e.printStackTrace();
 				}
 			}
+		}
+		else if ( v == createButton){
+			if (msg.length() == 0){
+				et.setText(msg + "Create");
+			}
+			else {
+				et.setText(msg + " create");
+			}
+			et.setSelection(et.length());
+		}
+		else if ( v == finishButton){
+			if (msg.length() == 0){
+				et.setText(msg + "Finish");
+			}
+			else {
+				et.setText(msg + " finish");
+			}
+			et.setSelection(et.length());
+		}
+		else if ( v == addButton){
+			if (msg.length() == 0){
+				et.setText(msg + "Add");
+			}
+			else {
+				et.setText(msg + " add");
+			}
+			et.setSelection(et.length());
+		}
+		else if ( v == deleteButton){
+			if (msg.length() == 0){
+				et.setText(msg + "Delete");
+			}
+			else {
+				et.setText(msg + " delete");
+			}
+			et.setSelection(et.length());
+		}
+		else if ( v == mergeButton){
+			if (msg.length() == 0){
+				et.setText(msg + "Merge");
+			}
+			else {
+				et.setText(msg + " merge");
+			}
+			et.setSelection(et.length());
+		}
+		else if ( v == branchButton){
+			if (msg.length() == 0){
+				et.setText(msg + "Branch");
+			}
+			else {
+				et.setText(msg + " branch");
+			}
+			et.setSelection(et.length());
+		}
+		else if ( v == classButton){
+			if (msg.length() == 0){
+				et.setText(msg + "Class");
+			}
+			else {
+				et.setText(msg + " class");
+			}
+			et.setSelection(et.length());
+		}
+		else if ( v == packageButton){
+			if (msg.length() == 0){
+				et.setText(msg + "Package");
+			}
+			else {
+				et.setText(msg + " package");
+			}
+			et.setSelection(et.length());
+		}
+		else if ( v == interfaceButton){
+			if (msg.length() == 0){
+				et.setText(msg + "Interface");
+			}
+			else {
+				et.setText(msg + " interface");
+			}
+			et.setSelection(et.length());
+		}
+		else if ( v == featureButton){
+			if (msg.length() == 0){
+				et.setText(msg + "Feature");
+			}
+			else {
+				et.setText(msg + " feature");
+			}
+			et.setSelection(et.length());
+		}
+		else if ( v == taskButton){
+			if (msg.length() == 0){
+				et.setText(msg + "Task");
+			}
+			else {
+				et.setText(msg + " task");
+			}
+			et.setSelection(et.length());
+		}
+		else if ( v == testButton){
+			if (msg.length() == 0){
+				et.setText(msg + "Test");
+			}
+			else {
+				et.setText(msg + " test");
+			}
+			et.setSelection(et.length());
 		}
 	}
 	
@@ -214,7 +348,7 @@ public class PersonalNotesFragment extends Fragment implements OnClickListener, 
 		    }
 		};
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setMessage("Delete this note?").setNegativeButton("Nay", dialogClickListener)
-		.setPositiveButton("Yeah", dialogClickListener).show();	
+		builder.setMessage("Delete this note?").setNegativeButton("No", dialogClickListener)
+		.setPositiveButton("Yes", dialogClickListener).show();	
 	}
 }

@@ -17,6 +17,8 @@ public class CardFragment extends Fragment
 {
 	private String logTag;
 	private CharSequence text;
+	private Integer clickNumber = 0;
+	private Fragment previousFragment;
 
 	public CardFragment()
 	{
@@ -24,18 +26,18 @@ public class CardFragment extends Fragment
 	}
 
 	@SuppressLint("ValidFragment")
-	public CardFragment(CharSequence txt)
+	public CardFragment(CharSequence txt, Fragment prevFragment)
 	{
 		Log.d(logTag, "Constructor text");
 		text=txt;
+		previousFragment = prevFragment;
 	}
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
         View rootView = inflater.inflate(R.layout.fragment_card, container, false);
         
-        Button p1_button = (Button) rootView.findViewById(R.id.bttnCloseCard);
-        p1_button.setText(text);
+        final Button p1_button = (Button) rootView.findViewById(R.id.bttnCloseCard);
         
 //        TextView tv = (TextView) rootView.findViewById(R.id.textOnCard);
 //        tv.setText(text);
@@ -46,10 +48,18 @@ public class CardFragment extends Fragment
         	@Override
         	public void onClick(View v) 
         	{
-             getActivity().getFragmentManager().popBackStack();
-             FragmentManager fragmentManager = getFragmentManager();
-             fragmentManager.beginTransaction().remove(fragment).commit();
-             Log.d(logTag, "fragment stuff");
+        		if ( clickNumber == 0){
+        			p1_button.setBackgroundResource(R.drawable.whole_screen_button);
+        			p1_button.setText(text);
+        			clickNumber++;
+        		}
+        		else {
+		            FragmentManager fragmentManager = getFragmentManager();
+		            fragmentManager.beginTransaction().replace(R.id.frame_container, previousFragment).commit();
+		            fragmentManager.beginTransaction().remove(fragment).commit();
+		            Log.d(logTag, "fragment stuff");
+        		}
+        		
         	}
         };
         ((Button) rootView.findViewById(R.id.bttnCloseCard)).setOnClickListener(bttnListener);

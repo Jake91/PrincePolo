@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import se.agile.activities.MainActivity.VIEW;
 import se.agile.activities.model.GitHubData.Branch;
 import se.agile.asynctasks.RequestBranches;
 import se.agile.asynctasks.RequestListenerAdapter;
@@ -13,6 +14,7 @@ import se.agile.model.Preferences;
 import se.agile.model.InteractiveArrayAdapter;
 import se.agile.princepolo.R;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -64,6 +66,18 @@ public class BranchesFragment extends ListFragment
         selectionButton.setVisibility(View.INVISIBLE);
         checkbox = (CheckBox) rootView.findViewById(R.id.chkAll);
 
+        Button nextButton = (Button) rootView.findViewById(R.id.nextButton);
+        nextButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), SelectWorkingFilesActivity.class);
+				startActivity(intent);
+				((MainActivity) getActivity()).displayView(VIEW.REPOSITORY_OVERVIEW);
+				
+			}
+		});
+        
 		RequestBranches reqbranches = new RequestBranches(listener);
 		reqbranches.execute();
 		
@@ -106,7 +120,7 @@ public class BranchesFragment extends ListFragment
 		
 
         // create our incredible click listener
-        OnClickListener seletionClickListener = new OnClickListener() 
+        OnClickListener selectionClickListener = new OnClickListener() 
         {
           @Override
           public void onClick(View v) 
@@ -139,7 +153,7 @@ public class BranchesFragment extends ListFragment
         };
     
         // assign click listener to the OK button (btnOK)
-        selectionButton.setOnClickListener(seletionClickListener);
+        selectionButton.setOnClickListener(selectionClickListener);
 	        
         return rootView;
 	}

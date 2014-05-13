@@ -65,7 +65,7 @@ public class SelectRepositoryFragment extends Fragment{
 							TemporaryStorage.workingFiles = new ArrayList<File>();
 							Preferences.setWorkingFiles(new ArrayList<File>());
 							Preferences.removeAllBranches();
-							((MainActivity) getActivity()).displayView(VIEW.REPOSITORY_OVERVIEW);
+							((MainActivity) getActivity()).displayView(VIEW.BRANCHES);
 						}
 					};
 					String selectedRepo = Preferences.getSelectedRepository().getName();

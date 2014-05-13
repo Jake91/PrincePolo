@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import se.agile.model.BranchNotification;
 import se.agile.model.CommitNotification;
+import se.agile.model.ConflictNotification;
 import se.agile.model.NotificationListArrayAdapter;
 import se.agile.model.Notification;
 import se.agile.model.NotificationHandler;
@@ -66,6 +67,20 @@ public class NotificationsFragment extends Fragment {
             	        FragmentTransaction transaction = fm.beginTransaction();
             	        transaction.addToBackStack("Notes");
             	        transaction.replace(R.id.content_notification_holder, branchFragment);
+            	        transaction.commit();
+            		}else if(not instanceof ConflictNotification){
+            			ConflictNotification conflictNot = (ConflictNotification) not;
+            			ConflictFragment conflictFragment = new ConflictFragment();
+            			conflictFragment.setTuple(conflictNot.getData());
+            			
+            			if(!not.hasBeenViewed()){
+            				not.setHasBeenViewed(true);
+                			NotificationHandler.viewedNotification(conflictNot);
+            			}
+            			FragmentManager fm = getFragmentManager();
+            	        FragmentTransaction transaction = fm.beginTransaction();
+            	        transaction.addToBackStack("Notes");
+            	        transaction.replace(R.id.content_notification_holder, conflictFragment);
             	        transaction.commit();
             		}
             	}

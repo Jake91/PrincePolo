@@ -1,6 +1,9 @@
 package se.agile.activities;
 
 import se.agile.activities.model.GitHubData.Branch;
+import se.agile.activities.model.GitHubData.Commit;
+import se.agile.activities.model.GitHubData.File;
+import se.agile.model.Tuple;
 import se.agile.princepolo.R;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -12,25 +15,23 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class BranchFragment extends Fragment 
+public class ConflictFragment extends Fragment 
 {
 	private String logTag;
-	private CharSequence text;
-	private Branch branch;
 	private View rootView;
-
-	public BranchFragment(){
+	private Tuple<File, Commit> tuple;
+	public ConflictFragment(){
 
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		logTag = getResources().getString(R.string.logtag_main);
-		rootView = inflater.inflate(R.layout.fragment_branch, container, false);
+		rootView = inflater.inflate(R.layout.fragment_conflict, container, false);
 
-		if(branch != null){
-			TextView textView = (TextView) rootView.findViewById(R.id.branch_Message);
-			textView.setText(branch.toString());
+		if(tuple != null){
+			TextView textView = (TextView) rootView.findViewById(R.id.conflict_Message);
+			textView.setText(tuple.first.toString());
 		}
 		android.view.View.OnClickListener viewListener = new View.OnClickListener() 
 		{
@@ -43,20 +44,20 @@ public class BranchFragment extends Fragment
 				transaction.commit();
 			}
 		};
-		((RelativeLayout) rootView.findViewById(R.id.branch_View)).setOnClickListener(viewListener);
+		((RelativeLayout) rootView.findViewById(R.id.conflict_View)).setOnClickListener(viewListener);
 		return rootView;
 	}
 
 
-	public Branch getBranch() {
-		return branch;
+	public Tuple<File, Commit> getTuple() {
+		return tuple;
 	}
 
 
-	public void setBranch(Branch branch) {
-		this.branch = branch;
+	public void setTuple(Tuple<File, Commit> tuple) {
+		this.tuple = tuple;
 	}
-
+	
 
 }
 

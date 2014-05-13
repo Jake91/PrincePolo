@@ -21,16 +21,123 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
+        android:layout_height="30dip"
+        android:orientation="horizontal"
+        android:id="@+id/LinearLayout2"
+        android:layout_below="@+id/LinearLayout1">
+        
+        <Button android:id="@+id/create_Button"
+        style="@android:style/ButtonBar"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/create_Button"/>
+        
+        <Button android:id="@+id/finish_Button"
+        style="@android:style/ButtonBar"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/finish_Button"/>
+        
+        <Button android:id="@+id/add_Button"
+        style="@android:style/ButtonBar"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/add_Button"/>
+        
+        <Button android:id="@+id/delete_Button"
+        style="@android:style/ButtonBar"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/delete_Button"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="30dip"
+        android:orientation="horizontal"
+        android:id="@+id/LinearLayout3"
+        android:layout_below="@+id/LinearLayout2">
+        
+        <Button android:id="@+id/merge_Button"
+        style="@android:style/ButtonBar"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/merge_Button"/>
+        
+        <Button android:id="@+id/branch_Button"
+        style="@android:style/ButtonBar"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/branch_Button"/>
+        
+        <Button android:id="@+id/class_Button"
+        style="@android:style/ButtonBar"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/class_Button"/>
+        
+        <Button android:id="@+id/package_Button"
+        style="@android:style/ButtonBar"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/package_Button"/>
+        
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="30dip"
+        android:orientation="horizontal"
+        android:id="@+id/LinearLayout4"
+        android:layout_below="@+id/LinearLayout3">
+        
+        <Button android:id="@+id/interface_Button"
+        style="@android:style/ButtonBar"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/interface_Button"/>
+        
+        <Button android:id="@+id/feature_Button"
+        style="@android:style/ButtonBar"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/feature_Button"/>
+        
+        <Button android:id="@+id/task_Button"
+        style="@android:style/ButtonBar"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/task_Button"/>
+        
+        <Button android:id="@+id/test_Button"
+        style="@android:style/ButtonBar"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/test_Button"/>
+        
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/LinearLayout2"
-        android:layout_below="@+id/LinearLayout1"
+        android:id="@+id/LinearLayout5"
+        android:layout_below="@+id/LinearLayout4"
         android:layout_alignParentBottom="true">
         <ListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_green_light">
+        android:background="@android:color/holo_blue_dark">
     	</ListView>
 
    		<ListView

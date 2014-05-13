@@ -1,6 +1,9 @@
 package se.agile.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 import se.agile.activities.model.GitHubData.Branch;
 import se.agile.activities.model.GitHubData.File;
@@ -64,7 +67,7 @@ public class Preferences {
     	setUserAcountCreated("");
     	setIsFirstTime(true);
     	setTimeInterval("10"); // 10 seconds between checks
-    	setUnselectedBranches(new ArrayList<Branch>());
+    	removeAllBranches();
     	setWorkingFiles(new ArrayList<File>());
     }
     
@@ -77,8 +80,8 @@ public class Preferences {
     	USER_NAME("username"),
     	USER_REPOSITORIES("repos"),
     	SELECTED_REPOSITORY("selected_repository"),
-    	UNSELECTED_REPOSITORIES("unselected_repositories"),
     	WORKING_FILES("working_files"),
+    	UNSELECTED_BRANCHES("unselected_branches"),
     	USER_ACCOUNT_CREATED("account_created"),
     	FIRST_TIME_USING_APP("is_first_time"),
     	CLIENT_ID("387b05f90574b6fede43"),
@@ -187,17 +190,47 @@ public class Preferences {
     	return list;
     }
     
-    
-    public static void setUnselectedBranches(ArrayList<Branch> unselectedBranches) {
+    // The List<String> passed in 
+    public static void setUnselectedBranchesArray(List<String> unselectedBranches) {
     	StringBuilder builder = new StringBuilder();
-    	for(Branch branch : unselectedBranches){
-    		builder.append(branch.getName() + ",");
+    	for(int i = 0; i < unselectedBranches.size();i++){
+    		builder.append(unselectedBranches.get(i) + (unselectedBranches.size() - 1 == i ? "" : ","));
     	}
-    	setGeneral(PREF_KEY.UNSELECTED_REPOSITORIES, builder.toString());
+    	setGeneral(PREF_KEY.UNSELECTED_BRANCHES, builder.toString());
     }
+
+	public static void addUnselectedBranch(String unselectedBranch) {
+		String branches = getGeneral(PREF_KEY.UNSELECTED_BRANCHES);
+		StringBuilder builder = new StringBuilder();
+		if (branches.equals("")) {
+			builder.append(branches + unselectedBranch);
+		} else {
+			builder.append(branches + "," + unselectedBranch);
+		}
+		setGeneral(PREF_KEY.UNSELECTED_BRANCHES, builder.toString());
+	}
+
+	public static void removeUnselectedBranches(String unselectedBranch) {
+		String branches = getGeneral(PREF_KEY.UNSELECTED_BRANCHES);
+
+		if (!branches.contains(",")) {
+			setGeneral(PREF_KEY.UNSELECTED_BRANCHES, "");
+		} else {
+			List<String> strings = new ArrayList<String>(Arrays.asList(branches
+					.split(",")));
+			Log.d(logTag, "Muh: " + unselectedBranch);
+			while (strings.remove(unselectedBranch))
+				;
+			setUnselectedBranchesArray(strings);
+		}
+	}
+    public static void removeAllBranches() {
+        	setGeneral(PREF_KEY.UNSELECTED_BRANCHES, "");
+    }
+    
     public static ArrayList<Branch> getUnselectedBranches() {
     	ArrayList<Branch> list = new ArrayList<Branch>();
-    	String branches = getGeneral(PREF_KEY.UNSELECTED_REPOSITORIES);
+    	String branches = getGeneral(PREF_KEY.UNSELECTED_BRANCHES);
     	for(String branch: branches.split(",")){
     		if(!branch.equals("")){
     			list.add(new Branch(branch));
@@ -228,7 +261,6 @@ public class Preferences {
     	}
     	return list;
     }
-    
     
     public static void setUserAcountCreated(String account_created) {
     	setGeneral(PREF_KEY.USER_ACCOUNT_CREATED, account_created);

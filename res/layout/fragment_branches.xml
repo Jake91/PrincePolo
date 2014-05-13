@@ -1,15 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_weight="1">
+        
+        <TextView
+    android:id="@+id/selecttext"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Select branches to watch"
+    android:textSize="30px"
+    android:layout_marginLeft="4px"
+    android:paddingTop="10px"/>
+ 
+    <ListView
+      android:id="@android:id/list"
+      android:layout_marginTop="10dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/selecttext"
+      android:layout_alignParentLeft="true" >
+    </ListView>
     
+    <View
+    android:layout_width="fill_parent"
+    android:layout_height="1dp"
+	android:layout_below="@android:id/list"
+    android:background="@android:color/darker_gray"/>
+    
+	<CheckBox
+            android:id="@+id/chkAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@android:id/list"
+			android:layout_alignLeft="@android:id/list"
+			android:layout_marginLeft="4px"
+			android:checked="true"
+        />
     
     <TextView
-        android:id="@+id/Commit_Message"
-         android:layout_width="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:id="@+id/allText"
+            android:text="All branches"
+			android:layout_toRightOf="@+id/chkAll"
+			android:layout_below="@android:id/list"
+			android:layout_alignBaseline="@+id/chkAll"
+			android:textSize="30px"
+        />
+    
+    <Button
+        android:id="@+id/unselectButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="16dp"
-        android:text="Message: bnla lasnkfjlkdsf"/>
-   
+        android:text="Select all"
+        android:layout_below="@+id/chkAll" />
+    
+        
+        <ProgressBar
+   android:id="@+id/progressBar1"
+   style="?android:attr/progressBarStyleLarge"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:layout_centerInParent="true"/>
 </RelativeLayout>

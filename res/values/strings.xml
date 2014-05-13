@@ -7,6 +7,19 @@
     <string name="drawer_close">Slider Menu Closed</string>
     <string name="note_textField">Write something...</string>
     <string name="saveNote_Button">Save</string>
+    <string name="create_Button">Create</string>
+    <string name="finish_Button">Finish</string>
+    <string name="add_Button">Add</string>
+    <string name="delete_Button">Delete</string>
+    <string name="merge_Button">Merge</string>
+    <string name="branch_Button">Branch</string>
+    <string name="class_Button">Class</string>
+    <string name="package_Button">Package</string>
+    <string name="interface_Button">Interface</string>
+    <string name="feature_Button">Feature</string>
+    <string name="task_Button">Task</string>
+    <string name="test_Button">Test</string>
+    
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">

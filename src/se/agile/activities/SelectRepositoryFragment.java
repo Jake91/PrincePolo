@@ -59,11 +59,12 @@ public class SelectRepositoryFragment extends Fragment{
 					OnClickListener radioButtonListener = new OnClickListener() {
 						@Override
 						public void onClick(View v) {
+							Preferences.removeAllBranches();
 							Preferences.setSelectedRepository(new Repository(((RadioButton) v).getText().toString()));
 							TemporaryStorage.branchList = null;
 							TemporaryStorage.workingFiles = new ArrayList<File>();
 							Preferences.setWorkingFiles(new ArrayList<File>());
-							Preferences.setUnselectedBranches(new ArrayList<Branch>());
+							Preferences.removeAllBranches();
 							((MainActivity) getActivity()).displayView(VIEW.REPOSITORY_OVERVIEW);
 						}
 					};

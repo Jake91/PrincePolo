@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import se.agile.activities.MainActivity.VIEW;
 import se.agile.activities.model.GitHubData.Branch;
 import se.agile.activities.model.GitHubData.Directory;
 import se.agile.activities.model.GitHubData.File;
@@ -16,9 +17,12 @@ import se.agile.model.DirectoryListArrayAdapter;
 import se.agile.model.Preferences;
 import se.agile.model.TemporaryStorage;
 import se.agile.princepolo.R;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,13 +42,12 @@ public class SelectWorkingFilesFragment extends Fragment{
 	private View rootView;
 	private static String selectedBranch, browsePath, currentRepo;
 	private static ArrayList<String> branchNameList;
-	private String currentPath;
+	private String currentPath, earlierBranch;
 	
 	private ArrayAdapter<String> branchAdapter;
 	private RequestBranches reqBranches;
 	private OnItemSelectedListener branchSelectedListener;
 	
-	private RequestFiles reqFiles;
 	private ArrayList<Directory> directoryList;
 	private DirectoryListArrayAdapter directoryAdapter;
 	private OnItemClickListener folderClickListener;
@@ -52,7 +55,9 @@ public class SelectWorkingFilesFragment extends Fragment{
 	private OnClickListener checkListener;
 	private OnClickListener doneButtonListener;
 	
-	private boolean isSpinnerListenerLocked, isFirstTime = true;
+	private boolean isSpinnerListenerLocked;
+	
+	private Context context;
 	
 	public static void resetStaticVariables(){
 		selectedBranch = null;
@@ -71,7 +76,7 @@ public class SelectWorkingFilesFragment extends Fragment{
 	public void onCreate (Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		//----------- Branches -------------------
-		
+		context = getActivity();
 		RequestListener<ArrayList<Branch>> reqBranchesListener = new RequestListenerAdapter<ArrayList<Branch>>() {
 
 			@Override
@@ -131,8 +136,9 @@ public class SelectWorkingFilesFragment extends Fragment{
 				if(isSpinnerListenerLocked){
 					isSpinnerListenerLocked = false;
 				}else{
+					earlierBranch = selectedBranch;
 					selectedBranch = branchAdapter.getItem(pos);
-					directoryAdapter.changeBranchUpdateDataAddHistory(selectedBranch);
+					directoryAdapter.changeBranchAndUpdateData(selectedBranch);
 				}
 			}
 
@@ -176,11 +182,19 @@ public class SelectWorkingFilesFragment extends Fragment{
 
 			@Override
 			public void requestFailed() {
-				// TODO Auto-generated method stub
-				
+				new AlertDialog.Builder(context).setTitle("Path doesn't exist for branch")
+						.setMessage("The selected path doesn't exist for the current path you are in. Changing back to earlier branch.")
+						.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								selectedBranch = earlierBranch;
+								directoryAdapter.changeBranchAndUpdateData(selectedBranch);
+								setSpinnerSelection();
+							}
+						}).show();
 			}
 		};
 		currentPath = browsePath;
+		earlierBranch = selectedBranch;
 		
 		checkListener = new OnClickListener() {
 			

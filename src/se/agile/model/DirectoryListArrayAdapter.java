@@ -28,7 +28,6 @@ public class DirectoryListArrayAdapter extends ArrayAdapter<Directory>{
 	private String currentPath = "", branchName;
 	private OnClickListener checkListener;
 	RequestListener<ArrayList<Directory>> requestListener;
-	private static LinkedList<String> earlierBranchesList = new LinkedList<String>();
 	
 	
 	public DirectoryListArrayAdapter(Context context, ArrayList<Directory> directoryList, String branchName, String path, RequestListener<ArrayList<Directory>> requestListener, OnClickListener checkListener) {
@@ -47,28 +46,13 @@ public class DirectoryListArrayAdapter extends ArrayAdapter<Directory>{
 		this.branchName = branchName;
 	}
 	
-	public void changeBranchUpdateDataAddHistory(String branchName){
-		earlierBranchesList.add(branchName);
-		this.branchName = branchName;
-		updateData(currentPath);
-	}
-	
 	public void changeBranchAndUpdateData(String branchName){
 		this.branchName = branchName;
 		updateData(currentPath);
 	}
 	
-	public String changeBackToEarlierBranch(){
-		if(!earlierBranchesList.isEmpty()){
-			this.branchName = earlierBranchesList.pollLast();
-		}
-		updateData(currentPath);
-		return branchName;
-	}
-	
 	public void updateData(String path){
 		RequestFiles reqFiles = new RequestFiles(requestListener);
-		
 		reqFiles.execute(path, branchName);
 		this.currentPath = path;
 	}

@@ -21,6 +21,9 @@
     <string name="test_Button">Test</string>
     <string name="textView_sound">Sound</string>
     <string name="textView_updateFrequency">Update frequency</string>
+    <string name="textView_minutes">Minutes</string>
+    <string name="textView_seconds">Seconds</string>
+    <string name="saveChanges_Button">Save Changes</string>
     
 
     <!-- Nav Drawer Menu Items -->

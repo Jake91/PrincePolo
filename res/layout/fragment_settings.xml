@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
+            android:layout_marginBottom="1dp"
             android:text="@string/textView_sound" />
         
         <Switch
@@ -39,9 +40,9 @@
 		    android:background="@android:color/darker_gray"/>
     </LinearLayout>
    
-    <LinearLayout
+   <LinearLayout
         android:id="@+id/updateFrequencyLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@+id/soundLayout"
@@ -52,18 +53,69 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
+            android:layout_marginBottom="1dp"
             android:text="@string/textView_updateFrequency" />
+        <LinearLayout
+	        android:id="@+id/relativeContainerLayout"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:gravity="center_vertical">
+	        <RelativeLayout
+		        android:id="@+id/minutePickerLayout"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="center">
+		        
+		        <NumberPicker 
+		            android:id="@+id/minutePicker"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"/>
+		        
+		        <TextView
+		            android:id="@+id/textView_minutes"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_below="@+id/minutePicker"
+		            android:layout_centerInParent="true"
+		            android:text="@string/textView_minutes" />
+	         </RelativeLayout>
+	         
+	         <RelativeLayout
+		        android:id="@+id/secondPickerLayout"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="center">
+		        <NumberPicker 
+		            android:id="@+id/secondPicker"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"/>
+	
+		        <TextView
+		            android:id="@+id/textView_seconds"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_below="@+id/secondPicker"
+		            android:layout_centerInParent="true"
+		            android:text="@string/textView_seconds" />
+	         	</RelativeLayout>
+	    </LinearLayout>
+	    <View
+		    android:id="@+id/separator2"
+		    android:layout_width="fill_parent"
+		    android:layout_height="1dp"
+		    android:layout_marginBottom="8dp"
+		    android:layout_marginTop="8dp"
+		    android:background="@android:color/darker_gray"/>
         
-        <TimePicker 
-            android:id="@+id/timePicker"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-		    android:layout_marginRight="5dp"
-        		
-
-
     </LinearLayout>
+    <Button android:id="@+id/saveChanges_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/saveChanges_Button"
+        android:textAlignment="center"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="7dp"/>
     
-
 </RelativeLayout>

@@ -362,6 +362,7 @@ public class MainActivity extends Activity {
 										Intent intent = new Intent(activity,
 												LoginActivity.class);
 										activity.startActivity(intent);
+										activity.overridePendingTransition(0, 0);
 										activity.displayView(VIEW.SETTINGS);
 									}
 								} else {
@@ -401,6 +402,7 @@ public class MainActivity extends Activity {
 				Intent intent = new Intent(MainActivity.this,
 						LoginActivity.class);
 				startActivity(intent);
+				overridePendingTransition(0, 0);
 			} else {
 				hasNoInternetConnection(activity);
 			}

@@ -91,6 +91,7 @@ public class BranchesFragment extends ListFragment
 			{
 				Intent intent = new Intent(getActivity(), SelectWorkingFilesActivity.class);
 				startActivity(intent);
+				getActivity().overridePendingTransition(0, 0);
 				((MainActivity) getActivity()).displayView(VIEW.REPOSITORY_OVERVIEW);
 				
 			}

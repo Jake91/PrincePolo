@@ -43,6 +43,7 @@ public class SelectWorkingFilesOverviewFragment extends Fragment{
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(),SelectWorkingFilesActivity.class);
 				getActivity().startActivity(intent);
+				getActivity().overridePendingTransition(0, 0);
 				
 			}
 		};

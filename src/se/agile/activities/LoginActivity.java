@@ -72,6 +72,7 @@ public class LoginActivity extends Activity implements RequestListener<String>{
                 	if(isPostSent){
                 		Preferences.setIsFirstTime(false);
                 		finish();
+                		overridePendingTransition(0, 0); //Removes the animation
                 	}
 				}        		
             }});

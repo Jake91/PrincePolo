@@ -173,11 +173,15 @@ public class Preferences {
     
     
     public static void setRepositories(ArrayList<Repository> repos) {
-    	StringBuilder builder = new StringBuilder();
-    	for(Repository repo : repos){
-    		builder.append(repo.getName() + ",");
+    	if(repos == null){
+    		setGeneral(PREF_KEY.USER_REPOSITORIES, "");
+    	}else{
+    		StringBuilder builder = new StringBuilder();
+        	for(Repository repo : repos){
+        		builder.append(repo.getName() + ",");
+        	}
+        	setGeneral(PREF_KEY.USER_REPOSITORIES, builder.toString());
     	}
-    	setGeneral(PREF_KEY.USER_REPOSITORIES, builder.toString());
     }
     public static ArrayList<Repository> getRepositories() {
     	ArrayList<Repository> list = new ArrayList<Repository>();

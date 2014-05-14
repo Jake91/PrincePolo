@@ -238,6 +238,7 @@ public class SelectWorkingFilesFragment extends Fragment{
 			@Override
 			public void onClick(View v) {
 				getActivity().finish();
+				getActivity().overridePendingTransition(0, 0);
 				
 			}
 		};

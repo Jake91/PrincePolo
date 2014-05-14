@@ -46,8 +46,6 @@ public class SettingsFragment extends Fragment
 		logTag = getResources().getString(R.string.logtag_main);
 		View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 		
-	    Button button = (Button) rootView.findViewById(R.id.flashlights);
-	    button.setOnClickListener(buttonOnClick);
 	    
 		return rootView;
 	}

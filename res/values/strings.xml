@@ -19,6 +19,8 @@
     <string name="feature_Button">Feature</string>
     <string name="task_Button">Task</string>
     <string name="test_Button">Test</string>
+    <string name="textView_sound">Sound</string>
+    <string name="textView_updateFrequency">Update frequency</string>
     
 
     <!-- Nav Drawer Menu Items -->

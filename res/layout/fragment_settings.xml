@@ -8,39 +8,62 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="se.agile.princepolo.SettingsFragment$PlaceholderFragment" >
 
-        <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:id="@+id/soundLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true">
         
-    <Button
-        android:id="@+id/flashlights"
+        <TextView
+            android:id="@+id/textView_sound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="@string/textView_sound" />
+        
+        <Switch
+	        android:id="@+id/soundSwitch"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:checked="true"
+	        android:textOff="Off"
+	        android:textOn="On" />
+        
+        <View
+		    android:id="@+id/separator1"
+		    android:layout_width="fill_parent"
+		    android:layout_height="1dp"
+		    android:layout_marginBottom="8dp"
+		    android:layout_marginTop="8dp"
+		    android:background="@android:color/darker_gray"/>
+    </LinearLayout>
+   
+    <LinearLayout
+        android:id="@+id/updateFrequencyLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Flash lights" />
- 
-    <TextView
-        android:id="@+id/lblTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Current Time (H:M): "
-        android:textAppearance="?android:attr/textAppearanceLarge" />
- 
-    <TextView
-        android:id="@+id/tvTime1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textAppearance="?android:attr/textAppearanceLarge" />
- 
-    <TimePicker
-        android:id="@+id/timePicker1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:orientation="vertical"
+        android:layout_below="@+id/soundLayout"
+        android:layout_alignParentLeft="true">
+        
+        <TextView
+            android:id="@+id/textView_updateFrequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="@string/textView_updateFrequency" />
+        
+        <TimePicker 
+            android:id="@+id/timePicker"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+		    android:layout_marginRight="5dp"
+        		
 
-    </LinearLayout>/
+
+    </LinearLayout>
+    
 
 </RelativeLayout>

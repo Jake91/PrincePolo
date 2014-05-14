@@ -31,7 +31,7 @@ public class DirectoryListArrayAdapter extends ArrayAdapter<Directory>{
 	
 	
 	public DirectoryListArrayAdapter(Context context, ArrayList<Directory> directoryList, String branchName, String path, RequestListener<ArrayList<Directory>> requestListener, OnClickListener checkListener) {
-		super(context, R.layout.list_view,R.id.directory_name, directoryList);
+		super(context, R.layout.fragment_notification_list_view,R.id.directory_name, directoryList);
 		this.context = context;
 		if(directoryList != null){
 			this.directoryList = directoryList;

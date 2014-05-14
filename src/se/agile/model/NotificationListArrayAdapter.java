@@ -23,7 +23,7 @@ public class NotificationListArrayAdapter extends ArrayAdapter<Notification> imp
 	private LinkedList<Notification>  notificationList;
 
 	public NotificationListArrayAdapter(Context context, LinkedList<Notification> notificationList) {
-		super(context, R.layout.list_view,R.id.List_View_Message, notificationList);
+		super(context, R.layout.fragment_notification_list_view,R.id.List_View_Message, notificationList);
 		this.context = context;
 		this.notificationList = TemporaryStorage.getNotifications();
 		NotificationHandler.addNotificationListener(this);

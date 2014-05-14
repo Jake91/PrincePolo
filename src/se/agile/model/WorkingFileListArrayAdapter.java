@@ -24,7 +24,7 @@ public class WorkingFileListArrayAdapter extends ArrayAdapter<File>{
 	
 	
 	public WorkingFileListArrayAdapter(Context context, ArrayList<File> filesList) {
-		super(context, R.layout.list_view,R.id.directory_name, filesList);
+		super(context, R.layout.fragment_notification_list_view,R.id.directory_name, filesList);
 		this.context = context;
 		if(fileList != null){
 			this.fileList = filesList;

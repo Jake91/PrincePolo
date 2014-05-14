@@ -3,8 +3,9 @@ package se.agile.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.agile.githubdata.Branch;
+import se.agile.princepolo.R;
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import se.agile.princepolo.R;
-import se.agile.activities.model.GitHubData.Branch;
-import se.agile.model.Preferences;
 
 public class InteractiveArrayAdapter extends ArrayAdapter<BranchSelectionModel> 
 {
 	private final List<BranchSelectionModel> list;
 	private final Activity context;
-	private final static String logTag = "Thor";
 
 	public InteractiveArrayAdapter(Activity context, List<BranchSelectionModel> list) 
 	{

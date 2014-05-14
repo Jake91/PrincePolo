@@ -1,7 +1,7 @@
 package se.agile.model;
 
-import se.agile.activities.model.GitHubData.Commit;
-import se.agile.activities.model.GitHubData.File;
+import se.agile.githubdata.Commit;
+import se.agile.githubdata.File;
 
 public class ConflictNotification extends Notification<Tuple<File,Commit>>{
 	public ConflictNotification(File file, Commit commit){

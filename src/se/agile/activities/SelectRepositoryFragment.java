@@ -3,11 +3,10 @@ package se.agile.activities;
 import java.util.ArrayList;
 
 import se.agile.activities.MainActivity.VIEW;
-import se.agile.activities.model.GitHubData.Branch;
-import se.agile.activities.model.GitHubData.File;
-import se.agile.activities.model.GitHubData.Repository;
 import se.agile.asynctasks.RequestListenerAdapter;
 import se.agile.asynctasks.RequestRepositories;
+import se.agile.githubdata.File;
+import se.agile.githubdata.Repository;
 import se.agile.model.PreferenceListener;
 import se.agile.model.Preferences;
 import se.agile.model.Preferences.PREF_KEY;

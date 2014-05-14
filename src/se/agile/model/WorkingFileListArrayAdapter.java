@@ -3,9 +3,8 @@ package se.agile.model;
 
 import java.util.ArrayList;
 
-import se.agile.activities.model.GitHubData.Directory;
-import se.agile.activities.model.GitHubData.File;
-import se.agile.model.Preferences.PREF_KEY;
+import se.agile.githubdata.Directory;
+import se.agile.githubdata.File;
 import se.agile.princepolo.R;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 public class WorkingFileListArrayAdapter extends ArrayAdapter<File>{
 	private final Context context;
 	private ArrayList<File>  fileList = new ArrayList<File>();
-	private String logTag = "PrincePolo";
 	private OnClickListener buttonRemoveListener;
 	
 	

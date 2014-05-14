@@ -2,18 +2,13 @@ package se.agile.asynctasks;
 
 import java.util.ArrayList;
 
-import se.agile.activities.model.GitHubData.Branch;
-import se.agile.activities.model.GitHubData.Commit;
-import se.agile.activities.model.GitHubData.Directory;
-import se.agile.activities.model.GitHubData.Folder;
+import se.agile.githubdata.Directory;
+import se.agile.githubdata.Folder;
 import android.util.Log;
 
 public class RequestAllFilesForBranch{
 	
-	private RequestBranches reqBranches;
 	private RequestListener<ArrayList<Directory>> listener;
-//	private ArrayList<Directory> directoryList = new ArrayList<Directory>();
-	private ArrayList<String> shaList = new ArrayList<String>();
 	private String logTag = "PrincePolo";
 	private int numberOfThreads = 0;
 	private Folder folder;

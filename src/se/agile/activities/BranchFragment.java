@@ -1,6 +1,6 @@
 package se.agile.activities;
 
-import se.agile.activities.model.GitHubData.Branch;
+import se.agile.githubdata.Branch;
 import se.agile.princepolo.R;
 import android.app.Fragment;
 import android.app.FragmentManager;

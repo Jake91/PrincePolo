@@ -5,7 +5,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import se.agile.asynctasks.RequestAccessToken;
-import se.agile.model.Notification;
 import se.agile.model.NotificationHandler;
 import se.agile.model.Preferences;
 import se.agile.model.TemporaryStorage;

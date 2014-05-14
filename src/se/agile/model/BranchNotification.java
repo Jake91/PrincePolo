@@ -1,6 +1,6 @@
 package se.agile.model;
 
-import se.agile.activities.model.GitHubData.Branch;
+import se.agile.githubdata.Branch;
 
 public class BranchNotification extends Notification<Branch>{
 

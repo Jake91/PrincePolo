@@ -1,9 +1,9 @@
-package se.agile.activities.model.GitHubData;
+package se.agile.githubdata;
 
 
-public class User implements GitHubDataInterface{
+public class Repository implements GitHubDataInterface{
 	private String name;
-	public User(String name){
+	public Repository(String name){
 		this.name = name;
 	}
 	
@@ -16,6 +16,6 @@ public class User implements GitHubDataInterface{
 	
 	@Override
 	public String toString(){
-		return "Username: " + name;
+		return "Repositoryname: " + name;
 	}
 }

@@ -1,13 +1,10 @@
 package se.agile.asynctasks;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import android.R.array;
+import se.agile.githubdata.Branch;
+import se.agile.githubdata.Commit;
 import android.util.Log;
-
-import se.agile.activities.model.GitHubData.Branch;
-import se.agile.activities.model.GitHubData.Commit;
 
 public class RequestAllCommitsForBranch{
 	

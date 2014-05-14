@@ -1,4 +1,4 @@
-package se.agile.activities.model.GitHubData;
+package se.agile.githubdata;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -1,8 +1,7 @@
 package se.agile.activities;
 
-import se.agile.activities.model.GitHubData.Branch;
-import se.agile.activities.model.GitHubData.Commit;
-import se.agile.activities.model.GitHubData.File;
+import se.agile.githubdata.Commit;
+import se.agile.githubdata.File;
 import se.agile.model.Tuple;
 import se.agile.princepolo.R;
 import android.app.Fragment;

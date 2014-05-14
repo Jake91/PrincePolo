@@ -2,12 +2,11 @@ package se.agile.asynctasks;
 
 import java.util.ArrayList;
 
-import se.agile.activities.model.GitHubData.Repository;
+import se.agile.githubdata.Repository;
 import se.agile.model.JSONParser;
 import se.agile.model.Preferences;
 
 public class RequestRepositories extends RequestTask<Void, Void, ArrayList<Repository>>{
-	private final String logTag = "PrincePolo";
 	
 	private final String URL = "https://api.github.com/user/repos";
 	

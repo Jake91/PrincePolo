@@ -3,8 +3,7 @@ package se.agile.activities;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import se.agile.activities.model.GitHubData.File;
-import se.agile.model.Preferences;
+import se.agile.githubdata.File;
 import se.agile.model.TemporaryStorage;
 import se.agile.model.WorkingFileListArrayAdapter;
 import se.agile.princepolo.R;

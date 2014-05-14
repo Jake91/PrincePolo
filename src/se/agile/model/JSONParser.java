@@ -10,13 +10,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import se.agile.activities.model.GitHubData.Branch;
-import se.agile.activities.model.GitHubData.Commit;
-import se.agile.activities.model.GitHubData.Directory;
-import se.agile.activities.model.GitHubData.File;
-import se.agile.activities.model.GitHubData.Folder;
-import se.agile.activities.model.GitHubData.Repository;
-import se.agile.activities.model.GitHubData.User;
+import se.agile.githubdata.Branch;
+import se.agile.githubdata.Commit;
+import se.agile.githubdata.Directory;
+import se.agile.githubdata.File;
+import se.agile.githubdata.Folder;
+import se.agile.githubdata.Repository;
+import se.agile.githubdata.User;
 import android.util.Log;
 
 public class JSONParser {

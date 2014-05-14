@@ -1,8 +1,6 @@
 package se.agile.model;
 
-import java.util.Date;
-
-import se.agile.activities.model.GitHubData.Commit;
+import se.agile.githubdata.Commit;
 
 public class CommitNotification extends Notification<Commit>{
 	public CommitNotification(Commit commit){

@@ -1,8 +1,7 @@
 package se.agile.asynctasks;
 
-import se.agile.activities.model.GitHubData.Branch;
+import se.agile.githubdata.Branch;
 import se.agile.model.JSONParser;
-import se.agile.model.Preferences;
 import android.util.Log;
 
 public class RequestBranch extends RequestTask<String, Void, Branch>{
@@ -14,7 +13,7 @@ public class RequestBranch extends RequestTask<String, Void, Branch>{
 		super();
 	}
 	
-	public RequestBranch(RequestListener listener){
+	public RequestBranch(RequestListener<Branch> listener){
 		super(listener);
 		url +=  super.getSelectedRepositoryName() + "/branches/";
 	}

@@ -2,14 +2,10 @@ package se.agile.asynctasks;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
-import se.agile.activities.model.GitHubData.Branch;
+import se.agile.githubdata.Branch;
 import se.agile.model.JSONParser;
-import se.agile.model.Preferences;
 
 public class RequestBranches extends RequestTask<Void, Void, ArrayList<Branch>>{
-	private final String logTag = "PrincePolo";
 	
 	private String url = "https://api.github.com/repos/";
 	
@@ -17,7 +13,7 @@ public class RequestBranches extends RequestTask<Void, Void, ArrayList<Branch>>{
 		super();
 	}
 	
-	public RequestBranches(RequestListener listener){
+	public RequestBranches(RequestListener<ArrayList<Branch>> listener){
 		super(listener);
 		url +=  super.getSelectedRepositoryName() + "/branches";
 	}

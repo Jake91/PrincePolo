@@ -2,13 +2,12 @@ package se.agile.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
-import se.agile.activities.model.GitHubData.Branch;
-import se.agile.activities.model.GitHubData.File;
-import se.agile.activities.model.GitHubData.Repository;
-import se.agile.activities.model.GitHubData.User;
+import se.agile.githubdata.Branch;
+import se.agile.githubdata.File;
+import se.agile.githubdata.Repository;
+import se.agile.githubdata.User;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;

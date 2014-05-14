@@ -1,21 +1,17 @@
 package se.agile.model;
 
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
 import se.agile.princepolo.R;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Shader.TileMode;
 import android.graphics.drawable.GradientDrawable;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class NotificationListArrayAdapter extends ArrayAdapter<Notification> implements NotificationListener{
@@ -42,7 +38,6 @@ public class NotificationListArrayAdapter extends ArrayAdapter<Notification> imp
 		
 		if(notification.hasBeenViewed()){
 			View circleView = (View) rowView.findViewById(R.id.CircleView);
-			GradientDrawable circleDrawable = (GradientDrawable)circleView.getBackground();
 			circleView.setVisibility(View.INVISIBLE);
 		}
 		titleView.setText(notification.getContentTitle());

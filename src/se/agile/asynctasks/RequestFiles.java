@@ -2,17 +2,15 @@ package se.agile.asynctasks;
 
 import java.util.ArrayList;
 
-import se.agile.activities.model.GitHubData.Directory;
-import se.agile.activities.model.GitHubData.Folder;
+import se.agile.githubdata.Directory;
+import se.agile.githubdata.Folder;
 import se.agile.model.JSONParser;
 
 public class RequestFiles extends RequestTask<String, Void, ArrayList<Directory>>{
-	private final String logTag = "PrincePolo";
 	
 	private Folder folder;
 	
 	private String url = "https://api.github.com/repos/";
-	//https://api.github.com/repos/Jake91/PrincePolo/contents
 	
 	public RequestFiles(){
 		super();

@@ -1,11 +1,10 @@
 package se.agile.asynctasks;
 
-import se.agile.activities.model.GitHubData.User;
+import se.agile.githubdata.User;
 import se.agile.model.JSONParser;
 import se.agile.model.Preferences;
 
 public class RequestUser extends RequestTask<String, Void, User>{
-	private final String logTag = "PrincePolo";
 	
 	private final String URL = "https://api.github.com/user";
 	

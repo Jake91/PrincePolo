@@ -3,13 +3,12 @@ package se.agile.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 
-import se.agile.activities.model.GitHubData.Directory;
-import se.agile.activities.model.GitHubData.File;
-import se.agile.activities.model.GitHubData.Folder;
 import se.agile.asynctasks.RequestFiles;
 import se.agile.asynctasks.RequestListener;
+import se.agile.githubdata.Directory;
+import se.agile.githubdata.File;
+import se.agile.githubdata.Folder;
 import se.agile.princepolo.R;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 public class DirectoryListArrayAdapter extends ArrayAdapter<Directory>{
 	private final Context context;
 	private ArrayList<Directory>  directoryList = new ArrayList<Directory>();
-	private String logTag = "PrincePolo";
 	private String currentPath = "", branchName;
 	private OnClickListener checkListener;
 	RequestListener<ArrayList<Directory>> requestListener;

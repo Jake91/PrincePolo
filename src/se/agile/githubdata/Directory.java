@@ -1,4 +1,4 @@
-package se.agile.activities.model.GitHubData;
+package se.agile.githubdata;
 
 public interface Directory extends Comparable<Directory>{
 

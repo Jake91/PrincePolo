@@ -11,12 +11,8 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 
 import se.agile.activities.MainActivity;
-import se.agile.activities.model.GitHubData.Commit;
-import se.agile.activities.model.GitHubData.GitHubDataInterface;
-import se.agile.model.JSONParser;
 import se.agile.model.Preferences;
 import android.os.AsyncTask;
 import android.util.Log;

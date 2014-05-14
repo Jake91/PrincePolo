@@ -1,13 +1,12 @@
 package se.agile.activities;	
 
-import se.agile.activities.model.GitHubData.Repository;
+import se.agile.githubdata.Repository;
 import se.agile.model.PreferenceListener;
 import se.agile.model.Preferences;
 import se.agile.model.Preferences.PREF_KEY;
 import se.agile.princepolo.R;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

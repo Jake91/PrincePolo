@@ -8,13 +8,13 @@ import java.util.concurrent.TimeUnit;
 
 import se.agile.activities.MainActivity;
 import se.agile.activities.MainActivity.VIEW;
-import se.agile.activities.model.GitHubData.Branch;
-import se.agile.activities.model.GitHubData.Commit;
-import se.agile.activities.model.GitHubData.File;
 import se.agile.asynctasks.RequestBranches;
 import se.agile.asynctasks.RequestFullCommit;
 import se.agile.asynctasks.RequestListener;
 import se.agile.asynctasks.RequestListenerAdapter;
+import se.agile.githubdata.Branch;
+import se.agile.githubdata.Commit;
+import se.agile.githubdata.File;
 import se.agile.princepolo.R;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -36,8 +36,8 @@ public class NotificationHandler extends RequestListenerAdapter<ArrayList<Branch
 	
 	private static ArrayList<NotificationListener> listenerList = new ArrayList<NotificationListener>();
 	
-	public NotificationHandler(Context context){
-		this.context = context;
+	public NotificationHandler(Context contexts){
+		context = contexts;
 		final RequestListener<ArrayList<Branch>> listener = this;
 
 		runnable = new Runnable() {

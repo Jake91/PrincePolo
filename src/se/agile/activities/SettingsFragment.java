@@ -96,7 +96,7 @@ public class SettingsFragment extends Fragment implements OnClickListener,
 	public Boolean soundEnabled(){
 		return sound;
 	}
-	// returns the desired updatefrequency in seconds, default 10. 
+	// returns the desired updatefrequency in seconds, default 10 
 	public int updateFrequency(){
 		return updateFrequency;
 	}

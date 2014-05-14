@@ -20,7 +20,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:layout_marginBottom="1dp"
             android:text="@string/textView_sound" />
         
         <Switch
@@ -35,8 +34,8 @@
 		    android:id="@+id/separator1"
 		    android:layout_width="fill_parent"
 		    android:layout_height="1dp"
-		    android:layout_marginBottom="8dp"
-		    android:layout_marginTop="8dp"
+		    android:layout_marginBottom="2dp"
+		    android:layout_marginTop="2dp"
 		    android:background="@android:color/darker_gray"/>
     </LinearLayout>
    
@@ -53,7 +52,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:layout_marginBottom="1dp"
             android:text="@string/textView_updateFrequency" />
         <LinearLayout
 	        android:id="@+id/relativeContainerLayout"
@@ -104,8 +102,8 @@
 		    android:id="@+id/separator2"
 		    android:layout_width="fill_parent"
 		    android:layout_height="1dp"
-		    android:layout_marginBottom="8dp"
-		    android:layout_marginTop="8dp"
+		    android:layout_marginBottom="2dp"
+		    android:layout_marginTop="2dp"
 		    android:background="@android:color/darker_gray"/>
         
     </LinearLayout>
@@ -114,6 +112,7 @@
         android:layout_height="wrap_content"
         android:text="@string/saveChanges_Button"
         android:textAlignment="center"
+        android:layout_below="@+id/updateFrequencyLayout"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="7dp"/>

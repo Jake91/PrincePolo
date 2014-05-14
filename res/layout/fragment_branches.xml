@@ -23,6 +23,7 @@
     </ListView>
     
     <View
+	android:id="@+id/linee"
     android:layout_width="fill_parent"
     android:layout_height="1dp"
 	android:layout_below="@android:id/list"

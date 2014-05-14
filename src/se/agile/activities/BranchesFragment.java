@@ -33,10 +33,11 @@ public class BranchesFragment extends ListFragment
 	ArrayList<Branch> allBranches;
 	private final static String logTag = "PrincePolo";
 	public static boolean unselectButton;
-	Button selectionButton;
+	Button selectionButton, nextButton;
 	private ProgressBar spinner;
-	private TextView tv;
+	private TextView tv,tv2;
 	private CheckBox checkbox;
+	private View line;
 	
 	RequestListenerAdapter<ArrayList<Branch>> listener = new RequestListenerAdapter<ArrayList<Branch>>() 
 	{
@@ -49,8 +50,13 @@ public class BranchesFragment extends ListFragment
 			setListAdapter(adapter);
 			
 			spinner.setVisibility(View.GONE);
-			selectionButton.setVisibility(View.VISIBLE);
-			tv.setVisibility(View.VISIBLE);
+
+	        tv.setVisibility(View.VISIBLE);
+	        selectionButton.setVisibility(View.VISIBLE);
+	        checkbox.setVisibility(View.VISIBLE);
+	        nextButton.setVisibility(View.VISIBLE);  
+	        tv2.setVisibility(View.VISIBLE);
+	        line.setVisibility(View.VISIBLE);
 		}
 	};
 	
@@ -58,19 +64,31 @@ public class BranchesFragment extends ListFragment
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) 
 	{
 	    View rootView = inflater.inflate(R.layout.fragment_branches, container, false);
+	    
         spinner = (ProgressBar) rootView.findViewById(R.id.progressBar1);
-        spinner.setVisibility(View.VISIBLE);
         tv = (TextView) rootView.findViewById(R.id.selecttext);
-        tv.setVisibility(View.INVISIBLE);
         selectionButton = (Button) rootView.findViewById(R.id.unselectButton);
-        selectionButton.setVisibility(View.INVISIBLE);
         checkbox = (CheckBox) rootView.findViewById(R.id.chkAll);
+        nextButton = (Button) rootView.findViewById(R.id.nextButton);
+        tv2 = (TextView) rootView.findViewById(R.id.allText);
+        line = (View) rootView.findViewById(R.id.linee);
+        
+        spinner.setVisibility(View.VISIBLE);
+
+        tv.setVisibility(View.INVISIBLE);
+        selectionButton.setVisibility(View.INVISIBLE);
+        checkbox.setVisibility(View.INVISIBLE);
+        nextButton.setVisibility(View.INVISIBLE);  
+        tv2.setVisibility(View.INVISIBLE);
+        line.setVisibility(View.INVISIBLE);
+        
 
         Button nextButton = (Button) rootView.findViewById(R.id.nextButton);
         nextButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v) 
+			{
 				Intent intent = new Intent(getActivity(), SelectWorkingFilesActivity.class);
 				startActivity(intent);
 				((MainActivity) getActivity()).displayView(VIEW.REPOSITORY_OVERVIEW);

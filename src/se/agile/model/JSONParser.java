@@ -117,7 +117,8 @@ public class JSONParser {
 	    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); 
 	    Date startDate = null;
 	    try {
-	        startDate = df.parse(object2.getJSONObject("committer").getString("date"));
+	    	String dateString = object2.getJSONObject("committer").getString("date");
+	        startDate = df.parse(dateString);
 	    } catch (ParseException e) {
 	    	Log.e(logTag, "couldn't parse date for commit");
 	        e.printStackTrace();
@@ -147,7 +148,18 @@ public class JSONParser {
 			JSONArray fileArray = object.getJSONArray("files");
 			for(int i = 0; i < fileArray.length(); i++){
 				JSONObject fileObject = fileArray.getJSONObject(i);
-				File file = new File(fileObject.getString("filename"), true);
+				String fileName = fileObject.getString("filename");
+				int split = fileName.lastIndexOf("/");
+				File file;
+				if(split < 0){
+					file = new File(fileName, true);
+					file.setPath("");
+				}else{
+					file = new File(fileName.substring(split, fileName.length()), true);
+					file.setPath(fileName.substring(0, split));
+				}
+				
+				
 				file.setStatus(fileObject.getString("status"));
 				try{
 					int additions = Integer.parseInt(fileObject.getString("additions"));

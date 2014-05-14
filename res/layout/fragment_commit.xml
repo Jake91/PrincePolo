@@ -1,15 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/Commit_View"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    
-    <TextView
-        android:id="@+id/Commit_Message"
-         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="16dp"
-        android:text="Message: bla bla"/>
-   
-</RelativeLayout>
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/Commit_View"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+		
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Commit:"
+            android:textSize="18sp" />
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/border_textview_normal"
+            android:orientation="horizontal"
+            android:paddingBottom="4dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="4dp" >
+
+            <TextView
+                android:id="@+id/commit_committer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="1"
+                android:text="Committer: Jake"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/commit_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_weight="1"
+                android:text="2012-06-13"
+                android:textSize="16sp" 
+                android:gravity="right"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Message:"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/Commit_Message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/border_textview_normal"
+            android:paddingBottom="4dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="5dp"
+            android:paddingTop="4dp"
+            android:text="Fixed the startorder of the application and it now remove the cookies so you have to enter github password every time"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Sha:"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/Commit_SHA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/border_textview_normal"
+            android:gravity="center_horizontal"
+            android:paddingBottom="4dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="4dp"
+            android:text="bc707fc5d4f67ae1952e62b3b24d3a6ea75f0a05"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/commit_total_additions"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/done_buttonshape_normal"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Total Additions: 20"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/commit_total_deletions"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/remove_buttonshape_normal"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Total Deletions: 20"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Changed Files:"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/commit_changed_files_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/border_textview_normal"
+            android:orientation="vertical"
+            android:paddingBottom="4dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="4dp" />
+
+        <Button
+            android:id="@+id/commit_back_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/done_buttonshape_selector"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="Go back"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</ScrollView>

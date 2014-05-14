@@ -16,6 +16,9 @@ public class Commit implements GitHubDataInterface{
 	
 	public Commit(String url){
 		this.url = url;
+		this.changedFiles = new ArrayList<File>();
+		this.parentList = new ArrayList<Commit>();
+		this.date = new Date();
 	}
 	
 	public String getMessage() {
@@ -24,9 +27,7 @@ public class Commit implements GitHubDataInterface{
 
 	public void setMessage(String message) {
 		this.message = message;
-		this.changedFiles = new ArrayList<File>();
-		this.parentList = new ArrayList<Commit>();
-		this.date = new Date(); 
+		 
 	}
 
 	public String getSha() {

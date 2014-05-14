@@ -19,7 +19,7 @@ import android.webkit.WebViewClient;
 
 public class LoginActivity extends Activity implements RequestListener<String>{
 	private static String OAUTH_URL = "https://github.com/login/oauth/authorize";
-    private static String CALLBACK_URL = "princepolo://oauthresponse";//"http://localhost";
+    private static String CALLBACK_URL = "princepolo://oauthresponse";
     
 	private String logTag;
 	
@@ -48,17 +48,14 @@ public class LoginActivity extends Activity implements RequestListener<String>{
 		webview.getSettings().setJavaScriptEnabled(true);
 		WebSettings ws = webview.getSettings();
 		ws.setSaveFormData(false);
-//			ws.setSavePassword(false);
         webview.setWebViewClient(new WebViewClient() {
         	@Override
             public void onPageFinished(WebView view, String url) {
-//        		Log.d(logTag, "onPageFinished url: " + url);
         		super.onPageFinished(view, url);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//            	Log.d(logTag, "shouldOverrideUrlLoading url: " + url);
             	return super.shouldOverrideUrlLoading(view, url);
             }
             private boolean isPostSent;
@@ -66,15 +63,11 @@ public class LoginActivity extends Activity implements RequestListener<String>{
         	public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 String accessCodeFragment = "code=";
             	// We hijack the GET request to extract the OAuth parameters
-            	Log.d(logTag, "OnPageStarted url: " + url);
             	synchronized (this) { //Seems to be threading calling the method since i got several HttpConnections running....
             		if(url.matches("princepolo://oauthresponse\\?code=[\\dA-z]+") && !isPostSent) {
     	        		String accessCode = url.split("code=")[1];
-    	        		Log.d(logTag, "accessCode: " + accessCode);
     	        		accessTokenThread.execute(accessCode);
                 		isPostSent = true;
-    	        	}else{
-    	        		Log.d(logTag, "Url don't match \"princepolo://oauthresponse\\?code=[\\dA-z]+\"");
     	        	}
                 	if(isPostSent){
                 		Preferences.setIsFirstTime(false);

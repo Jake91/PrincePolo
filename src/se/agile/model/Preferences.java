@@ -37,7 +37,7 @@ public class Preferences {
             edit.putString(key.getKey(), value);
             edit.apply();
             fireStateChanged(key);
-            Log.d(logTag,"saved " + key + ": " + value + " to preferences");
+//            Log.d(logTag,"saved " + key + ": " + value + " to preferences");
     	}else{
     		Log.e(logTag, "Preferences is not initialized");
     	}
@@ -45,11 +45,11 @@ public class Preferences {
     private static String getGeneral(PREF_KEY key) {
     	if(isInitialized()){
     		String value = prefs.getString(key.getKey(), "");
-            if(value.equals("")){
-            	Log.e(logTag, "You have no " + key + " saved in prefereneces");
-            }else{
-            	Log.d(logTag, "Got " + key + " from preferences: " + value);
-            }
+//            if(value.equals("")){
+//            	Log.e(logTag, "You have no " + key + " saved in prefereneces");
+//            }else{
+//            	Log.d(logTag, "Got " + key + " from preferences: " + value);
+//            }
             return value;
     	}else{
     		Log.e(logTag, "Preferences is not initialized");

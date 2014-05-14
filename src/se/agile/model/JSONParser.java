@@ -155,7 +155,7 @@ public class JSONParser {
 					file = new File(fileName, true);
 					file.setPath("");
 				}else{
-					file = new File(fileName.substring(split, fileName.length()), true);
+					file = new File(fileName.substring(split+1, fileName.length()), true);
 					file.setPath(fileName.substring(0, split));
 				}
 				

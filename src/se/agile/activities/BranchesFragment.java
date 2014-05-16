@@ -30,11 +30,11 @@ public class BranchesFragment extends ListFragment
 	ArrayList<Branch> allBranches;
 	private final static String logTag = "PrincePolo";
 	public static boolean unselectButton;
-	Button selectionButton, nextButton;
-	private ProgressBar spinner;
-	private TextView tv,tv2;
+	Button nextButton;
+//	private ProgressBar spinner;
+//	private TextView tv,tv2;
 	private CheckBox checkbox;
-	private View line;
+//	private View line;
 	
 	RequestListenerAdapter<ArrayList<Branch>> listener = new RequestListenerAdapter<ArrayList<Branch>>() 
 	{
@@ -46,14 +46,14 @@ public class BranchesFragment extends ListFragment
 			ArrayAdapter<BranchSelectionModel> adapter = new InteractiveArrayAdapter(getActivity(), getModel());
 			setListAdapter(adapter);
 			
-			spinner.setVisibility(View.GONE);
-
-	        tv.setVisibility(View.VISIBLE);
-	        selectionButton.setVisibility(View.VISIBLE);
-	        checkbox.setVisibility(View.VISIBLE);
-	        nextButton.setVisibility(View.VISIBLE);  
-	        tv2.setVisibility(View.VISIBLE);
-	        line.setVisibility(View.VISIBLE);
+//			spinner.setVisibility(View.GONE);
+//
+//	        tv.setVisibility(View.VISIBLE);
+//	        selectionButton.setVisibility(View.VISIBLE);
+//	        checkbox.setVisibility(View.VISIBLE);
+//	        nextButton.setVisibility(View.VISIBLE);  
+//	        tv2.setVisibility(View.VISIBLE);
+//	        line.setVisibility(View.VISIBLE);
 		}
 	};
 	
@@ -62,22 +62,22 @@ public class BranchesFragment extends ListFragment
 	{
 	    View rootView = inflater.inflate(R.layout.fragment_branches, container, false);
 	    
-        spinner = (ProgressBar) rootView.findViewById(R.id.progressBar1);
-        tv = (TextView) rootView.findViewById(R.id.selecttext);
-        selectionButton = (Button) rootView.findViewById(R.id.unselectButton);
+//        spinner = (ProgressBar) rootView.findViewById(R.id.progressBar1);
+//        tv = (TextView) rootView.findViewById(R.id.selecttext);
+//        selectionButton = (Button) rootView.findViewById(R.id.unselectButton);
         checkbox = (CheckBox) rootView.findViewById(R.id.chkAll);
         nextButton = (Button) rootView.findViewById(R.id.nextButton);
-        tv2 = (TextView) rootView.findViewById(R.id.allText);
-        line = (View) rootView.findViewById(R.id.linee);
+//        tv2 = (TextView) rootView.findViewById(R.id.allText);
+//        line = (View) rootView.findViewById(R.id.linee);
         
-        spinner.setVisibility(View.VISIBLE);
-
-        tv.setVisibility(View.INVISIBLE);
-        selectionButton.setVisibility(View.INVISIBLE);
-        checkbox.setVisibility(View.INVISIBLE);
-        nextButton.setVisibility(View.INVISIBLE);  
-        tv2.setVisibility(View.INVISIBLE);
-        line.setVisibility(View.INVISIBLE);
+//        spinner.setVisibility(View.VISIBLE);
+//
+//        tv.setVisibility(View.INVISIBLE);
+//        selectionButton.setVisibility(View.INVISIBLE);
+//        checkbox.setVisibility(View.INVISIBLE);
+//        nextButton.setVisibility(View.INVISIBLE);  
+//        tv2.setVisibility(View.INVISIBLE);
+//        line.setVisibility(View.INVISIBLE);
         
 
         Button nextButton = (Button) rootView.findViewById(R.id.nextButton);
@@ -89,12 +89,12 @@ public class BranchesFragment extends ListFragment
 				Intent intent = new Intent(getActivity(), SelectWorkingFilesActivity.class);
 				startActivity(intent);
 				getActivity().overridePendingTransition(0, 0);
-				((MainActivity) getActivity()).displayView(VIEW.REPOSITORY_OVERVIEW);
+				((MainActivity) getActivity()).displayView(VIEW.OVERVIEW);
 				
 			}
 		});
         
-		RequestBranches reqbranches = new RequestBranches(listener);
+		RequestBranches reqbranches = new RequestBranches(listener, getActivity());
 		reqbranches.execute();
 		
 		unselectButton = true;
@@ -136,40 +136,40 @@ public class BranchesFragment extends ListFragment
 		
 
         // create our incredible click listener
-        OnClickListener selectionClickListener = new OnClickListener() 
-        {
-          @Override
-          public void onClick(View v) 
-          {
-      		//ArrayList<Branch> allBranches = new ArrayList<Branch>();
-      		RequestBranches reqbranches = new RequestBranches(listener);
-      		reqbranches.execute();
-      		
-      		if (selectionButton.getText().equals("Unselect all")) 
-      		{
-      	          selectionButton.setText("Select all");
-      	          unselectButton = false;
-      	          
-      			// All branches in an arraylist string
-      			List<String> namesOfAllBranches = new ArrayList<String>();
-    			for (int i = 0; i < allBranches.size(); i++)
-    			{
-    				namesOfAllBranches.add(allBranches.get(i).getName());
-    			}
-      			Preferences.setUnselectedBranchesArray(namesOfAllBranches);
-      			//Log.d(logTag,Arrays.toString(namesOfAllBranches.toArray()));
-  	        } 
-      		else 
-      		{
-      	          selectionButton.setText("Unselect all");
-      	          unselectButton = true;
-      	          Preferences.removeAllBranches();	          
-  	        }
-          }
-        };
-    
-        // assign click listener to the OK button (btnOK)
-        selectionButton.setOnClickListener(selectionClickListener);
+//        OnClickListener selectionClickListener = new OnClickListener() 
+//        {
+//          @Override
+//          public void onClick(View v) 
+//          {
+//      		//ArrayList<Branch> allBranches = new ArrayList<Branch>();
+//      		RequestBranches reqbranches = new RequestBranches(listener);
+//      		reqbranches.execute();
+//      		
+//      		if (selectionButton.getText().equals("Unselect all")) 
+//      		{
+//      	          selectionButton.setText("Select all");
+//      	          unselectButton = false;
+//      	          
+//      			// All branches in an arraylist string
+//      			List<String> namesOfAllBranches = new ArrayList<String>();
+//    			for (int i = 0; i < allBranches.size(); i++)
+//    			{
+//    				namesOfAllBranches.add(allBranches.get(i).getName());
+//    			}
+//      			Preferences.setUnselectedBranchesArray(namesOfAllBranches);
+//      			//Log.d(logTag,Arrays.toString(namesOfAllBranches.toArray()));
+//  	        } 
+//      		else 
+//      		{
+//      	          selectionButton.setText("Unselect all");
+//      	          unselectButton = true;
+//      	          Preferences.removeAllBranches();	          
+//  	        }
+//          }
+//        };
+//    
+//        // assign click listener to the OK button (btnOK)
+//        selectionButton.setOnClickListener(selectionClickListener);
 	        
         return rootView;
 	}
@@ -200,7 +200,7 @@ public class BranchesFragment extends ListFragment
 			{
 				list.get(i).setSelected(true);
 			}
-			selectionButton.setText("Unselect all");
+//			selectionButton.setText("Unselect all");
 		}
 		
 		// If branches have been saved to preferences, then select just them

@@ -2,6 +2,7 @@ package se.agile.asynctasks;
 
 import se.agile.githubdata.Commit;
 import se.agile.model.JSONParser;
+import android.content.Context;
 
 public class RequestShortCommit extends RequestTask<String, Void, Commit>{
 	
@@ -16,6 +17,11 @@ public class RequestShortCommit extends RequestTask<String, Void, Commit>{
 		url +=  super.getSelectedRepositoryName() + "/git/commits/";
 	}
 	
+	public RequestShortCommit(RequestListener<Commit> listener, Context context){
+		super(listener, context);
+		url +=  super.getSelectedRepositoryName() + "/git/commits/";
+	}
+	
 	@Override
 	protected Commit doInBackground(String... params) {
 		String sha = params[0]; 
@@ -24,8 +30,6 @@ public class RequestShortCommit extends RequestTask<String, Void, Commit>{
 	}
 	@Override
 	protected void onPostExecute(Commit commit){
-		if(!isCancelled()){
-			finishedWithRequest(commit);
-		}
+		finishedWithRequest(commit);
 	}
 }

@@ -123,7 +123,9 @@ public class JSONParser {
 	    	Log.e(logTag, "couldn't parse date for commit");
 	        e.printStackTrace();
 	    }
-		commit.setDate(startDate);
+	    if(startDate != null){
+	    	commit.setDate(startDate);
+	    }
 		commit.setMessage(object2.getString("message"));
 		
 		try{
@@ -240,6 +242,21 @@ public class JSONParser {
 			Log.e(logTag, "parseUser: json string is null");
 		}
 		return user;
+	}
+
+	public static ArrayList<Commit> parseLatestCommits(String json) {
+		ArrayList<Commit> commits = new ArrayList<Commit>();
+		if(json != null){
+			try {
+				JSONArray array = new JSONArray(json);
+				for(int i = 0; i < array.length() && i < 4; i++){
+					commits.add(parseCommitObject(array.getJSONObject(i)));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		return (commits.isEmpty() ? null : commits);
 	}
 	
 }

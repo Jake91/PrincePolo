@@ -2,6 +2,8 @@ package se.agile.asynctasks;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+
 import se.agile.githubdata.Branch;
 import se.agile.model.JSONParser;
 
@@ -15,6 +17,11 @@ public class RequestBranches extends RequestTask<Void, Void, ArrayList<Branch>>{
 	
 	public RequestBranches(RequestListener<ArrayList<Branch>> listener){
 		super(listener);
+		url +=  super.getSelectedRepositoryName() + "/branches";
+	}
+	
+	public RequestBranches(RequestListener<ArrayList<Branch>> listener, Context context){
+		super(listener, context);
 		url +=  super.getSelectedRepositoryName() + "/branches";
 	}
 	

@@ -9,7 +9,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="Select branches to watch"
-    android:textSize="30px"
+    android:textSize="18sp"
     android:layout_marginLeft="4px"
     android:paddingTop="10px"/>
  
@@ -47,28 +47,14 @@
 			android:layout_toRightOf="@+id/chkAll"
 			android:layout_below="@android:id/list"
 			android:layout_alignBaseline="@+id/chkAll"
-			android:textSize="30px"
+			android:textSize="16dp"
         />
-    
-    <Button
-        android:id="@+id/unselectButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select all"
-        android:layout_below="@+id/chkAll" />
     
     <Button
         android:id="@+id/nextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Next"
-        android:layout_below="@+id/unselectButton" />
+        android:layout_below="@+id/chkAll" />
     
-        
-        <ProgressBar
-   android:id="@+id/progressBar1"
-   style="?android:attr/progressBarStyleLarge"
-   android:layout_width="wrap_content"
-   android:layout_height="wrap_content"
-   android:layout_centerInParent="true"/>
 </RelativeLayout>

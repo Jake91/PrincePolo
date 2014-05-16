@@ -1,5 +1,6 @@
 package se.agile.asynctasks;
 
+import android.content.Context;
 import se.agile.githubdata.User;
 import se.agile.model.JSONParser;
 import se.agile.model.Preferences;
@@ -16,6 +17,10 @@ public class RequestUser extends RequestTask<String, Void, User>{
 		super(listener);
 	}
 	
+	public RequestUser(RequestListener<User> listener, Context context){
+		super(listener, context);
+	}
+	
 	@Override
 	protected User doInBackground(String... params) {
 		return JSONParser.parseUser(generalGETRequest(URL));
@@ -24,9 +29,8 @@ public class RequestUser extends RequestTask<String, Void, User>{
 	protected void onPostExecute(User user){
 		if(!isCancelled()){
 			Preferences.setUser(user);
-			finishedWithRequest(user);
 		}
-		
+		finishedWithRequest(user);
 	}
 	
 }

@@ -92,7 +92,6 @@ public class LoginActivity extends Activity implements RequestListener<String>{
 
 	@Override
 	public void whenNoSelectedRepository() {
-		MainActivity.hasNoSelectedRepository(this);
 		
 	}
 	

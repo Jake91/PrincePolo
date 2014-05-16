@@ -1,5 +1,6 @@
 package se.agile.activities;	
 
+import se.agile.model.Preferences;
 import se.agile.princepolo.R;
 import android.app.Fragment;
 import android.graphics.Color;
@@ -20,15 +21,17 @@ public class SettingsFragment extends Fragment implements OnClickListener,
 	private String logTag;
 	private Switch soundSwitch;
 	private Button saveChangesButton;
-	private Boolean sound = true, changed;
+	private boolean sound, changed;
 	private NumberPicker minutePicker, secondPicker;
-	private int updateFrequency = 10;
+	private int updateFrequency;
 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		logTag = getResources().getString(R.string.logtag_main);
 		View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+		sound = Preferences.getSoundIsOn();
+		updateFrequency = Preferences.getTimeDuration();
 		soundSwitch = (Switch) rootView.findViewById(R.id.soundSwitch);
 		saveChangesButton = (Button) rootView.findViewById(R.id.saveChanges_Button);
 		minutePicker = (NumberPicker) rootView.findViewById(R.id.minutePicker);
@@ -55,6 +58,8 @@ public class SettingsFragment extends Fragment implements OnClickListener,
 		if (v == saveChangesButton){
 			sound = changed;
 			updateFrequency = (minutePicker.getValue())*60 + secondPicker.getValue();
+			Preferences.setTimeDuration(updateFrequency);
+			Preferences.setSoundIsOn(sound);
 			disableSaveButton();
 		}
 	}
@@ -93,7 +98,7 @@ public class SettingsFragment extends Fragment implements OnClickListener,
 		saveChangesButton.setTextColor(Color.parseColor("#A7A79B"));
 	}
 	// returns whether or not sound is enabled
-	public Boolean soundEnabled(){
+	public boolean soundEnabled(){
 		return sound;
 	}
 	// returns the desired updatefrequency in seconds, default 10 

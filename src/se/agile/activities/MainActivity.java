@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
 
 		if (savedInstanceState == null) {
 
-			displayView(VIEW.REPOSITORY_OVERVIEW);
+			displayView(VIEW.OVERVIEW);
 		}
 		notificationHandler = new NotificationHandler(this);
 		notificationHandler.start();
@@ -176,17 +176,15 @@ public class MainActivity extends Activity {
 		// The position is now easy to change.
 		// But if you change the position you also have to change the order that
 		// they are specified! position 0 -> Specified first (in this enum).
-		REPOSITORY_OVERVIEW(0, false, "", 0), 
-		NOTIFICATIONS(1, true, "0", 1), 
-		PLANNING_POKER(2, false, "", 2), 
-		PERSONAL_NOTES(3, false, "", 3), 
-		BRANCHES(4, false, "", 4),
-		COLLABORATORS(5, false, "", 5), 
-		SELECT_REPOSITORY(6, false, "", 6),
-		CONNECT_TO_GITHUB(7, false, "", 7), 
-		SETTINGS(8, false, "", 8), 
-		SELECT_WORKING_FILES(9, false,"", 9), 
-		SIGNOUT(10, false, "", 10);
+		OVERVIEW(0, false, "", 0), 
+		NOTIFICATIONS(1, false, "", 1),
+		REPOSITORIES(2, false, "", 2),
+		BRANCHES(3, false, "", 3),
+		WORKING_FILES(4, false,"", 4),
+		PLANNING_POKER(5, false, "", 5), 
+		PERSONAL_NOTES(6, false, "", 6),  
+		SETTINGS(7, false, "", 7), 
+		SIGNOUT(8, false, "", 8);
 
 		private final int position, titleIconArrayIndex;
 		private boolean isCounterVisible;
@@ -256,8 +254,8 @@ public class MainActivity extends Activity {
 	protected void displayView(VIEW view) {
 		Fragment fragment = null;
 		switch (view) {
-		case REPOSITORY_OVERVIEW:
-			fragment = new RepositoryOverviewFragment();
+		case OVERVIEW:
+			fragment = new OverivewFragmentSwitcher();
 			break;
 		case NOTIFICATIONS:
 			fragment = new NotificationFragmentSwitcher();
@@ -271,19 +269,13 @@ public class MainActivity extends Activity {
 		case BRANCHES:
 			fragment = new BranchesFragment();
 			break;
-		case COLLABORATORS:
-			fragment = new CollaboratorsFragment();
-			break;
-		case SELECT_REPOSITORY:
+		case REPOSITORIES:
 			fragment = new SelectRepositoryFragment();
-			break;
-		case CONNECT_TO_GITHUB:
-			fragment = new ConnectToGitHubFragment();
 			break;
 		case SETTINGS:
 			fragment = new SettingsFragment();
 			break;
-		case SELECT_WORKING_FILES:
+		case WORKING_FILES:
 			fragment = new SelectWorkingFilesOverviewFragment();
 			break;
 		case SIGNOUT:
@@ -371,9 +363,8 @@ public class MainActivity extends Activity {
 						})
 				.setNegativeButton("Cancel",
 						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,
-									int whichButton) {
-								activity.displayView(VIEW.CONNECT_TO_GITHUB);
+							public void onClick(DialogInterface dialog, int whichButton) {
+								activity.displayView(VIEW.SETTINGS);
 							}
 						}).show();
 	}
@@ -384,7 +375,7 @@ public class MainActivity extends Activity {
 				.setMessage("Select a Repository")
 				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
-						activity.displayView(VIEW.SELECT_REPOSITORY);
+						activity.displayView(VIEW.REPOSITORIES);
 					}
 				}).show();
 	}
@@ -392,14 +383,11 @@ public class MainActivity extends Activity {
 	/**
 	 * Check that we have an access token and a selected repository.
 	 */
-	private void initialCheck() {
+	public void initialCheck() {
 		Log.d(logTag, "initialCheck");
-		if (!Preferences.isConnectedToGitHub()
-				&& !RequestAccessToken.isRequestingAccessToken()) {
+		if (!Preferences.isConnectedToGitHub() && !RequestAccessToken.isRequestingAccessToken()) {
 			if (isNetworkConnected()) {
-				Log.d(logTag, "start login");
-				Intent intent = new Intent(MainActivity.this,
-						LoginActivity.class);
+				Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 				startActivity(intent);
 				overridePendingTransition(0, 0);
 			} else {
@@ -407,7 +395,7 @@ public class MainActivity extends Activity {
 			}
 		} else if (!Preferences.hasSelectedRepository()) {
 			Log.d(logTag, "Select repo");
-			displayView(VIEW.SELECT_REPOSITORY);
+			displayView(VIEW.REPOSITORIES);
 		}
 	}
 
@@ -427,6 +415,7 @@ public class MainActivity extends Activity {
 	@Override
 	public void onStop(){
 		Preferences.setWorkingFiles(TemporaryStorage.workingFiles);
+		notificationHandler.removeListenerFromPrefs();
 		super.onStop();
 	}
 }

@@ -2,6 +2,8 @@ package se.agile.asynctasks;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+
 import se.agile.githubdata.Repository;
 import se.agile.model.JSONParser;
 import se.agile.model.Preferences;
@@ -16,6 +18,10 @@ public class RequestRepositories extends RequestTask<Void, Void, ArrayList<Repos
 	
 	public RequestRepositories(RequestListener<ArrayList<Repository>> listener){
 		super(listener);
+	}
+	
+	public RequestRepositories(RequestListener<ArrayList<Repository>> listener, Context context){
+		super(listener, context);
 	}
 	
 	@Override

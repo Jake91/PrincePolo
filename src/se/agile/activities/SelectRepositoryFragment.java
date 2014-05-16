@@ -31,22 +31,8 @@ public class SelectRepositoryFragment extends Fragment{
 	private RequestRepositories thread;
 	
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-		logTag = getResources().getString(R.string.logtag_main);
-		rootView = inflater.inflate(R.layout.fragment_select_repository, container, false);
-		thread = new RequestRepositories(new RequestListenerAdapter<ArrayList<Repository>>() {
-			@Override
-			public void whenNoInternetConnection() {
-				MainActivity.hasNoInternetConnection(getActivity());
-				
-			}
-			@Override
-			public void whenNoSelectedRepository() {
-				MainActivity.hasNoSelectedRepository(getActivity());
-				
-			}
-		});
-		
+	public void onCreate (Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
 		prefListener = new PreferenceListener() {
 			@Override
 			public void preferenceChanged(PREF_KEY key) {
@@ -85,6 +71,21 @@ public class SelectRepositoryFragment extends Fragment{
 				
 			}
 		};
+	}
+	
+	@Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+		logTag = getResources().getString(R.string.logtag_main);
+		rootView = inflater.inflate(R.layout.fragment_select_repository, container, false);
+		thread = new RequestRepositories(new RequestListenerAdapter<ArrayList<Repository>>() {
+			@Override
+			public void whenNoInternetConnection() {
+				MainActivity.hasNoInternetConnection(getActivity());
+				
+			}
+		},getActivity());
+		
+		
 		Preferences.addListener(prefListener);
 		
 		thread.execute();

@@ -68,6 +68,8 @@ public class Preferences {
     	setTimeInterval("10"); // 10 seconds between checks
     	removeAllBranches();
     	setWorkingFiles(new ArrayList<File>());
+    	setTimeDuration(10);
+    	setSoundIsOn(true);
     }
     
     public static enum PREF_KEY {
@@ -76,6 +78,8 @@ public class Preferences {
     	ACCESS_TOKEN("access_token"),
     	TOKEN_TYPE("token_type"),
     	SCOPE("scope"),
+    	TIME_DURATION("time_duration"),
+    	SOUND_IS_ON("sound_is_on"),
     	USER_NAME("username"),
     	USER_REPOSITORIES("repos"),
     	SELECTED_REPOSITORY("selected_repository"),
@@ -279,6 +283,26 @@ public class Preferences {
     public static Repository getSelectedRepository() {
     	return new Repository(getGeneral(PREF_KEY.SELECTED_REPOSITORY));
     }
+    
+    public static void setSoundIsOn(boolean isOn) {
+    	setGeneral(PREF_KEY.SOUND_IS_ON, isOn + "");
+    }
+    
+    public static boolean getSoundIsOn() {
+    	return !getGeneral(PREF_KEY.SOUND_IS_ON).equals("false");
+    }
+    
+    public static void setTimeDuration(int duration) {
+    	setGeneral(PREF_KEY.TIME_DURATION, duration + "");
+    }
+    
+    public static int getTimeDuration() {
+    	String duration = getGeneral(PREF_KEY.TIME_DURATION);
+    	return (duration.equals("") ? 10 : Integer.parseInt(duration));
+    }
+    
+    
+    
     //-------------------------------
     
     public static String getClientId() {
@@ -294,6 +318,7 @@ public class Preferences {
     private static void fireStateChanged(PREF_KEY key){
     	for(PreferenceListener listener : prefListener){
     		listener.preferenceChanged(key);
+    		Log.d(logTag, "fire pref changed");
     	}
     }
 

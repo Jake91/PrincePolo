@@ -17,7 +17,7 @@
 		        android:layout_height="wrap_content"
 				android:layout_toRightOf="@+id/check"
 		        android:text="@+id/label"
-		        android:textSize="30px" >
+		        android:textSize="16sp" >
 		    </TextView>
 		
 		</RelativeLayout>

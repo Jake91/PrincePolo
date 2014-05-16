@@ -15,6 +15,7 @@ import se.agile.asynctasks.RequestListenerAdapter;
 import se.agile.githubdata.Branch;
 import se.agile.githubdata.Commit;
 import se.agile.githubdata.File;
+import se.agile.model.Preferences.PREF_KEY;
 import se.agile.princepolo.R;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -33,13 +34,29 @@ public class NotificationHandler extends RequestListenerAdapter<ArrayList<Branch
 	private String logTag = "PrincePolo";
 	private Runnable runnable;
 	private ScheduledExecutorService scheduler;
+	private PreferenceListener prefListener;
+	
 	
 	private static ArrayList<NotificationListener> listenerList = new ArrayList<NotificationListener>();
 	
 	public NotificationHandler(Context contexts){
 		context = contexts;
 		final RequestListener<ArrayList<Branch>> listener = this;
-
+		
+		prefListener = new PreferenceListener() {
+			
+			@Override
+			public void preferenceChanged(PREF_KEY key) {
+				if(key.equals(PREF_KEY.TIME_DURATION)){
+					stop();
+					start();
+				}
+				
+			}
+		};
+		
+		Preferences.addListener(prefListener);
+		
 		runnable = new Runnable() {
 			public void run() {
 				requestBranches = new RequestBranches(listener);
@@ -51,7 +68,7 @@ public class NotificationHandler extends RequestListenerAdapter<ArrayList<Branch
 	
 	public void start(){
 		scheduler = Executors.newSingleThreadScheduledExecutor();
-		future = scheduler.scheduleAtFixedRate(runnable, 0, 10, TimeUnit.SECONDS);
+		future = scheduler.scheduleAtFixedRate(runnable, 0, Preferences.getTimeDuration(), TimeUnit.SECONDS);
 		// Time is set in the Settings fragment and the value is stored in the Preferences class
 		// Integer.parseInt(Preferences.getTimeInterval())
 	}
@@ -150,7 +167,9 @@ public class NotificationHandler extends RequestListenerAdapter<ArrayList<Branch
     	builder.setSmallIcon(R.drawable.ic_launcher);
     	builder.setContentTitle(notification.getContentTitle());
     	builder.setContentText(notification.getContentText());
-    	builder.setSound(alarmSound);
+    	if(Preferences.getSoundIsOn()){
+    		builder.setSound(alarmSound);
+    	}
     	builder.setVibrate(pattern);
     	builder.setAutoCancel(true);
     	if(notification instanceof CommitNotification){
@@ -177,5 +196,9 @@ public class NotificationHandler extends RequestListenerAdapter<ArrayList<Branch
 	
 	public static boolean removeNotificationListener(NotificationListener listener){
 		return listenerList.remove(listener);
+	}
+	
+	public void removeListenerFromPrefs(){
+		Preferences.removeListener(prefListener);
 	}
 }

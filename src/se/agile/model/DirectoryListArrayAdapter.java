@@ -50,7 +50,7 @@ public class DirectoryListArrayAdapter extends ArrayAdapter<Directory>{
 	}
 	
 	public void updateData(String path){
-		RequestFiles reqFiles = new RequestFiles(requestListener);
+		RequestFiles reqFiles = new RequestFiles(requestListener, context);
 		reqFiles.execute(path, branchName);
 		this.currentPath = path;
 	}

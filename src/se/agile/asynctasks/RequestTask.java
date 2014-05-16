@@ -14,6 +14,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import se.agile.activities.MainActivity;
 import se.agile.model.Preferences;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -34,6 +36,9 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 	
 	private Result result;
 	
+	private Context context;
+	private ProgressDialog dialog;
+	
 	public RequestTask(){
 		this(null);
 	}
@@ -42,8 +47,19 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 		this.listener = listener;
 	}
 	
+	public RequestTask(RequestListener<Result> listener, Context context){
+		this.listener = listener;
+		this.context = context;
+	}
+	
 	@Override
 	protected void onPreExecute (){
+		if(context != null){
+			Log.d(logTag, "open loading screen");
+			dialog = new ProgressDialog(context);
+	        dialog.setMessage("Collecting Data");
+	        dialog.show();
+		}
 		if(!MainActivity.isNetworkConnected()){
 			Log.e(logTag, "Warning: No Internet Connection");
 			if(listener != null){
@@ -95,15 +111,23 @@ public abstract class RequestTask<Params, Progress, Result> extends AsyncTask<Pa
 	}
 	
 	public void finishedWithRequest(Result result){
-		if(result == null){
-			Log.e(logTag, "RequestTask: Result is null!");
-			listener.requestFailed();
-		}else{
-			this.result = result;
-			if(listener != null && !isCancelled()){
-				listener.requestFinished(this.result);
+		if(!isCancelled()){
+			if(result == null){
+				Log.e(logTag, "RequestTask: Result is null!");
+				listener.requestFailed();
+			}else{
+				this.result = result;
+				if(listener != null && !isCancelled()){
+					listener.requestFinished(this.result);
+				}
 			}
+		}else if(listener != null){
+			listener.requestFailed();
 		}
+		if(context != null){
+	        dialog.dismiss();
+		}
+		
 	}
 	
 	public Result getResult(){
